@@ -1,103 +1,92 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useChatStore } from '@/app/store/chatStore';
-import { apiClient } from '@/shared/api';
-import { ModelInfo } from '@/types';
-import { Sparkles, ChevronDown, Cpu, Zap, Check } from 'lucide-react';
+import { ChevronDown, Check } from 'lucide-react';
+
+interface AIModelOption {
+  id: string;
+  name: string;
+  subtitle: string;
+  isNew?: boolean;
+  isExtended?: boolean;
+}
+
+export const AI_MODELS: AIModelOption[] = [
+  {
+    id: 'wen-3.5-flash-lite',
+    name: '3.5 Flash-Lite',
+    subtitle: 'Fastest answers',
+  },
+  {
+    id: 'wen-3.6-flash',
+    name: '3.6 Flash',
+    subtitle: 'All-around help',
+    isNew: true,
+  },
+  {
+    id: 'wen-3.1-pro',
+    name: '3.1 Pro',
+    subtitle: 'Advanced reasoning',
+  },
+  {
+    id: 'wen-extended-thinking',
+    name: 'Extended thinking',
+    subtitle: 'Complex problem solving',
+    isExtended: true,
+  },
+];
 
 export const ModelSelector: React.FC = () => {
   const { selectedModel, setSelectedModel } = useChatStore();
-  const [models, setModels] = useState<ModelInfo[]>([]);
   const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // Default to '3.6 Flash' if not set
+  useEffect(() => {
+    if (!selectedModel || selectedModel === 'gpt-4o-mini') {
+      setSelectedModel('wen-3.6-flash');
+    }
+  }, [selectedModel, setSelectedModel]);
 
   useEffect(() => {
-    const fetchModels = async () => {
-      try {
-        const res = await apiClient.get('/models');
-        setModels(res.data.models);
-      } catch {
-        setModels([
-          {
-            id: 'gpt-4o-mini',
-            name: 'GPT-4o Mini',
-            provider: 'OpenAI',
-            context_window: 128000,
-            description: 'Fast, intelligent & versatile for daily tasks',
-            is_available: true,
-          },
-          {
-            id: 'gpt-4o',
-            name: 'GPT-4o',
-            provider: 'OpenAI',
-            context_window: 128000,
-            description: 'Most powerful flagship reasoning and coding model',
-            is_available: true,
-          },
-          {
-            id: 'gemini-1.5-flash',
-            name: 'Gemini 1.5 Flash',
-            provider: 'Google',
-            context_window: 1000000,
-            description: '1 Million token context window with extreme speed',
-            is_available: true,
-          },
-          {
-            id: 'claude-3-5-sonnet-20240620',
-            name: 'Claude 3.5 Sonnet',
-            provider: 'Anthropic',
-            context_window: 200000,
-            description: 'Industry-leading code generation & complex problem solving',
-            is_available: true,
-          },
-          {
-            id: 'wen-core-default',
-            name: 'WEN Core Engine',
-            provider: 'WEN Engine',
-            context_window: 32000,
-            description: 'Zero-config local engine with built-in intelligence',
-            is_available: true,
-          },
-        ]);
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(e.target as Node)
+      ) {
+        setIsOpen(false);
       }
     };
-    fetchModels();
-  }, []);
+    if (isOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isOpen]);
 
-  const activeModelObj = models.find((m) => m.id === selectedModel) || {
-    name: selectedModel || 'Model Tanlang',
-    provider: 'AI',
-  };
+  const activeModelObj =
+    AI_MODELS.find((m) => m.id === selectedModel) || AI_MODELS[1]; // default 3.6 Flash
+
+  const regularModels = AI_MODELS.filter((m) => !m.isExtended);
+  const extendedModel = AI_MODELS.find((m) => m.isExtended);
 
   return (
-    <div className="relative">
+    <div className="relative" ref={dropdownRef}>
+      {/* Selector Trigger Button */}
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-surface hover:bg-surface-light border border-surface-border text-xs font-semibold text-zinc-200 transition-all hover:border-primary/40 shadow-sm group"
+        className="flex items-center gap-2 px-3.5 py-2 rounded-2xl bg-surface hover:bg-surface-light border border-surface-border text-xs font-bold text-zinc-200 transition-all hover:border-primary/40 shadow-sm group select-none"
       >
-        <span className="w-2 h-2 rounded-full bg-primary-neon animate-pulse" />
-        <span className="truncate max-w-[130px]">{activeModelObj.name}</span>
-        <ChevronDown className="w-3 h-3 text-zinc-400 group-hover:text-white transition-colors" />
+        <span className="text-white font-semibold">{activeModelObj.name}</span>
+        <ChevronDown className="w-3.5 h-3.5 text-zinc-400 group-hover:text-white transition-colors" />
       </button>
 
+      {/* Model Dropdown Popup matching exact user screenshot */}
       {isOpen && (
-        <>
-          <div
-            className="fixed inset-0 z-40"
-            onClick={() => setIsOpen(false)}
-          />
-          <div className="absolute bottom-full left-0 mb-3 w-80 bg-surface-dark/95 backdrop-blur-2xl border border-surface-border rounded-3xl shadow-2xl p-2.5 z-50 space-y-1.5 animate-in fade-in zoom-in-95 duration-150">
-            <div className="px-3 py-2 text-[10px] font-bold uppercase tracking-widest text-zinc-400 flex items-center justify-between border-b border-surface-border/60">
-              <span className="flex items-center gap-1.5">
-                <Cpu className="w-3 h-3 text-primary-light" />
-                Mavjud AI Modellar
-              </span>
-              <span className="text-[9px] px-1.5 py-0.5 rounded bg-primary/20 text-primary-light">
-                {models.length} ta
-              </span>
-            </div>
-
-            <div className="max-h-64 overflow-y-auto space-y-1 pt-1">
-              {models.map((m) => (
+        <div className="absolute bottom-full left-0 mb-3 w-64 bg-[#18181b]/95 backdrop-blur-2xl border border-white/[0.1] rounded-2xl shadow-2xl p-2 z-50 select-none animate-in fade-in zoom-in-95 duration-150">
+          <div className="space-y-1">
+            {regularModels.map((m) => {
+              const isSelected = selectedModel === m.id;
+              return (
                 <button
                   key={m.id}
                   type="button"
@@ -105,20 +94,15 @@ export const ModelSelector: React.FC = () => {
                     setSelectedModel(m.id);
                     setIsOpen(false);
                   }}
-                  className={`w-full flex items-start gap-3 p-2.5 rounded-2xl text-left transition-all ${
-                    selectedModel === m.id
-                      ? 'bg-primary/20 border border-primary/50 text-white shadow-md shadow-primary/20'
-                      : 'hover:bg-surface border border-transparent text-zinc-300'
+                  className={`w-full flex items-start gap-3 px-3 py-2 rounded-xl text-left transition-colors ${
+                    isSelected
+                      ? 'bg-white/[0.08] text-white'
+                      : 'hover:bg-white/[0.05] text-zinc-300'
                   }`}
                 >
-                  <div
-                    className={`w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5 ${
-                      selectedModel === m.id
-                        ? 'bg-primary text-white shadow-md'
-                        : 'bg-surface-light text-zinc-400 border border-surface-border'
-                    }`}
-                  >
-                    <Zap className="w-4 h-4" />
+                  {/* Checkmark slot on left */}
+                  <div className="w-4 h-4 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    {isSelected && <Check className="w-4 h-4 text-white" />}
                   </div>
 
                   <div className="flex-1 min-w-0">
@@ -126,25 +110,56 @@ export const ModelSelector: React.FC = () => {
                       <span className="text-xs font-bold text-white truncate">
                         {m.name}
                       </span>
-                      {selectedModel === m.id && (
-                        <Check className="w-3.5 h-3.5 text-primary-light" />
+                      {m.isNew && (
+                        <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-zinc-800 text-zinc-300 border border-white/[0.08]">
+                          New
+                        </span>
                       )}
                     </div>
-                    <p className="text-[11px] text-zinc-400 truncate mt-0.5 leading-snug">
-                      {m.description}
+                    <p className="text-[11px] text-zinc-400 mt-0.5 leading-snug">
+                      {m.subtitle}
                     </p>
-                    <div className="flex items-center gap-2 mt-1.5 text-[9px] text-zinc-500 font-mono">
-                      <span className="px-1.5 py-0.5 rounded bg-surface border border-surface-border text-zinc-400">
-                        {m.provider}
-                      </span>
-                      <span>{(m.context_window / 1000).toFixed(0)}k Context</span>
-                    </div>
                   </div>
                 </button>
-              ))}
-            </div>
+              );
+            })}
+
+            {/* Separator line */}
+            <div className="my-1 border-t border-white/[0.08]" />
+
+            {/* Extended thinking item */}
+            {extendedModel && (
+              <button
+                type="button"
+                onClick={() => {
+                  setSelectedModel(extendedModel.id);
+                  setIsOpen(false);
+                }}
+                className={`w-full flex items-start gap-3 px-3 py-2 rounded-xl text-left transition-colors ${
+                  selectedModel === extendedModel.id
+                    ? 'bg-white/[0.08] text-white'
+                    : 'hover:bg-white/[0.05] text-zinc-300'
+                }`}
+              >
+                {/* Checkmark slot on left */}
+                <div className="w-4 h-4 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  {selectedModel === extendedModel.id && (
+                    <Check className="w-4 h-4 text-white" />
+                  )}
+                </div>
+
+                <div className="flex-1 min-w-0">
+                  <span className="text-xs font-bold text-white truncate block">
+                    {extendedModel.name}
+                  </span>
+                  <p className="text-[11px] text-zinc-400 mt-0.5 leading-snug">
+                    {extendedModel.subtitle}
+                  </p>
+                </div>
+              </button>
+            )}
           </div>
-        </>
+        </div>
       )}
     </div>
   );
