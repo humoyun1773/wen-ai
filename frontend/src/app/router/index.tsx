@@ -7,6 +7,12 @@ import { DocumentsPage } from '@/pages/DocumentsPage';
 import { PromptsPage } from '@/pages/PromptsPage';
 import { SettingsPage } from '@/pages/SettingsPage';
 import { AdminPage } from '@/pages/AdminPage';
+import { ImagesPage } from '@/pages/ImagesPage';
+import { LibraryPage } from '@/pages/LibraryPage';
+import { ScheduledPage } from '@/pages/ScheduledPage';
+import { PluginsPage } from '@/pages/PluginsPage';
+import { ProjectsPage } from '@/pages/ProjectsPage';
+import { CodexPage } from '@/pages/CodexPage';
 
 const ProtectedRoute: React.FC<{ children: React.ReactNode; adminOnly?: boolean }> = ({
   children,
@@ -55,6 +61,54 @@ export const AppRouter: React.FC = () => {
           element={
             <ProtectedRoute>
               <ChatPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/images"
+          element={
+            <ProtectedRoute>
+              <ImagesPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/library"
+          element={
+            <ProtectedRoute>
+              <LibraryPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/scheduled"
+          element={
+            <ProtectedRoute>
+              <ScheduledPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/plugins"
+          element={
+            <ProtectedRoute>
+              <PluginsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/projects"
+          element={
+            <ProtectedRoute>
+              <ProjectsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/codex"
+          element={
+            <ProtectedRoute>
+              <CodexPage />
             </ProtectedRoute>
           }
         />

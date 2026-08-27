@@ -23,6 +23,12 @@ import {
   Layers,
   X,
   MoreVertical,
+  Image as ImageIcon,
+  BookOpen,
+  Clock,
+  Plug,
+  Folder,
+  Code2,
 } from 'lucide-react';
 
 export const Sidebar: React.FC = () => {
@@ -94,7 +100,6 @@ export const Sidebar: React.FC = () => {
     setCurrentConversationId(null);
     clearAttachedFiles();
     navigate('/chat');
-    // On mobile, close drawer after creating new chat
     if (window.innerWidth < 768) {
       setSidebarOpen(false);
     }
@@ -103,7 +108,13 @@ export const Sidebar: React.FC = () => {
   const handleSelectChat = (id: string) => {
     setCurrentConversationId(id);
     navigate(`/chat/${id}`);
-    // On mobile, close drawer after selecting chat
+    if (window.innerWidth < 768) {
+      setSidebarOpen(false);
+    }
+  };
+
+  const handleNavClick = (path: string) => {
+    navigate(path);
     if (window.innerWidth < 768) {
       setSidebarOpen(false);
     }
@@ -128,7 +139,7 @@ export const Sidebar: React.FC = () => {
         />
       )}
 
-      {/* Main Sidebar (Responsive Drawer on Mobile) */}
+      {/* Main Sidebar */}
       <aside
         className={`fixed md:static inset-y-0 left-0 z-50 w-72 sm:w-80 h-screen flex flex-col bg-surface-dark border-r border-surface-border flex-shrink-0 transition-transform duration-300 ease-in-out select-none ${
           isSidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
@@ -137,7 +148,7 @@ export const Sidebar: React.FC = () => {
         {/* Collapsed view on desktop */}
         {!isSidebarOpen && (
           <div className="hidden md:flex flex-col items-center py-5 px-3 w-full justify-between h-full">
-            <div className="flex flex-col items-center gap-4">
+            <div className="flex flex-col items-center gap-3">
               <div
                 onClick={() => navigate('/chat')}
                 className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-primary via-primary-light to-secondary flex items-center justify-center shadow-lg shadow-primary/30 cursor-pointer hover:scale-105 transition-transform"
@@ -153,10 +164,24 @@ export const Sidebar: React.FC = () => {
               </button>
               <button
                 onClick={handleNewChat}
-                className="p-3 rounded-2xl bg-gradient-to-r from-primary to-secondary hover:brightness-110 text-white shadow-lg shadow-primary/25 transition-all active:scale-95"
+                className="p-2.5 rounded-xl bg-gradient-to-r from-primary to-secondary hover:brightness-110 text-white shadow-lg shadow-primary/25 transition-all"
                 title="Yangi Chat"
               >
-                <Plus className="w-5 h-5" />
+                <Plus className="w-4 h-4" />
+              </button>
+              <button
+                onClick={() => handleNavClick('/images')}
+                className="p-2.5 rounded-xl text-zinc-400 hover:text-white hover:bg-surface-light"
+                title="Rasmlar"
+              >
+                <ImageIcon className="w-4 h-4" />
+              </button>
+              <button
+                onClick={() => handleNavClick('/codex')}
+                className="p-2.5 rounded-xl text-zinc-400 hover:text-white hover:bg-surface-light"
+                title="Codex"
+              >
+                <Code2 className="w-4 h-4" />
               </button>
             </div>
 
@@ -212,19 +237,55 @@ export const Sidebar: React.FC = () => {
               </button>
             </div>
 
-            {/* Action Button: New Chat */}
-            <div className="p-3">
-              <button
+            {/* Core Feature Navigation Bar (Yangi chat, Rasmlar, Kutubxona, Rejali, Plaginlar, Loyihalar, Codex) */}
+            <div className="p-3 space-y-1 border-b border-surface-border/60">
+              <NavItem
+                icon={<Plus className="w-4 h-4 text-primary-light" />}
+                label="Новый чат"
+                active={location.pathname === '/chat' && !currentConversationId}
                 onClick={handleNewChat}
-                className="w-full flex items-center justify-center gap-2.5 px-4 py-3 rounded-2xl bg-gradient-to-r from-primary via-primary-hover to-secondary hover:opacity-95 text-white text-xs font-bold tracking-wide shadow-lg shadow-primary/25 transition-all duration-200 active:scale-[0.98] group"
-              >
-                <Plus className="w-4 h-4 group-hover:rotate-90 transition-transform duration-200" />
-                <span>YANGI SUHBAT OCHISH</span>
-              </button>
+                highlight
+              />
+              <NavItem
+                icon={<ImageIcon className="w-4 h-4 text-accent-rose" />}
+                label="Изображения"
+                active={location.pathname === '/images'}
+                onClick={() => handleNavClick('/images')}
+              />
+              <NavItem
+                icon={<BookOpen className="w-4 h-4 text-accent-cyan" />}
+                label="Библиотека"
+                active={location.pathname === '/library'}
+                onClick={() => handleNavClick('/library')}
+              />
+              <NavItem
+                icon={<Clock className="w-4 h-4 text-accent-emerald" />}
+                label="Запланированное"
+                active={location.pathname === '/scheduled'}
+                onClick={() => handleNavClick('/scheduled')}
+              />
+              <NavItem
+                icon={<Plug className="w-4 h-4 text-primary-light" />}
+                label="Плагины"
+                active={location.pathname === '/plugins'}
+                onClick={() => handleNavClick('/plugins')}
+              />
+              <NavItem
+                icon={<Folder className="w-4 h-4 text-accent-amber" />}
+                label="Проекты"
+                active={location.pathname === '/projects'}
+                onClick={() => handleNavClick('/projects')}
+              />
+              <NavItem
+                icon={<Code2 className="w-4 h-4 text-accent-violet" />}
+                label="Codex"
+                active={location.pathname === '/codex'}
+                onClick={() => handleNavClick('/codex')}
+              />
             </div>
 
             {/* Search Bar */}
-            <div className="px-3 pb-2">
+            <div className="px-3 pt-2.5 pb-1">
               <div className="relative flex items-center">
                 <Search className="w-3.5 h-3.5 absolute left-3.5 text-zinc-500 pointer-events-none" />
                 <input
@@ -247,7 +308,6 @@ export const Sidebar: React.FC = () => {
 
             {/* Conversations List */}
             <div className="flex-1 overflow-y-auto px-3 space-y-4 py-2">
-              {/* Pinned Section */}
               {pinnedChats.length > 0 && (
                 <div className="space-y-1">
                   <div className="px-2 text-[10px] font-bold text-primary-light uppercase tracking-widest flex items-center gap-1.5">
@@ -269,7 +329,6 @@ export const Sidebar: React.FC = () => {
                 </div>
               )}
 
-              {/* Recent Section */}
               <div className="space-y-1">
                 <div className="px-2 text-[10px] font-bold text-zinc-400 uppercase tracking-widest flex items-center gap-1.5">
                   <Layers className="w-3 h-3" />
@@ -280,7 +339,7 @@ export const Sidebar: React.FC = () => {
                     Yuklanmoqda...
                   </div>
                 ) : recentChats.length === 0 ? (
-                  <div className="p-5 text-center text-xs text-zinc-500 border border-dashed border-surface-border rounded-2xl">
+                  <div className="p-4 text-center text-xs text-zinc-500 border border-dashed border-surface-border rounded-2xl">
                     Hozircha suhbatlar yo'q
                   </div>
                 ) : (
@@ -302,7 +361,6 @@ export const Sidebar: React.FC = () => {
 
             {/* User Profile & Popover Menu at the Bottom */}
             <div className="relative p-3 border-t border-surface-border bg-surface/90" ref={profileMenuRef}>
-              {/* Profile Popover Menu */}
               {isProfileMenuOpen && (
                 <div className="absolute bottom-full left-3 right-3 mb-2 bg-surface-dark/95 backdrop-blur-2xl border border-surface-borderLight rounded-3xl shadow-2xl p-2 z-50 space-y-1 animate-in fade-in zoom-in-95 duration-150">
                   <div className="px-3 py-2.5 border-b border-surface-border">
@@ -321,7 +379,6 @@ export const Sidebar: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* Admin only features */}
                   {isAdmin && (
                     <>
                       <MenuOption
@@ -377,7 +434,6 @@ export const Sidebar: React.FC = () => {
                 </div>
               )}
 
-              {/* Profile Card Trigger */}
               <div
                 onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
                 className="flex items-center justify-between p-2 rounded-2xl bg-surface-dark/60 hover:bg-surface-light border border-surface-border cursor-pointer transition-all group"
@@ -405,6 +461,30 @@ export const Sidebar: React.FC = () => {
         )}
       </aside>
     </>
+  );
+};
+
+const NavItem: React.FC<{
+  icon: React.ReactNode;
+  label: string;
+  active: boolean;
+  onClick: () => void;
+  highlight?: boolean;
+}> = ({ icon, label, active, onClick, highlight }) => {
+  return (
+    <button
+      onClick={onClick}
+      className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
+        active
+          ? 'bg-primary/20 text-white border border-primary/40 shadow-sm'
+          : highlight
+          ? 'text-white hover:bg-surface-light hover:text-white'
+          : 'text-zinc-400 hover:bg-surface hover:text-zinc-100'
+      }`}
+    >
+      {icon}
+      <span>{label}</span>
+    </button>
   );
 };
 
