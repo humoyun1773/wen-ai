@@ -7,7 +7,6 @@ import { Message } from '@/types';
 import { MessageItem } from '@/widgets/MessageItem';
 import { ChatInput } from '@/widgets/ChatInput';
 import { UpgradePlanModal } from '@/widgets/UpgradePlanModal';
-import { LanguageSelector, SUPPORTED_LANGUAGES } from '@/widgets/LanguageSelector';
 import {
   Menu,
 } from 'lucide-react';
@@ -18,10 +17,6 @@ export const ChatArea: React.FC = () => {
   const { user } = useAuthStore();
 
   const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState(false);
-  // Default language is English ('en')
-  const [currentLang, setCurrentLang] = useState<string>(() => {
-    return localStorage.getItem('wen_ai_lang') || 'en';
-  });
 
   const {
     currentConversationId,
@@ -37,11 +32,6 @@ export const ChatArea: React.FC = () => {
     resetStreaming,
     toggleSidebar,
   } = useChatStore();
-
-  const handleSelectLanguage = (code: string) => {
-    setCurrentLang(code);
-    localStorage.setItem('wen_ai_lang', code);
-  };
 
   // Fetch messages if a conversation is active
   const { data: messages = [], isLoading } = useQuery<Message[]>({
@@ -139,22 +129,17 @@ export const ChatArea: React.FC = () => {
     }
   };
 
-  const currentLangObj =
-    SUPPORTED_LANGUAGES.find((l) => l.code === currentLang) ||
-    SUPPORTED_LANGUAGES[0];
-
-  // Dynamic localized personalized greeting
+  // Default English greeting (AI auto-detects language on user's prompt)
   const getGreeting = () => {
-    const base = currentLangObj.greeting;
     if (user?.name) {
-      return `${base}, ${user.name}`;
+      return `Good day, ${user.name}`;
     }
-    return base;
+    return 'Good day';
   };
 
   return (
     <div className="flex-1 flex flex-col h-screen bg-background bg-grid-pattern relative overflow-hidden">
-      {/* Clean Header Bar */}
+      {/* Clean Navbar without manual language dropdown */}
       <div className="flex items-center justify-between px-3 sm:px-6 py-3.5 border-b border-surface-border bg-surface-dark/75 backdrop-blur-xl z-20">
         <div className="flex items-center gap-2 sm:gap-3">
           {/* Mobile hamburger menu toggle */}
@@ -171,14 +156,8 @@ export const ChatArea: React.FC = () => {
           </span>
         </div>
 
-        {/* Right Nav Actions: Language Switcher (20 Languages) & Upgrade Plan */}
+        {/* Right Nav Action: Upgrade Plan Button */}
         <div className="flex items-center gap-2 sm:gap-3">
-          {/* 20-Language Selector Dropdown (Default English) */}
-          <LanguageSelector
-            currentLang={currentLang}
-            onSelectLang={handleSelectLanguage}
-          />
-
           <button
             onClick={() => setIsUpgradeModalOpen(true)}
             className="px-4 py-2 rounded-full bg-gradient-to-r from-primary via-primary-light to-secondary hover:brightness-110 text-white text-xs font-bold shadow-md shadow-primary/25 transition-all active:scale-95"
@@ -192,13 +171,13 @@ export const ChatArea: React.FC = () => {
       {/* Messages Scroll Area */}
       <div className="flex-1 overflow-y-auto px-3 sm:px-4 py-4 sm:py-6 space-y-4 relative z-10 flex flex-col">
         {messages.length === 0 && !streamingMessage ? (
-          /* Clean Minimal Multilingual Welcome Screen */
+          /* Clean Minimalist Welcome Screen */
           <div className="my-auto flex flex-col items-center justify-center text-center py-8 px-4 max-w-xl mx-auto">
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white tracking-tight mb-3">
               {getGreeting()}!
             </h1>
             <p className="text-sm sm:text-base text-zinc-400 max-w-md leading-relaxed">
-              {currentLangObj.subtitle}
+              How can I help you today?
             </p>
           </div>
         ) : (
