@@ -69,10 +69,7 @@ export const AttachmentToolsMenu: React.FC<AttachmentToolsMenuProps> = ({
         <button
           type="button"
           onMouseDown={(e) => e.preventDefault()}
-          onClick={() => {
-            onUploadClick();
-            onClose();
-          }}
+          onClick={() => handleAction('upload_files')}
           className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/[0.1] hover:text-white transition-all text-left cursor-pointer active:scale-[0.98]"
         >
           <Paperclip className="w-4 h-4 text-zinc-400" />
@@ -234,12 +231,11 @@ export const AttachmentToolsMenu: React.FC<AttachmentToolsMenuProps> = ({
             <span className="font-medium">Обучение с ИИ</span>
           </button>
 
-          {/* Personal Intelligence toggle switch */}
-          <div
+          {/* Personal Intelligence */}
+          <button
+            type="button"
             onMouseDown={(e) => e.preventDefault()}
-            onClick={() =>
-              setIsPersonalIntelligenceActive(!isPersonalIntelligenceActive)
-            }
+            onClick={() => handleAction('personal_ai')}
             className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl hover:bg-white/[0.1] cursor-pointer transition-all text-left select-none"
           >
             <div className="flex items-center gap-3">
@@ -250,18 +246,8 @@ export const AttachmentToolsMenu: React.FC<AttachmentToolsMenuProps> = ({
               </div>
             </div>
 
-            <div
-              className={`w-9 h-5 rounded-full flex items-center p-0.5 transition-colors ${
-                isPersonalIntelligenceActive ? 'bg-primary' : 'bg-zinc-700'
-              }`}
-            >
-              <div
-                className={`w-4 h-4 rounded-full bg-white shadow-md transform transition-transform ${
-                  isPersonalIntelligenceActive ? 'translate-x-4' : 'translate-x-0'
-                }`}
-              />
-            </div>
-          </div>
+            <ChevronRight className="w-3.5 h-3.5 text-zinc-400" />
+          </button>
         </div>
       )}
     </div>

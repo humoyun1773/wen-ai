@@ -84,28 +84,28 @@ export const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, disabled })
 
   const handleActionSelect = (action: string) => {
     switch (action) {
+      case 'upload_files':
+      case 'drive':
+        navigate('/documents');
+        break;
+      case 'photos':
       case 'create_image':
         navigate('/images');
         break;
       case 'create_music':
-        setText((prev) => (prev ? prev + ' /music ' : '/music '));
+      case 'notebooks':
+      case 'deep_research':
+        navigate('/library');
         break;
       case 'canvas':
         navigate('/codex');
         break;
-      case 'deep_research':
-        navigate('/library');
-        break;
       case 'guided_learning':
         navigate('/prompts');
         break;
-      case 'photos':
       case 'avatar':
-      case 'notebooks':
-        fileInputRef.current?.click();
-        break;
-      case 'drive':
-        alert("Интеграция с Google Drive: аккаунт успешно проверен.");
+      case 'personal_ai':
+        navigate('/settings');
         break;
       default:
         break;
