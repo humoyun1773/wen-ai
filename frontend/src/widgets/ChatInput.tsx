@@ -73,7 +73,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, disabled })
       });
       attachFile(res.data);
     } catch {
-      alert("Fayl yuklashda xatolik yuz berdi. Fayl hajmi 25MB dan oshmasligi lozim.");
+      alert("Ошибка при загрузке файла. Размер файла не должен превышать 25 МБ.");
     } finally {
       setIsUploading(false);
       if (fileInputRef.current) fileInputRef.current.value = '';
@@ -89,13 +89,13 @@ export const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, disabled })
         setText((prev) => (prev ? prev + ' /music ' : '/music '));
         break;
       case 'canvas':
-        setText((prev) => (prev ? prev + ' [Canvas mode] ' : '[Canvas mode] '));
+        setText((prev) => (prev ? prev + ' [Режим Canvas] ' : '[Режим Canvas] '));
         break;
       case 'deep_research':
-        setText((prev) => (prev ? prev + ' [Deep Research] ' : '[Deep Research] '));
+        setText((prev) => (prev ? prev + ' [Глубокое исследование] ' : '[Глубокое исследование] '));
         break;
       case 'guided_learning':
-        setText((prev) => (prev ? prev + ' [Guided Learning] ' : '[Guided Learning] '));
+        setText((prev) => (prev ? prev + ' [Обучение с ИИ] ' : '[Обучение с ИИ] '));
         break;
       case 'photos':
       case 'avatar':
@@ -103,7 +103,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, disabled })
         fileInputRef.current?.click();
         break;
       case 'drive':
-        alert("Google Drive integratsiyasi: hisobingiz muvaffaqiyatli tekshirildi.");
+        alert("Интеграция с Google Drive: аккаунт успешно проверен.");
         break;
       default:
         break;
@@ -112,12 +112,12 @@ export const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, disabled })
 
   const toggleVoiceInput = () => {
     if (!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
-      alert("Sizning brauzeringiz ovozli yozishni qo'llab-quvvatlamaydi.");
+      alert("Ваш браузер не поддерживает голосовой ввод.");
       return;
     }
     const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
     const recognition = new SpeechRecognition();
-    recognition.lang = 'en-US';
+    recognition.lang = 'ru-RU';
     recognition.interimResults = false;
 
     if (!isListening) {
@@ -151,6 +151,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, disabled })
                 type="button"
                 onClick={() => removeAttachedFile(file.id)}
                 className="text-zinc-400 hover:text-red-400 transition-colors p-0.5 rounded-full hover:bg-surface-light"
+                title="Удалить"
               >
                 <X className="w-3 h-3" />
               </button>
@@ -167,7 +168,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, disabled })
           value={text}
           onChange={(e) => setText(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder="Ask WEN AI anything... (Shift+Enter for new line)"
+          placeholder="Спросите WEN AI о чем угодно... (Shift+Enter для новой строки)"
           disabled={disabled || isStreaming}
           className="w-full bg-transparent text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none resize-none min-h-[46px] max-h-[220px] leading-6 px-2.5 pt-1.5 font-sans"
         />
@@ -182,7 +183,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, disabled })
                 onClick={() => setIsAttachmentMenuOpen(!isAttachmentMenuOpen)}
                 disabled={isUploading || isStreaming}
                 className="flex items-center justify-center w-9 h-9 rounded-2xl bg-surface hover:bg-surface-light border border-surface-border text-zinc-300 hover:text-white transition-all hover:border-primary/40 active:scale-95"
-                title="Add attachments and tools"
+                title="Прикрепить файлы и инструменты"
               >
                 {isUploading ? (
                   <Loader2 className="w-4 h-4 animate-spin text-primary-light" />
@@ -191,7 +192,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, disabled })
                 )}
               </button>
 
-              {/* Flyout Menu matching user screenshots */}
+              {/* Flyout Menu */}
               <AttachmentToolsMenu
                 isOpen={isAttachmentMenuOpen}
                 onClose={() => setIsAttachmentMenuOpen(false)}
@@ -219,7 +220,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, disabled })
                   ? 'bg-red-500/20 border-red-500 text-red-400 animate-pulse'
                   : 'bg-surface/70 hover:bg-surface-light border-surface-border text-zinc-400 hover:text-zinc-200'
               }`}
-              title="Voice Speech Input"
+              title="Голосовой ввод"
             >
               {isListening ? <MicOff className="w-3.5 h-3.5" /> : <Mic className="w-3.5 h-3.5" />}
             </button>
@@ -231,7 +232,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, disabled })
             onClick={handleSubmit}
             disabled={!text.trim() || disabled || isStreaming}
             className="flex items-center justify-center p-2.5 rounded-2xl bg-gradient-to-tr from-primary via-primary-light to-secondary hover:brightness-110 disabled:opacity-30 disabled:hover:brightness-100 text-white shadow-lg shadow-primary/30 transition-all duration-200 active:scale-95 group"
-            title="Send Message"
+            title="Отправить сообщение"
           >
             <Send className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
           </button>
@@ -241,9 +242,9 @@ export const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, disabled })
       <div className="flex items-center justify-center gap-4 text-[10px] text-zinc-500 text-center mt-2.5 font-medium">
         <span>⚡ Real-time SSE Streaming</span>
         <span>•</span>
-        <span>🔒 Secure Encrypted</span>
+        <span>🔒 Защищенное соединение</span>
         <span>•</span>
-        <span>📄 RAG Grounding</span>
+        <span>📄 База знаний RAG</span>
       </div>
     </div>
   );

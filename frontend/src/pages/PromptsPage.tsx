@@ -5,9 +5,9 @@ import { Sidebar } from '@/widgets/Sidebar';
 import { Button } from '@/shared/components/Button';
 import { Input } from '@/shared/components/Input';
 import { Modal } from '@/shared/components/Modal';
+import { useChatStore } from '@/app/store/chatStore';
 import { apiClient } from '@/shared/api';
 import { SystemPrompt } from '@/types';
-import { useChatStore } from '@/app/store/chatStore';
 import {
   Terminal,
   Plus,
@@ -19,34 +19,32 @@ import {
   Languages,
   Briefcase,
   Layers,
-  Bot,
-  Sliders,
 } from 'lucide-react';
 
 const PRESET_TEMPLATES = [
   {
-    name: 'Senior Frontend & React Developer',
-    description: 'Clean TypeScript, Tailwind CSS va zamonaviy arxitektura',
-    content: 'You are an expert Senior Frontend Architect. Provide clean, modular, and typed React 18+ code with Tailwind CSS. Explain design patterns and prioritize high performance and UX.',
+    name: 'Senior Fullstack Архитектор',
     category: 'coding',
+    description: 'Чистый код, лучшие практики, паттерны проектирования и безопасность.',
+    content: 'Ты — Senior Fullstack Architect мирового уровня. Отвечай подробно, предоставляй чистый, надежный, масштабируемый код с соблюдением принципов SOLID и Clean Architecture.',
   },
   {
-    name: 'Senior Python & FastAPI Architect',
-    description: 'Clean Architecture, async SQLAlchemy va Pydantic v2',
-    content: 'You are an elite Python Backend Architect. Write production-ready, clean architecture FastAPI code using async SQLAlchemy 2.0, Pydantic v2, robust error handling and structured logging.',
-    category: 'coding',
-  },
-  {
-    name: 'O\'zbek Tili Tahrirchisi va Muallif',
-    description: 'Rasmiy va professional tilda matn yaratish',
-    content: 'Siz professional o\'zbek tili muharriri va filolog mutaxassisisiz. Barcha matnlarni imlo qoidalariga qat\'iy amal qilgan holda, chiroyli va rasmiy uslubda tahrirlang.',
+    name: 'Эксперт по переводу и редактуре',
     category: 'writing',
+    description: 'Художественный и технический перевод высочайшего качества.',
+    content: 'Ты — профессиональный лингвист и редактор. Переводи тексты максимально естественно, точно передавая терминологию, стиль и эмоциональный тон оригинала.',
   },
   {
-    name: 'Shartnoma va Huquqiy Hujjat Auditor',
-    description: 'Hujjatlardagi xavflar va majburiyatlarni tekshirish',
-    content: 'You are a meticulous Legal and Contract Analyst. Analyze documents for legal compliance, risks, liability issues, and unclear clauses. Point out critical red flags clearly.',
+    name: 'Финансовый и бизнес-аналитик',
     category: 'business',
+    description: 'Анализ рынков, финансовые модели, ROI и бизнес-стратегии.',
+    content: 'Ты — ведущий финансовый и бизнес-аналитик. Оценивай риски, предлагай эффективные стратегии масштабирования и формируй четкие бизнес-выводы.',
+  },
+  {
+    name: 'SMM & Контент-криейтор',
+    category: 'marketing',
+    description: 'Вирусные посты, рекламные заголовки и вовлекающий контент.',
+    content: 'Ты — эксперт по маркетингу и виральному контенту. Создавай цепляющие, современные и конвертящие тексты для социальных сетей и рекламных кампаний.',
   },
 ];
 
@@ -57,12 +55,13 @@ export const PromptsPage: React.FC = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingPrompt, setEditingPrompt] = useState<SystemPrompt | null>(null);
-  const [filterCategory, setFilterCategory] = useState<string>('all');
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+
   const [formData, setFormData] = useState({
     name: '',
     description: '',
     content: '',
-    category: 'custom',
+    category: 'general',
   });
 
   // Fetch prompts
@@ -74,11 +73,11 @@ export const PromptsPage: React.FC = () => {
     },
   });
 
-  // Create/Update prompt
+  // Create or Update
   const createMutation = useMutation({
     mutationFn: async (data: any) => {
       if (editingPrompt) {
-        await apiClient.patch(`/prompts/${editingPrompt.id}`, data);
+        await apiClient.put(`/prompts/${editingPrompt.id}`, data);
       } else {
         await apiClient.post('/prompts', data);
       }
@@ -89,7 +88,7 @@ export const PromptsPage: React.FC = () => {
     },
   });
 
-  // Delete prompt
+  // Delete
   const deleteMutation = useMutation({
     mutationFn: async (id: string) => {
       await apiClient.delete(`/prompts/${id}`);
@@ -99,14 +98,14 @@ export const PromptsPage: React.FC = () => {
     },
   });
 
-  const handleOpenModal = (p?: SystemPrompt) => {
-    if (p) {
-      setEditingPrompt(p);
+  const handleOpenModal = (prompt?: SystemPrompt) => {
+    if (prompt) {
+      setEditingPrompt(prompt);
       setFormData({
-        name: p.name,
-        description: p.description || '',
-        content: p.content,
-        category: p.category || 'custom',
+        name: prompt.name,
+        description: prompt.description || '',
+        content: prompt.content,
+        category: prompt.category || 'general',
       });
     } else {
       setEditingPrompt(null);
@@ -114,7 +113,7 @@ export const PromptsPage: React.FC = () => {
         name: '',
         description: '',
         content: '',
-        category: 'custom',
+        category: 'general',
       });
     }
     setIsModalOpen(true);
@@ -125,15 +124,19 @@ export const PromptsPage: React.FC = () => {
     setEditingPrompt(null);
   };
 
-  const handleAddPreset = async (preset: typeof PRESET_TEMPLATES[0]) => {
-    await apiClient.post('/prompts', preset);
-    queryClient.invalidateQueries({ queryKey: ['prompts'] });
+  const handleAddPreset = (preset: any) => {
+    createMutation.mutate({
+      name: preset.name,
+      description: preset.description,
+      content: preset.content,
+      category: preset.category,
+      is_public: false,
+    });
   };
 
-  const filteredPrompts = prompts.filter((p) => {
-    if (filterCategory === 'all') return true;
-    return p.category === filterCategory;
-  });
+  const filteredPrompts = selectedCategory === 'all'
+    ? prompts
+    : prompts.filter((p) => p.category === selectedCategory);
 
   return (
     <div className="flex h-screen w-screen overflow-hidden bg-background bg-grid-pattern text-zinc-100">
@@ -141,7 +144,7 @@ export const PromptsPage: React.FC = () => {
 
       <main className="flex-1 flex flex-col h-full overflow-y-auto p-6 md:p-10 relative">
         <div className="max-w-5xl mx-auto w-full space-y-8">
-          {/* Header Banner */}
+          {/* Header */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-surface-border pb-6">
             <div>
               <div className="flex items-center gap-2.5">
@@ -149,11 +152,11 @@ export const PromptsPage: React.FC = () => {
                   <Terminal className="w-5 h-5" />
                 </div>
                 <h1 className="text-2xl md:text-3xl font-extrabold text-white tracking-tight">
-                  System Prompts & AI Personalar
+                  Библиотека системных промптов
                 </h1>
               </div>
               <p className="text-xs text-zinc-400 mt-1.5 leading-relaxed">
-                AI ga maxsus rollar, shaxsiyatlar va xulq-atvor qoidalarini biriktiring va suhbat kontekstini o'zgartiring.
+                Настраивайте персоны ИИ, роли экспертов и системные инструкции для точных ответов в один клик.
               </p>
             </div>
 
@@ -164,7 +167,7 @@ export const PromptsPage: React.FC = () => {
               className="self-start sm:self-auto py-3 px-5 rounded-2xl bg-gradient-to-r from-primary to-secondary text-xs font-bold shadow-lg shadow-primary/25"
             >
               <Plus className="w-4 h-4" />
-              <span>YANGI PROMPT YARATISH</span>
+              <span>СОЗДАТЬ ПРОМПТ</span>
             </Button>
           </div>
 
@@ -172,7 +175,7 @@ export const PromptsPage: React.FC = () => {
           <div className="space-y-3.5">
             <h3 className="text-xs font-bold uppercase tracking-wider text-zinc-400 flex items-center gap-2">
               <Layers className="w-3.5 h-3.5 text-primary-light" />
-              <span>Tayyor Shablonlar (1-bosishda qo'shish)</span>
+              <span>Готовые шаблоны (добавление в 1 клик)</span>
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
               {PRESET_TEMPLATES.map((tmpl, idx) => (
@@ -192,7 +195,7 @@ export const PromptsPage: React.FC = () => {
                     className="text-primary-light hover:bg-primary/20 text-xs flex-shrink-0 rounded-xl"
                     onClick={() => handleAddPreset(tmpl)}
                   >
-                    + Qo'shish
+                    + Добавить
                   </Button>
                 </div>
               ))}
@@ -204,17 +207,17 @@ export const PromptsPage: React.FC = () => {
             <div className="flex items-center justify-between">
               <h2 className="text-base font-bold text-white flex items-center gap-2">
                 <Layers className="w-4 h-4 text-primary-light" />
-                <span>Faol Promplaringiz ({filteredPrompts.length})</span>
+                <span>Ваши промпты ({filteredPrompts.length})</span>
               </h2>
             </div>
 
             {isLoading ? (
               <div className="p-12 text-center text-xs text-zinc-500 animate-pulse">
-                Yuklanmoqda...
+                Загрузка...
               </div>
             ) : filteredPrompts.length === 0 ? (
               <div className="p-10 bg-surface/60 rounded-3xl border border-surface-border text-center text-xs text-zinc-400">
-                Hozircha shaxsiy promptlar yo'q. Yuqoridagi tayyor shablonlardan birini qo'shing yoki yangi prompt yarating.
+                У вас пока нет сохраненных промптов. Добавьте готовый шаблон выше или создайте новый.
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -242,14 +245,14 @@ export const PromptsPage: React.FC = () => {
                         <button
                           onClick={() => handleOpenModal(p)}
                           className="p-2 rounded-xl text-zinc-400 hover:text-white hover:bg-surface-light"
-                          title="Tahrirlash"
+                          title="Редактировать"
                         >
                           <Edit2 className="w-3.5 h-3.5" />
                         </button>
                         <button
                           onClick={() => deleteMutation.mutate(p.id)}
                           className="p-2 rounded-xl text-zinc-400 hover:text-red-400 hover:bg-surface-light"
-                          title="O'chirish"
+                          title="Удалить"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
                         </button>
@@ -270,7 +273,7 @@ export const PromptsPage: React.FC = () => {
                       }}
                     >
                       <MessageSquare className="w-3.5 h-3.5" />
-                      <span>Ushbu Persona bilan Chat qilish</span>
+                      <span>Использовать в чате</span>
                     </Button>
                   </div>
                 ))}
@@ -283,30 +286,30 @@ export const PromptsPage: React.FC = () => {
         <Modal
           isOpen={isModalOpen}
           onClose={handleCloseModal}
-          title={editingPrompt ? "Promptni Tahrirlash" : "Yangi AI Ko'rsatma Yaratish"}
+          title={editingPrompt ? "Редактирование промпта" : "Создание новой ИИ-инструкции"}
         >
           <div className="space-y-4">
             <Input
-              label="Prompt Nomi"
-              placeholder="Masalan: Senior React Developer"
+              label="Название промпта"
+              placeholder="Например: Senior React Developer"
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
             />
 
             <Input
-              label="Qisqacha Tavsif"
-              placeholder="Masalan: Toza kod va eng yaxshi amaliyotlar"
+              label="Краткое описание"
+              placeholder="Например: Чистый код и лучшие практики разработки"
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
             />
 
             <div className="space-y-1.5">
               <label className="block text-xs font-semibold text-zinc-300">
-                Tizim Ko'rsatmasi (System Instruction)
+                Системная инструкция (System Instruction)
               </label>
               <textarea
                 rows={6}
-                placeholder="AI ga beriladigan aniq ko'rsatmalarni yozing..."
+                placeholder="Введите точные системные правила и указания для ИИ..."
                 value={formData.content}
                 onChange={(e) => setFormData({ ...formData, content: e.target.value })}
                 className="w-full bg-surface-dark border border-surface-border rounded-2xl p-3.5 text-xs text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-primary resize-none font-mono leading-relaxed"
@@ -319,7 +322,7 @@ export const PromptsPage: React.FC = () => {
               disabled={!formData.name.trim() || !formData.content.trim()}
               isLoading={createMutation.isPending}
             >
-              Saqlash
+              Сохранить
             </Button>
           </div>
         </Modal>

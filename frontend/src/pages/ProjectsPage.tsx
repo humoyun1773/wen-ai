@@ -28,18 +28,18 @@ const SAMPLE_PROJECTS: Project[] = [
   {
     id: '1',
     name: 'WEN AI Core Platform',
-    description: 'FastAPI Clean Architecture backend va React TypeScript frontend tizimi',
+    description: 'FastAPI Clean Architecture бэкенд и React TypeScript фронтенд интерфейс',
     chatsCount: 14,
     filesCount: 6,
-    updatedAt: 'Bugun 17:15',
+    updatedAt: 'Сегодня в 17:15',
   },
   {
     id: '2',
     name: 'E-Commerce Microservices',
-    description: 'Docker, Redis kesh va PostgreSQL klasterli onlayn do\'kon servislari',
+    description: 'Микросервисы интернет-магазина с Docker, Redis кэшем и PostgreSQL',
     chatsCount: 8,
     filesCount: 3,
-    updatedAt: '24-avgust',
+    updatedAt: '24 августа',
   },
 ];
 
@@ -54,10 +54,10 @@ export const ProjectsPage: React.FC = () => {
     const newProj: Project = {
       id: Date.now().toString(),
       name: formData.name,
-      description: formData.description || 'Loyiha tavsifi yo\'q',
+      description: formData.description || 'Описание проекта отсутствует',
       chatsCount: 0,
       filesCount: 0,
-      updatedAt: 'Hozirgina',
+      updatedAt: 'Только что',
     };
     setProjects([newProj, ...projects]);
     setIsModalOpen(false);
@@ -78,10 +78,10 @@ export const ProjectsPage: React.FC = () => {
               </div>
               <div>
                 <h1 className="text-2xl md:text-3xl font-extrabold text-white tracking-tight">
-                  Loyihalar & Ish Maydonlari (Projects)
+                  Проекты & Рабочие пространства
                 </h1>
                 <p className="text-xs text-zinc-400 mt-1">
-                  Har bir loyiha uchun alohida chatlar, fayllar va AI ko'rsatmalarini guruhlang.
+                  Группируйте чаты, файлы и системные инструкции отдельно для каждого проекта.
                 </p>
               </div>
             </div>
@@ -91,7 +91,7 @@ export const ProjectsPage: React.FC = () => {
               className="py-3 px-5 rounded-2xl bg-gradient-to-r from-primary to-secondary text-xs font-bold shadow-lg shadow-primary/25 self-start sm:self-auto"
             >
               <Plus className="w-4 h-4" />
-              <span>YANGI LOYIHA OCHISH</span>
+              <span>СОЗДАТЬ ПРОЕКТ</span>
             </Button>
           </div>
 
@@ -121,6 +121,7 @@ export const ProjectsPage: React.FC = () => {
                     <button
                       onClick={() => setProjects(projects.filter((p) => p.id !== proj.id))}
                       className="p-1.5 text-zinc-500 hover:text-red-400 rounded-lg hover:bg-surface-light"
+                      title="Удалить"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
@@ -135,12 +136,12 @@ export const ProjectsPage: React.FC = () => {
                   <div className="flex items-center gap-3 text-[11px] text-zinc-400 font-medium">
                     <span className="flex items-center gap-1">
                       <MessageSquare className="w-3.5 h-3.5 text-primary-light" />
-                      {proj.chatsCount} ta chat
+                      {proj.chatsCount} чатов
                     </span>
                     <span>•</span>
                     <span className="flex items-center gap-1">
                       <FileCode className="w-3.5 h-3.5 text-accent-cyan" />
-                      {proj.filesCount} ta fayl
+                      {proj.filesCount} файлов
                     </span>
                   </div>
 
@@ -150,7 +151,7 @@ export const ProjectsPage: React.FC = () => {
                     className="text-primary-light hover:bg-primary/15 text-xs py-1.5 px-3 rounded-xl"
                     onClick={() => navigate('/chat')}
                   >
-                    <span>Loyiha Chati</span>
+                    <span>Чат проекта</span>
                     <ExternalLink className="w-3 h-3 ml-1" />
                   </Button>
                 </div>
@@ -163,23 +164,23 @@ export const ProjectsPage: React.FC = () => {
         <Modal
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
-          title="Yangi Loyiha Yaratish"
+          title="Создание нового проекта"
         >
           <div className="space-y-4">
             <Input
-              label="Loyiha Nomi"
-              placeholder="Masalan: AI Platform Backend"
+              label="Название проекта"
+              placeholder="Например: AI Platform Backend"
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
             />
 
             <div className="space-y-1.5">
               <label className="block text-xs font-semibold text-zinc-300">
-                Loyiha Tavsifi
+                Описание проекта
               </label>
               <textarea
                 rows={3}
-                placeholder="Loyiha maqsadi va texnologiyalari..."
+                placeholder="Цель проекта, стек технологий и особенности..."
                 value={formData.description}
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                 className="w-full bg-surface-dark border border-surface-border rounded-2xl p-3.5 text-xs text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-primary resize-none"
@@ -187,7 +188,7 @@ export const ProjectsPage: React.FC = () => {
             </div>
 
             <Button onClick={handleCreate} className="w-full py-3 rounded-2xl font-bold">
-              Yaratish
+              Создать
             </Button>
           </div>
         </Modal>

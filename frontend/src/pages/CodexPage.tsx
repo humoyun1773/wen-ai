@@ -40,7 +40,7 @@ export const CodexPage: React.FC = () => {
 
   const handleRun = () => {
     setIsRunning(true);
-    setOutput('Kompilyatsiya qilinmoqda va ishga tushirilmoqda...\n');
+    setOutput('Компиляция и запуск в изолированной песочнице...\n');
     setTimeout(() => {
       setOutput(
         'Processing 4 chunks through neural vector space...\n' +
@@ -53,10 +53,10 @@ export const CodexPage: React.FC = () => {
 
   const handleExplain = () => {
     setAiExplanation(
-      '🧠 **AI Codex Tahlili:**\n' +
-      '- Ushbu kod asinxron (`async/await`) funksiya orqali matnlarni vektorli fazoga o\'tkazishni simulyatsiya qiladi.\n' +
-      '- `asyncio.run()` yordamida `calculate_ai_embeddings` hodisalar tsiklida (event loop) ishga tushirilgan.\n' +
-      '- 1536 o\'lchamli zamonaviy matnli embeddinglar OpenAI va Cohere modellari standartlariga mos keladi.'
+      '🧠 **Анализ WEN AI Codex:**\n' +
+      '- Этот код асинхронно (`async/await`) выполняет векторизацию текстовых фрагментов.\n' +
+      '- Функция `calculate_ai_embeddings` запускается в цикле событий с помощью `asyncio.run()`.\n' +
+      '- Размерность векторов 1536 соответствует современным стандартам эмбеддингов нейросетей.'
     );
   };
 
@@ -77,7 +77,7 @@ export const CodexPage: React.FC = () => {
                   WEN — AI Developer Studio & Sandbox
                 </h1>
                 <p className="text-xs text-zinc-400 mt-0.5">
-                  Interaktiv kod muharriri, xatolarni tuzatish va sun'iy intellekt tahlili.
+                  Интерактивный редактор кода, отладка ошибок и интеллектуальный анализ архитектуры.
                 </p>
               </div>
             </div>
@@ -102,7 +102,7 @@ export const CodexPage: React.FC = () => {
                 className="text-xs py-2 px-3 rounded-xl"
               >
                 <Lightbulb className="w-3.5 h-3.5 text-amber-400" />
-                <span>Kodni Tushuntir</span>
+                <span>Объяснить код</span>
               </Button>
 
               <Button
@@ -113,7 +113,7 @@ export const CodexPage: React.FC = () => {
                 className="text-xs py-2 px-4 rounded-xl font-bold bg-gradient-to-r from-primary to-secondary"
               >
                 <Play className="w-3.5 h-3.5" />
-                <span>Ishga Tushirish</span>
+                <span>Запустить</span>
               </Button>
             </div>
           </div>
@@ -147,14 +147,14 @@ export const CodexPage: React.FC = () => {
                 <div className="flex items-center justify-between px-4 py-2.5 bg-surface-dark border-b border-surface-border text-xs text-zinc-400 font-mono">
                   <div className="flex items-center gap-2">
                     <Terminal className="w-3.5 h-3.5 text-accent-emerald" />
-                    <span>Terminal Console</span>
+                    <span>Терминал</span>
                   </div>
                   {output && (
                     <button
                       onClick={() => setOutput('')}
                       className="text-[10px] text-zinc-500 hover:text-white"
                     >
-                      Tozalash
+                      Очистить
                     </button>
                   )}
                 </div>
@@ -162,7 +162,7 @@ export const CodexPage: React.FC = () => {
                 <div className="p-4 flex-1 overflow-y-auto font-mono text-xs text-emerald-400 whitespace-pre-wrap leading-relaxed">
                   {output || (
                     <span className="text-zinc-600 italic">
-                      Kod natijasi bu yerda ko'rinadi. "Ishga Tushirish" tugmasini bosing...
+                      Результат выполнения появится здесь. Нажмите кнопку "Запустить"...
                     </span>
                   )}
                 </div>

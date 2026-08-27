@@ -28,8 +28,8 @@ const INITIAL_PLUGINS: Plugin[] = [
   {
     id: 'web_search',
     name: 'Real-time Web Search',
-    category: 'Internet',
-    description: 'AI modeliga real vaqtdagi internet qidiruvi va dolzarb ma\'lumotlarni ulash.',
+    category: 'Интернет',
+    description: 'Подключение модели ИИ к актуальному поиску в реальном времени и извлечение свежих фактов.',
     icon: <Globe className="w-5 h-5 text-accent-cyan" />,
     isEnabled: true,
     version: 'v2.4',
@@ -37,8 +37,8 @@ const INITIAL_PLUGINS: Plugin[] = [
   {
     id: 'code_interpreter',
     name: 'Python Code Sandbox',
-    category: 'Developer Tools',
-    description: 'AI tomonidan yozilgan Python kodlarini xavfsiz izolyatsiyalangan muhitda bajarish va natijasini ko\'rish.',
+    category: 'Инструменты разработчика',
+    description: 'Безопасное выполнение сгенерированного кода Python в изолированной среде с мгновенным выводом результата.',
     icon: <Code2 className="w-5 h-5 text-primary-light" />,
     isEnabled: true,
     version: 'v3.1',
@@ -46,8 +46,8 @@ const INITIAL_PLUGINS: Plugin[] = [
   {
     id: 'sql_connector',
     name: 'SQL Database Explorer',
-    category: 'Data Analysis',
-    description: 'PostgreSQL, MySQL va SQLite ma\'lumotlar bazalariga ulanib avtomatik so\'rovlar generatsiya qilish.',
+    category: 'Анализ данных',
+    description: 'Подключение к базам данных PostgreSQL, MySQL, SQLite и автоматическая генерация аналитических запросов.',
     icon: <Database className="w-5 h-5 text-accent-emerald" />,
     isEnabled: false,
     version: 'v1.2',
@@ -55,8 +55,8 @@ const INITIAL_PLUGINS: Plugin[] = [
   {
     id: 'github_sync',
     name: 'GitHub Repository Sync',
-    category: 'Integrations',
-    description: 'GitHub omboringizdagi repo kodlarini o\'qish, PR review qilish va commitlar tarixi bo\'yicha suhbat.',
+    category: 'Интеграции',
+    description: 'Чтение репозиториев GitHub, автоматический код-ревью пул-реквестов и анализ коммитов.',
     icon: <Github className="w-5 h-5 text-zinc-100" />,
     isEnabled: true,
     version: 'v2.0',
@@ -86,10 +86,10 @@ export const PluginsPage: React.FC = () => {
               </div>
               <div>
                 <h1 className="text-2xl md:text-3xl font-extrabold text-white tracking-tight">
-                  Plaginlar & MCP Integratsiyalar
+                  Плагины & MCP Интеграции
                 </h1>
                 <p className="text-xs text-zinc-400 mt-1">
-                  WEN AI imkoniyatlarini internet qidiruvi, kod ijrochisi va ma'lumotlar bazalari bilan kengaytiring.
+                  Расширяйте возможности WEN AI веб-поиском, исполнением кода и доступом к внешним базам данных.
                 </p>
               </div>
             </div>
@@ -123,7 +123,7 @@ export const PluginsPage: React.FC = () => {
                   <button
                     onClick={() => togglePlugin(plugin.id)}
                     className="p-1 rounded-xl text-zinc-300 hover:text-white transition-transform active:scale-95"
-                    title={plugin.isEnabled ? "O'chirish" : "Yoqish"}
+                    title={plugin.isEnabled ? "Отключить" : "Включить"}
                   >
                     {plugin.isEnabled ? (
                       <ToggleRight className="w-8 h-8 text-primary-neon" />
@@ -148,7 +148,7 @@ export const PluginsPage: React.FC = () => {
                         plugin.isEnabled ? 'bg-emerald-500 animate-pulse' : 'bg-zinc-600'
                       }`}
                     />
-                    {plugin.isEnabled ? 'Faollashtirilgan' : 'O\'chirilgan'}
+                    {plugin.isEnabled ? 'Подключен' : 'Отключен'}
                   </span>
 
                   <span className="text-[11px] text-zinc-500 font-medium">

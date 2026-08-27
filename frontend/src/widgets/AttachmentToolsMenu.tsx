@@ -64,7 +64,7 @@ export const AttachmentToolsMenu: React.FC<AttachmentToolsMenuProps> = ({
           className="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/[0.08] hover:text-white transition-colors text-left"
         >
           <Paperclip className="w-4 h-4 text-zinc-400" />
-          <span className="font-medium">Upload files</span>
+          <span className="font-medium">Загрузить файлы</span>
         </button>
 
         {/* Add from Drive */}
@@ -77,7 +77,7 @@ export const AttachmentToolsMenu: React.FC<AttachmentToolsMenuProps> = ({
           className="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/[0.08] hover:text-white transition-colors text-left"
         >
           <HardDrive className="w-4 h-4 text-zinc-400" />
-          <span className="font-medium">Add from Drive</span>
+          <span className="font-medium">Добавить из Drive</span>
         </button>
 
         {/* More uploads > */}
@@ -98,7 +98,7 @@ export const AttachmentToolsMenu: React.FC<AttachmentToolsMenuProps> = ({
           >
             <div className="flex items-center gap-3">
               <MoreHorizontal className="w-4 h-4 text-zinc-400" />
-              <span className="font-medium">More uploads</span>
+              <span className="font-medium">Другие загрузки</span>
             </div>
             <ChevronRight className="w-3.5 h-3.5 text-zinc-500" />
           </button>
@@ -116,7 +116,7 @@ export const AttachmentToolsMenu: React.FC<AttachmentToolsMenuProps> = ({
           className="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/[0.08] hover:text-white transition-colors text-left"
         >
           <ImageIcon className="w-4 h-4 text-zinc-400" />
-          <span className="font-medium">Create image</span>
+          <span className="font-medium">Создать изображение</span>
         </button>
 
         {/* Create music */}
@@ -129,7 +129,7 @@ export const AttachmentToolsMenu: React.FC<AttachmentToolsMenuProps> = ({
           className="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/[0.08] hover:text-white transition-colors text-left"
         >
           <Music className="w-4 h-4 text-zinc-400" />
-          <span className="font-medium">Create music</span>
+          <span className="font-medium">Создать музыку</span>
         </button>
 
         {/* Canvas */}
@@ -142,7 +142,7 @@ export const AttachmentToolsMenu: React.FC<AttachmentToolsMenuProps> = ({
           className="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/[0.08] hover:text-white transition-colors text-left"
         >
           <Layout className="w-4 h-4 text-zinc-400" />
-          <span className="font-medium">Canvas</span>
+          <span className="font-medium">Режим Canvas</span>
         </button>
 
         {/* More tools > */}
@@ -163,7 +163,7 @@ export const AttachmentToolsMenu: React.FC<AttachmentToolsMenuProps> = ({
           >
             <div className="flex items-center gap-3">
               <MoreHorizontal className="w-4 h-4 text-zinc-400" />
-              <span className="font-medium">More tools</span>
+              <span className="font-medium">Другие инструменты</span>
             </div>
             <ChevronRight className="w-3.5 h-3.5 text-zinc-500" />
           </button>
@@ -182,7 +182,7 @@ export const AttachmentToolsMenu: React.FC<AttachmentToolsMenuProps> = ({
             className="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/[0.08] hover:text-white transition-colors text-left"
           >
             <ImageIcon className="w-4 h-4 text-zinc-400" />
-            <span className="font-medium">Photos</span>
+            <span className="font-medium">Фотографии</span>
           </button>
 
           <button
@@ -194,7 +194,7 @@ export const AttachmentToolsMenu: React.FC<AttachmentToolsMenuProps> = ({
             className="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/[0.08] hover:text-white transition-colors text-left"
           >
             <User className="w-4 h-4 text-zinc-400" />
-            <span className="font-medium">Avatar</span>
+            <span className="font-medium">Аватар</span>
           </button>
 
           <button
@@ -206,7 +206,7 @@ export const AttachmentToolsMenu: React.FC<AttachmentToolsMenuProps> = ({
             className="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/[0.08] hover:text-white transition-colors text-left"
           >
             <BookMarked className="w-4 h-4 text-zinc-400" />
-            <span className="font-medium">Notebooks</span>
+            <span className="font-medium">Блокноты</span>
           </button>
         </div>
       )}
@@ -223,7 +223,7 @@ export const AttachmentToolsMenu: React.FC<AttachmentToolsMenuProps> = ({
             className="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/[0.08] hover:text-white transition-colors text-left"
           >
             <Atom className="w-4 h-4 text-zinc-400" />
-            <span className="font-medium">Deep research</span>
+            <span className="font-medium">Глубокое исследование</span>
           </button>
 
           <button
@@ -235,7 +235,7 @@ export const AttachmentToolsMenu: React.FC<AttachmentToolsMenuProps> = ({
             className="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/[0.08] hover:text-white transition-colors text-left"
           >
             <BookOpen className="w-4 h-4 text-zinc-400" />
-            <span className="font-medium">Guided learning</span>
+            <span className="font-medium">Обучение с ИИ</span>
           </button>
 
           {/* Personal Intelligence toggle switch */}
@@ -248,7 +248,7 @@ export const AttachmentToolsMenu: React.FC<AttachmentToolsMenuProps> = ({
             <div className="flex items-center gap-3">
               <User className="w-4 h-4 text-zinc-400" />
               <div>
-                <p className="font-medium">Personal Intelligence</p>
+                <p className="font-medium">Персональный ИИ</p>
                 <p className="text-[10px] text-zinc-500 font-mono">Labs</p>
               </div>
             </div>

@@ -37,7 +37,7 @@ export const AuthPage: React.FC = () => {
         navigate('/chat');
       }
     } catch (err: any) {
-      const msg = err.response?.data?.detail || err.response?.data?.message || 'Avtorizatsiyada xatolik yuz berdi';
+      const msg = err.response?.data?.detail || err.response?.data?.message || 'Ошибка авторизации. Проверьте данные.';
       setErrorMsg(typeof msg === 'string' ? msg : JSON.stringify(msg));
     } finally {
       setIsLoading(false);
@@ -55,23 +55,13 @@ export const AuthPage: React.FC = () => {
       <div className="relative w-full max-w-md bg-surface-dark/85 backdrop-blur-2xl border border-surface-borderLight rounded-3xl p-8 md:p-10 shadow-2xl z-10">
         {/* Brand */}
         <div className="flex flex-col items-center text-center mb-8">
-          <div className="relative mb-4">
-            <div className="w-16 h-16 rounded-3xl bg-gradient-to-tr from-primary via-primary-light to-secondary flex items-center justify-center shadow-2xl shadow-primary/40 animate-float">
-              <Bot className="w-9 h-9 text-white" />
-            </div>
-            <div className="absolute -inset-1.5 bg-gradient-to-r from-primary to-accent-cyan rounded-3xl blur-lg opacity-30 -z-10" />
-          </div>
-
           <div className="flex items-center gap-2">
-            <h1 className="text-2xl font-black text-white tracking-tight">
+            <h1 className="text-3xl font-black text-white tracking-tight">
               WEN AI
             </h1>
-            <span className="text-[10px] uppercase font-bold tracking-widest px-2 py-0.5 rounded-full bg-gradient-to-r from-primary/30 to-secondary/30 text-primary-light border border-primary/30">
-              NEXUS
-            </span>
           </div>
           <p className="text-xs text-zinc-400 mt-1 font-medium">
-            Universal Sun'iy Intellekt Platformasi
+            Универсальная платформа искусственного интеллекта
           </p>
         </div>
 
@@ -89,7 +79,7 @@ export const AuthPage: React.FC = () => {
                 : 'text-zinc-400 hover:text-white'
             }`}
           >
-            Kirish
+            Войти
           </button>
           <button
             type="button"
@@ -103,7 +93,7 @@ export const AuthPage: React.FC = () => {
                 : 'text-zinc-400 hover:text-white'
             }`}
           >
-            Ro'yxatdan o'tish
+            Регистрация
           </button>
         </div>
 
@@ -117,27 +107,27 @@ export const AuthPage: React.FC = () => {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           {!isLogin && (
             <Input
-              label="To'liq Ismingiz"
-              placeholder="Ali Valiyev"
+              label="Ваше имя"
+              placeholder="Иван Иванов"
               icon={<UserIcon className="w-4 h-4" />}
-              {...register('name', { required: "Ism kiritish majburiy" })}
+              {...register('name', { required: "Введите имя" })}
             />
           )}
 
           <Input
-            label="Email Pochta"
+            label="Электронная почта"
             type="email"
-            placeholder="ali@example.com"
+            placeholder="user@example.com"
             icon={<Mail className="w-4 h-4" />}
-            {...register('email', { required: "Email kiritish majburiy" })}
+            {...register('email', { required: "Введите email" })}
           />
 
           <Input
-            label="Maxfiy Kalit (Parol)"
+            label="Пароль"
             type="password"
             placeholder="••••••••"
             icon={<Lock className="w-4 h-4" />}
-            {...register('password', { required: "Parol kiritish majburiy" })}
+            {...register('password', { required: "Введите пароль" })}
           />
 
           <Button
@@ -146,7 +136,7 @@ export const AuthPage: React.FC = () => {
             isLoading={isLoading}
           >
             <span className="flex items-center justify-center gap-2">
-              <span>{isLogin ? "TIZIMGA KIRISH" : "HISOB YARATISH"}</span>
+              <span>{isLogin ? "ВОЙТИ В СИСТЕМУ" : "СОЗДАТЬ АККАУНТ"}</span>
               <ArrowRight className="w-4 h-4" />
             </span>
           </Button>
@@ -155,7 +145,7 @@ export const AuthPage: React.FC = () => {
         <div className="mt-8 pt-4 border-t border-surface-border flex items-center justify-between text-[11px] text-zinc-500">
           <span className="flex items-center gap-1.5">
             <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-            Argon2 & JWT Xavfsiz
+            Защита Argon2 & JWT
           </span>
           <span>v1.0.0 Production</span>
         </div>

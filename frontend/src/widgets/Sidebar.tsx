@@ -18,7 +18,6 @@ import {
   LogOut,
   ChevronLeft,
   ChevronRight,
-  Bot,
   Layers,
   X,
   MoreVertical,
@@ -157,21 +156,21 @@ export const Sidebar: React.FC = () => {
               <button
                 onClick={toggleSidebar}
                 className="p-2.5 rounded-xl bg-surface/80 hover:bg-surface-light border border-surface-border text-zinc-400 hover:text-white transition-all"
-                title="Sidebar-ni ochish"
+                title="Развернуть панель"
               >
                 <ChevronRight className="w-4 h-4" />
               </button>
               <button
                 onClick={handleNewChat}
                 className="p-2.5 rounded-xl bg-gradient-to-r from-primary to-secondary hover:brightness-110 text-white shadow-lg shadow-primary/25 transition-all"
-                title="Yangi Chat"
+                title="Новый чат"
               >
                 <Plus className="w-4 h-4" />
               </button>
               <button
                 onClick={() => handleNavClick('/images')}
                 className="p-2.5 rounded-xl text-zinc-400 hover:text-white hover:bg-surface-light"
-                title="Rasmlar"
+                title="Изображения"
               >
                 <ImageIcon className="w-4 h-4" />
               </button>
@@ -188,7 +187,7 @@ export const Sidebar: React.FC = () => {
               <button
                 onClick={logout}
                 className="p-2.5 rounded-xl text-red-400/80 hover:text-red-400 hover:bg-red-500/10 transition-all"
-                title="Chiqish"
+                title="Выйти"
               >
                 <LogOut className="w-4 h-4" />
               </button>
@@ -216,13 +215,13 @@ export const Sidebar: React.FC = () => {
               <button
                 onClick={toggleSidebar}
                 className="p-1.5 rounded-xl text-zinc-400 hover:text-white hover:bg-surface-light border border-transparent hover:border-surface-border transition-all"
-                title="Yopish"
+                title="Свернуть"
               >
                 <ChevronLeft className="w-4 h-4" />
               </button>
             </div>
 
-            {/* Core Feature Navigation Bar (Yangi chat, Rasmlar, Kutubxona, Rejali, Plaginlar, Loyihalar, Codex) */}
+            {/* Core Feature Navigation Bar (Новый чат, Изображения, Библиотека, Запланированное, Плагины, Проекты, Wen) */}
             <div className="p-3 space-y-1 border-b border-surface-border/60">
               <NavItem
                 icon={<Plus className="w-4 h-4 text-primary-light" />}
@@ -275,7 +274,7 @@ export const Sidebar: React.FC = () => {
                 <Search className="w-3.5 h-3.5 absolute left-3.5 text-zinc-500 pointer-events-none" />
                 <input
                   type="text"
-                  placeholder="Suhbatlarni qidirish..."
+                  placeholder="Поиск чатов..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full pl-9 pr-8 py-2 bg-surface/60 border border-surface-border rounded-xl text-xs text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-primary/50 focus:bg-surface transition-all"
@@ -297,7 +296,7 @@ export const Sidebar: React.FC = () => {
                 <div className="space-y-1">
                   <div className="px-2 text-[10px] font-bold text-primary-light uppercase tracking-widest flex items-center gap-1.5">
                     <Pin className="w-3 h-3" />
-                    <span>Biriktirilgan ({pinnedChats.length})</span>
+                    <span>Закрепленные ({pinnedChats.length})</span>
                   </div>
                   {pinnedChats.map((conv) => (
                     <ChatItem
@@ -317,15 +316,15 @@ export const Sidebar: React.FC = () => {
               <div className="space-y-1">
                 <div className="px-2 text-[10px] font-bold text-zinc-400 uppercase tracking-widest flex items-center gap-1.5">
                   <Layers className="w-3 h-3" />
-                  <span>Suhbatlar Tarixi</span>
+                  <span>История чатов</span>
                 </div>
                 {isLoading ? (
                   <div className="p-4 text-center text-xs text-zinc-500 animate-pulse">
-                    Yuklanmoqda...
+                    Загрузка...
                   </div>
                 ) : recentChats.length === 0 ? (
                   <div className="p-4 text-center text-xs text-zinc-500 border border-dashed border-surface-border rounded-2xl">
-                    Hozircha suhbatlar yo'q
+                    История чатов пуста
                   </div>
                 ) : (
                   recentChats.map((conv) => (
@@ -359,7 +358,7 @@ export const Sidebar: React.FC = () => {
                             : 'bg-primary/15 text-primary-light border-primary/30'
                         }`}
                       >
-                        {isAdmin ? 'ADMINISTRATOR' : 'PREMIUM USER'}
+                        {isAdmin ? 'АДМИНИСТРАТОР' : 'PREMIUM ПОЛЬЗОВАТЕЛЬ'}
                       </span>
                     </div>
                   </div>
@@ -368,7 +367,7 @@ export const Sidebar: React.FC = () => {
                     <>
                       <MenuOption
                         icon={<Shield className="w-4 h-4 text-emerald-400" />}
-                        label="Admin Boshqaruvi"
+                        label="Панель администратора"
                         onClick={() => {
                           setIsProfileMenuOpen(false);
                           navigate('/admin');
@@ -377,7 +376,7 @@ export const Sidebar: React.FC = () => {
                       />
                       <MenuOption
                         icon={<FileText className="w-4 h-4 text-accent-cyan" />}
-                        label="Document AI & RAG"
+                        label="Документы и RAG"
                         onClick={() => {
                           setIsProfileMenuOpen(false);
                           navigate('/documents');
@@ -386,7 +385,7 @@ export const Sidebar: React.FC = () => {
                       />
                       <MenuOption
                         icon={<Terminal className="w-4 h-4 text-accent-rose" />}
-                        label="Prompt Kutubxonasi"
+                        label="Библиотека промптов"
                         onClick={() => {
                           setIsProfileMenuOpen(false);
                           navigate('/prompts');
@@ -399,7 +398,7 @@ export const Sidebar: React.FC = () => {
 
                   <MenuOption
                     icon={<Settings className="w-4 h-4 text-zinc-300" />}
-                    label="Sozlamalar"
+                    label="Настройки"
                     onClick={() => {
                       setIsProfileMenuOpen(false);
                       navigate('/settings');
@@ -409,7 +408,7 @@ export const Sidebar: React.FC = () => {
 
                   <MenuOption
                     icon={<LogOut className="w-4 h-4 text-red-400" />}
-                    label="Tizimdan Chiqish"
+                    label="Выйти из аккаунта"
                     danger
                     onClick={() => {
                       setIsProfileMenuOpen(false);
@@ -429,7 +428,7 @@ export const Sidebar: React.FC = () => {
                   </div>
                   <div className="min-w-0">
                     <p className="text-xs font-semibold text-zinc-100 truncate group-hover:text-primary-light transition-colors">
-                      {user?.name || 'Foydalanuvchi'}
+                      {user?.name || 'Пользователь'}
                     </p>
                     <p className="text-[10px] text-zinc-400 truncate">{user?.email}</p>
                   </div>
@@ -501,6 +500,7 @@ const ChatItem: React.FC<{
   onSelect: () => void;
   onDelete: () => void;
   onTogglePin: () => void;
+  title?: string;
 }> = ({ conv, isSelected, onSelect, onDelete, onTogglePin }) => {
   return (
     <div
@@ -529,7 +529,7 @@ const ChatItem: React.FC<{
           className={`p-1 rounded-lg hover:bg-surface-dark ${
             conv.is_pinned ? 'text-primary-light' : 'text-zinc-500 hover:text-white'
           }`}
-          title={conv.is_pinned ? 'Unpin' : 'Pin'}
+          title={conv.is_pinned ? 'Открепить' : 'Закрепить'}
         >
           <Pin className="w-3 h-3" />
         </button>
@@ -539,7 +539,7 @@ const ChatItem: React.FC<{
             onDelete();
           }}
           className="p-1 rounded-lg text-zinc-500 hover:text-red-400 hover:bg-surface-dark"
-          title="O'chirish"
+          title="Удалить"
         >
           <Trash2 className="w-3 h-3" />
         </button>

@@ -38,10 +38,10 @@ export const UpgradePlanModal: React.FC<UpgradePlanModalProps> = ({
         {/* Title Header */}
         <div className="text-center max-w-xl mx-auto mb-8 space-y-2">
           <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-white">
-            Tarif rejangizni yangilang
+            Обновите свой план
           </h2>
           <p className="text-xs sm:text-sm text-zinc-400">
-            O'zingiz yoki jamoangiz uchun eng mos sun'iy intellekt rejasini tanlang
+            Выберите оптимальный тарифный план для себя или своей команды
           </p>
 
           {/* Plan Tab Switcher */}
@@ -54,7 +54,7 @@ export const UpgradePlanModal: React.FC<UpgradePlanModalProps> = ({
                   : 'text-zinc-400 hover:text-white'
               }`}
             >
-              Shaxsiy tariflar
+              Персональные
             </button>
             <button
               onClick={() => setTab('business')}
@@ -64,7 +64,7 @@ export const UpgradePlanModal: React.FC<UpgradePlanModalProps> = ({
                   : 'text-zinc-400 hover:text-white'
               }`}
             >
-              Biznes & Jamoa
+              Бизнес & Команда
             </button>
           </div>
         </div>
@@ -80,33 +80,33 @@ export const UpgradePlanModal: React.FC<UpgradePlanModalProps> = ({
                     Free
                   </span>
                   <h3 className="text-base font-bold text-white mt-1">
-                    WEN AI ni sinab ko'ring
+                    Попробуйте WEN AI
                   </h3>
                   <p className="text-[11px] text-zinc-400 mt-1 leading-snug">
-                    Kundalik savollar va oddiy vazifalar uchun bepul AI.
+                    Бесплатный доступ для повседневных задач и простых запросов.
                   </p>
                 </div>
 
                 <div className="flex items-baseline gap-1">
                   <span className="text-3xl font-black text-white">$0</span>
-                  <span className="text-xs text-zinc-500 font-medium">/ oy</span>
+                  <span className="text-xs text-zinc-500 font-medium">/ мес</span>
                 </div>
 
                 <button
                   disabled
                   className="w-full py-2.5 rounded-xl bg-surface-dark border border-surface-border text-xs font-semibold text-zinc-400 cursor-default"
                 >
-                  Joriy rejangiz
+                  Текущий план
                 </button>
 
                 <div className="space-y-2 pt-2 border-t border-surface-border text-xs text-zinc-300">
                   <p className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider">
-                    Asosiy imkoniyatlar:
+                    Включено в план:
                   </p>
-                  <FeatureItem text="Cheklangan chat so'rovlari" />
-                  <FeatureItem text="Asosiy GPT-4o mini modeli" />
-                  <FeatureItem text="1 ta fayl tahlili (RAG)" />
-                  <FeatureItem text="Standart javob tezligi" />
+                  <FeatureItem text="Базовый лимит сообщений" />
+                  <FeatureItem text="Модель GPT-4o mini" />
+                  <FeatureItem text="Анализ 1 документа (RAG)" />
+                  <FeatureItem text="Стандартная скорость ответа" />
                 </div>
               </div>
             </div>
@@ -119,33 +119,33 @@ export const UpgradePlanModal: React.FC<UpgradePlanModalProps> = ({
                     WEN Go
                   </span>
                   <h3 className="text-base font-bold text-white mt-1">
-                    Ko'proq foydalaning
+                    Больше возможностей
                   </h3>
                   <p className="text-[11px] text-zinc-400 mt-1 leading-snug">
-                    O'qish, yaratish va kattaroq limitlar bilan ishlash.
+                    Для учебы, творчества и работы с повышенными лимитами.
                   </p>
                 </div>
 
                 <div className="flex items-baseline gap-1">
                   <span className="text-3xl font-black text-white">$5</span>
-                  <span className="text-xs text-zinc-500 font-medium">/ oy</span>
+                  <span className="text-xs text-zinc-500 font-medium">/ мес</span>
                 </div>
 
                 <button
-                  onClick={() => alert("WEN Go rejasiga o'tish tanlandi")}
+                  onClick={() => alert("Выбран переход на план WEN Go")}
                   className="w-full py-2.5 rounded-xl bg-surface-light hover:bg-white hover:text-black border border-white/10 text-xs font-bold text-white transition-all shadow-md active:scale-95"
                 >
-                  Go ga o'tish
+                  Перейти на Go
                 </button>
 
                 <div className="space-y-2 pt-2 border-t border-surface-border text-xs text-zinc-300">
                   <p className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider">
-                    Free dagi barcha imkoniyatlar va:
+                    Все из Free, плюс:
                   </p>
-                  <FeatureItem text="Kengaytirilgan chat limiti" />
-                  <FeatureItem text="AI rasm yaratish (Vision studio)" />
-                  <FeatureItem text="Ovozli yozish va eshitish" />
-                  <FeatureItem text="Tezlashtirilgan server kuchi" />
+                  <FeatureItem text="Расширенный лимит сообщений" />
+                  <FeatureItem text="Генерация изображений (Vision)" />
+                  <FeatureItem text="Голосовой ввод и озвучивание" />
+                  <FeatureItem text="Повышенная скорость серверов" />
                 </div>
               </div>
             </div>
@@ -153,7 +153,7 @@ export const UpgradePlanModal: React.FC<UpgradePlanModalProps> = ({
             {/* WEN Plus (RECOMMENDED / HIGHLIGHTED) */}
             <div className="relative p-6 rounded-3xl bg-gradient-to-b from-primary/20 via-surface to-surface-dark border-2 border-primary/60 flex flex-col justify-between space-y-6 shadow-2xl shadow-primary/20 scale-105 z-10">
               <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-0.5 rounded-full bg-gradient-to-r from-primary via-primary-light to-secondary text-white text-[9px] font-black uppercase tracking-widest shadow-lg">
-                TAVSIYA ETILADI
+                РЕКОМЕНДУЕТСЯ
               </div>
 
               <div className="space-y-4">
@@ -162,34 +162,34 @@ export const UpgradePlanModal: React.FC<UpgradePlanModalProps> = ({
                     WEN Plus
                   </span>
                   <h3 className="text-base font-bold text-white mt-1">
-                    Sizning to'liq AI assistentingiz
+                    Ваш полный ИИ-ассистент
                   </h3>
                   <p className="text-[11px] text-zinc-400 mt-1 leading-snug">
-                    Eng kuchli flagman modellar va cheksiz tahlil.
+                    Флагманские модели ИИ и безлимитный интеллектуальный анализ.
                   </p>
                 </div>
 
                 <div className="flex items-baseline gap-1">
                   <span className="text-3xl font-black text-white">$20</span>
-                  <span className="text-xs text-zinc-500 font-medium">/ oy</span>
+                  <span className="text-xs text-zinc-500 font-medium">/ мес</span>
                 </div>
 
                 <button
-                  onClick={() => alert("WEN Plus rejasiga o'tish tanlandi")}
+                  onClick={() => alert("Выбран переход на план WEN Plus")}
                   className="w-full py-3 rounded-xl bg-gradient-to-r from-primary via-primary-hover to-secondary hover:brightness-110 text-xs font-black text-white tracking-wide transition-all shadow-lg shadow-primary/30 active:scale-95"
                 >
-                  WEN Plus ga o'tish
+                  Перейти на WEN Plus
                 </button>
 
                 <div className="space-y-2 pt-2 border-t border-surface-border text-xs text-zinc-200">
                   <p className="text-[10px] font-bold text-primary-light uppercase tracking-wider">
-                    Go dagi barcha imkoniyatlar va:
+                    Все из Go, плюс:
                   </p>
-                  <FeatureItem text="GPT-4o & Claude 3.5 Sonnet to'liq" highlight />
-                  <FeatureItem text="Document AI & RAG (PDF, DOCX, CSV)" highlight />
-                  <FeatureItem text="WEN Codex — AI Developer Sandbox" highlight />
-                  <FeatureItem text="Rejalashtirilgan avtomatizatsiya" />
-                  <FeatureItem text="Reklamasiz va maksimal tezlik" />
+                  <FeatureItem text="Полный доступ к GPT-4o & Claude 3.5" highlight />
+                  <FeatureItem text="Document AI & RAG (PDF, Word, CSV)" highlight />
+                  <FeatureItem text="WEN Codex — среда разработки ИИ" highlight />
+                  <FeatureItem text="Автоматизация по расписанию" />
+                  <FeatureItem text="Максимальная скорость без рекламы" />
                 </div>
               </div>
             </div>
@@ -202,33 +202,33 @@ export const UpgradePlanModal: React.FC<UpgradePlanModalProps> = ({
                     WEN Pro
                   </span>
                   <h3 className="text-base font-bold text-white mt-1">
-                    Maksimal imkoniyatlar
+                    Максимальная мощность
                   </h3>
                   <p className="text-[11px] text-zinc-400 mt-1 leading-snug">
-                    Kun bo'yi og'ir dasturlash va hisoblash bilan ishlovchilar uchun.
+                    Для профессиональной разработки, анализа данных и вычислений.
                   </p>
                 </div>
 
                 <div className="flex items-baseline gap-1">
                   <span className="text-3xl font-black text-white">$100</span>
-                  <span className="text-xs text-zinc-500 font-medium">/ oy</span>
+                  <span className="text-xs text-zinc-500 font-medium">/ мес</span>
                 </div>
 
                 <button
-                  onClick={() => alert("WEN Pro rejasiga o'tish tanlandi")}
+                  onClick={() => alert("Выбран переход на план WEN Pro")}
                   className="w-full py-2.5 rounded-xl bg-surface-light hover:bg-white hover:text-black border border-white/10 text-xs font-bold text-white transition-all shadow-md active:scale-95"
                 >
-                  Pro ga o'tish
+                  Перейти на Pro
                 </button>
 
                 <div className="space-y-2 pt-2 border-t border-surface-border text-xs text-zinc-300">
                   <p className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider">
-                    Plus dagi barcha imkoniyatlar va:
+                    Все из Plus, плюс:
                   </p>
-                  <FeatureItem text="5 baravar kattaroq hisoblash quvvati" />
-                  <FeatureItem text="100 GB bulutli hujjatlar xotirasi" />
-                  <FeatureItem text="Eng yangi beta modellarga erta kirish" />
-                  <FeatureItem text="Shaxsiy API integratsiyasi" />
+                  <FeatureItem text="В 5 раз больше вычислительных ресурсов" />
+                  <FeatureItem text="100 ГБ облачного хранилища документов" />
+                  <FeatureItem text="Ранний доступ к новым бета-моделям" />
+                  <FeatureItem text="Индивидуальная API интеграция" />
                 </div>
               </div>
             </div>
@@ -246,29 +246,29 @@ export const UpgradePlanModal: React.FC<UpgradePlanModalProps> = ({
                     Free
                   </span>
                   <h3 className="text-lg font-bold text-white mt-1">
-                    WEN AI ni jamoada sinash
+                    Тестирование в команде
                   </h3>
                   <p className="text-xs text-zinc-400 mt-1">
-                    Kichik guruhlar uchun boshlang'ich imkoniyatlar.
+                    Базовые функции для совместной работы небольших групп.
                   </p>
                 </div>
 
                 <div className="flex items-baseline gap-1">
                   <span className="text-3xl font-black text-white">$0</span>
-                  <span className="text-xs text-zinc-500 font-medium">/ oy</span>
+                  <span className="text-xs text-zinc-500 font-medium">/ мес</span>
                 </div>
 
                 <button
                   disabled
                   className="w-full py-3 rounded-xl bg-surface-dark border border-surface-border text-xs font-semibold text-zinc-400 cursor-default"
                 >
-                  Joriy rejangiz
+                  Текущий план
                 </button>
 
                 <div className="space-y-2.5 pt-4 border-t border-surface-border text-xs text-zinc-300">
-                  <FeatureItem text="Cheklangan umumiy chat" />
-                  <FeatureItem text="Asosiy modellar" />
-                  <FeatureItem text="1 ta umumiy workspace" />
+                  <FeatureItem text="Ограниченный общий чат" />
+                  <FeatureItem text="Базовые модели" />
+                  <FeatureItem text="1 общее рабочее пространство" />
                 </div>
               </div>
             </div>
@@ -282,41 +282,41 @@ export const UpgradePlanModal: React.FC<UpgradePlanModalProps> = ({
                       WEN Business
                     </span>
                     <h3 className="text-lg font-bold text-white mt-1">
-                      O'sayotgan jamoalar uchun
+                      Для растущих компаний
                     </h3>
                   </div>
                   <span className="text-[10px] font-bold px-2.5 py-1 rounded-full bg-accent-cyan/20 text-accent-cyan border border-accent-cyan/30">
-                    KORPORATIV
+                    КОРПОРАТИВНЫЙ
                   </span>
                 </div>
 
                 <p className="text-xs text-zinc-400">
-                  Kompaniya konteksti va markazlashgan boshqaruv bilan himoyalangan ish maydoni.
+                  Защищенная рабочая среда с контекстом компании и централизованным управлением.
                 </p>
 
                 <div className="flex items-baseline gap-1">
                   <span className="text-3xl font-black text-white">$25</span>
                   <span className="text-xs text-zinc-400 font-medium">
-                    / foydalanuvchi / oy
+                    / пользователь / мес
                   </span>
                 </div>
 
                 <button
-                  onClick={() => alert("WEN Business rejasiga so'rov yuborildi")}
+                  onClick={() => alert("Заявка на подключение WEN Business отправлена")}
                   className="w-full py-3 rounded-xl bg-gradient-to-r from-accent-cyan to-primary hover:brightness-110 text-xs font-black text-white tracking-wide transition-all shadow-lg shadow-cyan-500/20 active:scale-95"
                 >
-                  Business ga ulanish
+                  Подключить Business
                 </button>
 
                 <div className="space-y-2.5 pt-4 border-t border-surface-border text-xs text-zinc-200">
                   <p className="text-[10px] font-bold text-accent-cyan uppercase tracking-wider">
-                    Jamoaviy imkoniyatlar:
+                    Корпоративные функции:
                   </p>
-                  <FeatureItem text="Admin paneli va foydalanuvchilar monitoringi" highlight />
-                  <FeatureItem text="Kompaniya ichki RAG bilimlar bazasi" highlight />
-                  <FeatureItem text="SAML SSO va ikki bosqichli xavfsizlik (MFA)" highlight />
-                  <FeatureItem text="Cheksiz GPT-4o, Claude 3.5 va WEN Codex" />
-                  <FeatureItem text="Kompaniya ma'lumotlari AI o'qitishda ishlatilmaydi" />
+                  <FeatureItem text="Панель администратора и аудит доступа" highlight />
+                  <FeatureItem text="Внутренняя корпоративная база знаний RAG" highlight />
+                  <FeatureItem text="SAML SSO и двухфакторная защита (MFA)" highlight />
+                  <FeatureItem text="Безлимитный доступ к GPT-4o, Claude 3.5 и WEN Codex" />
+                  <FeatureItem text="Данные компании не используются для обучения ИИ" />
                 </div>
               </div>
             </div>
@@ -326,7 +326,7 @@ export const UpgradePlanModal: React.FC<UpgradePlanModalProps> = ({
         {/* Footer Note */}
         <div className="mt-8 pt-4 border-t border-surface-border text-center text-xs text-zinc-500 flex items-center justify-center gap-2">
           <ShieldCheck className="w-4 h-4 text-emerald-400" />
-          <span>Istalgan vaqtda bekor qilish yoki o'zgartirish mumkin. To'lovlar xavfsiz himoyalangan.</span>
+          <span>Отмена или смена плана в любое время. Все платежи надежно защищены.</span>
         </div>
       </div>
     </div>

@@ -147,7 +147,7 @@ export const ChatArea: React.FC = () => {
             type="button"
             onClick={toggleSidebar}
             className="p-2 rounded-xl bg-surface border border-surface-border text-zinc-300 hover:text-white md:hidden"
-            title="Menyu"
+            title="Меню"
           >
             <Menu className="w-4 h-4" />
           </button>
@@ -160,8 +160,8 @@ export const ChatArea: React.FC = () => {
             onClick={() => setIsUpgradeModalOpen(true)}
             className="px-4 py-2 rounded-full bg-gradient-to-r from-primary via-primary-light to-secondary hover:brightness-110 text-white text-xs font-bold shadow-md shadow-primary/25 transition-all active:scale-95"
           >
-            <span className="hidden sm:inline">Upgrade Plan</span>
-            <span className="sm:hidden">Upgrade</span>
+            <span className="hidden sm:inline">Обновить тариф</span>
+            <span className="sm:hidden">Тариф</span>
           </button>
         </div>
       </div>

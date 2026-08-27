@@ -79,11 +79,11 @@ export const AdminPage: React.FC = () => {
                 <Shield className="w-5 h-5" />
               </div>
               <h1 className="text-2xl md:text-3xl font-extrabold text-white tracking-tight">
-                Admin Boshqaruv Markazi
+                Панель администратора
               </h1>
             </div>
             <p className="text-xs text-zinc-400 mt-1.5 leading-relaxed">
-              Foydalanuvchilar faolligi, AI modellari holati va hisoblash resurslari monitoringi.
+              Мониторинг активности пользователей, состояния провайдеров ИИ и расхода токенов.
             </p>
           </div>
 
@@ -91,34 +91,34 @@ export const AdminPage: React.FC = () => {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <StatCard
               icon={<Users className="w-5 h-5 text-primary-light" />}
-              label="Jami Foydalanuvchilar"
+              label="Всего пользователей"
               value={stats?.total_users ?? 0}
-              subtext={`${stats?.active_users ?? 0} faol hisob`}
+              subtext={`${stats?.active_users ?? 0} активных`}
               badge="+100%"
               color="primary"
             />
             <StatCard
               icon={<MessageSquare className="w-5 h-5 text-accent-cyan" />}
-              label="Jami Suhbatlar"
+              label="Всего чатов"
               value={stats?.total_conversations ?? 0}
-              subtext={`${stats?.total_messages ?? 0} xabar`}
-              badge="Faol"
+              subtext={`${stats?.total_messages ?? 0} сообщений`}
+              badge="Активно"
               color="cyan"
             />
             <StatCard
               icon={<FileText className="w-5 h-5 text-accent-rose" />}
-              label="Indekslangan Hujjatlar"
+              label="Индексировано файлов"
               value={stats?.total_files ?? 0}
-              subtext="RAG bazasida"
-              badge="Yuklangan"
+              subtext="В базе RAG"
+              badge="Загружено"
               color="rose"
             />
             <StatCard
               icon={<Activity className="w-5 h-5 text-accent-emerald" />}
-              label="Sarflangan Tokenlar"
+              label="Использовано токенов"
               value={stats?.total_tokens_used ? stats.total_tokens_used.toLocaleString() : '0'}
-              subtext={`${stats?.total_requests ?? 0} ta so'rov`}
-              badge="Monitoring"
+              subtext={`${stats?.total_requests ?? 0} запросов`}
+              badge="Мониторинг"
               color="emerald"
             />
           </div>
@@ -127,7 +127,7 @@ export const AdminPage: React.FC = () => {
           <div className="space-y-4">
             <h2 className="text-base font-bold text-white flex items-center gap-2">
               <Server className="w-4 h-4 text-primary-light" />
-              <span>AI Providerlar va API Kalitlar Diagnostikasi</span>
+              <span>Диагностика провайдеров ИИ и API-ключей</span>
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -146,12 +146,12 @@ export const AdminPage: React.FC = () => {
                     {p.is_configured ? (
                       <span className="flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
                         <CheckCircle className="w-3 h-3" />
-                        Faol
+                        Активен
                       </span>
                     ) : (
                       <span className="flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20">
                         <AlertTriangle className="w-3 h-3" />
-                        Kalitsiz
+                        Без ключа
                       </span>
                     )}
                   </div>
@@ -160,11 +160,11 @@ export const AdminPage: React.FC = () => {
                     <div className="flex items-center gap-1.5 font-mono text-[10px]">
                       <Key className="w-3 h-3 text-zinc-500" />
                       <span className="text-zinc-300 truncate">
-                        {p.masked_key || 'API Key berilmagan (.env)'}
+                        {p.masked_key || 'API-ключ не задан (.env)'}
                       </span>
                     </div>
                     <div className="text-[10px] text-zinc-400 truncate">
-                      Modellar: <span className="text-zinc-200 font-medium">{p.available_models.join(', ')}</span>
+                      Модели: <span className="text-zinc-200 font-medium">{p.available_models.join(', ')}</span>
                     </div>
                   </div>
                 </div>
@@ -177,14 +177,14 @@ export const AdminPage: React.FC = () => {
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <h2 className="text-base font-bold text-white flex items-center gap-2">
                 <Users className="w-4 h-4 text-primary-light" />
-                <span>Ro'yxatdan O'tgan Foydalanuvchilar</span>
+                <span>Зарегистрированные пользователи</span>
               </h2>
 
               <div className="relative max-w-xs w-full">
                 <Search className="w-3.5 h-3.5 absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400" />
                 <input
                   type="text"
-                  placeholder="Ism yoki email bo'yicha..."
+                  placeholder="Поиск по имени или email..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full pl-9 pr-4 py-2 bg-surface border border-surface-border rounded-2xl text-xs text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-primary"
@@ -197,24 +197,24 @@ export const AdminPage: React.FC = () => {
                 <table className="w-full text-left text-xs">
                   <thead className="bg-surface-dark border-b border-surface-border text-zinc-400 uppercase tracking-widest text-[10px] font-bold">
                     <tr>
-                      <th className="px-6 py-4">Foydalanuvchi</th>
+                      <th className="px-6 py-4">Пользователь</th>
                       <th className="px-6 py-4">Email</th>
-                      <th className="px-6 py-4">Rol</th>
-                      <th className="px-6 py-4">Holat</th>
-                      <th className="px-6 py-4 text-right">Amallar</th>
+                      <th className="px-6 py-4">Роль</th>
+                      <th className="px-6 py-4">Статус</th>
+                      <th className="px-6 py-4 text-right">Действия</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-surface-border/40 text-zinc-300">
                     {isUsersLoading ? (
                       <tr>
                         <td colSpan={5} className="px-6 py-8 text-center text-zinc-500 animate-pulse">
-                          Yuklanmoqda...
+                          Загрузка пользователей...
                         </td>
                       </tr>
                     ) : userList.length === 0 ? (
                       <tr>
                         <td colSpan={5} className="px-6 py-8 text-center text-zinc-500">
-                          Foydalanuvchilar topilmadi
+                          Пользователи не найдены
                         </td>
                       </tr>
                     ) : (
@@ -231,7 +231,7 @@ export const AdminPage: React.FC = () => {
                             <span
                               className={`text-[9px] uppercase font-bold tracking-widest px-2.5 py-1 rounded-full border ${
                                 u.role === 'admin'
-                                  ? 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30'
+                                   ? 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30'
                                   : 'bg-surface-dark text-zinc-400 border-surface-border'
                               }`}
                             >
@@ -246,7 +246,7 @@ export const AdminPage: React.FC = () => {
                                   : 'bg-red-500/10 text-red-400'
                               }`}
                             >
-                              {u.is_active ? 'Faol' : 'Bloklangan'}
+                              {u.is_active ? 'Активен' : 'Заблокирован'}
                             </span>
                           </td>
                           <td className="px-6 py-4 text-right">
@@ -264,12 +264,12 @@ export const AdminPage: React.FC = () => {
                               {u.is_active ? (
                                 <>
                                   <Lock className="w-3 h-3" />
-                                  <span>Bloklash</span>
+                                  <span>Заблокировать</span>
                                 </>
                               ) : (
                                 <>
                                   <Unlock className="w-3 h-3" />
-                                  <span>Faollashtirish</span>
+                                  <span>Разблокировать</span>
                                 </>
                               )}
                             </Button>

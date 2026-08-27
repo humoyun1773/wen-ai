@@ -27,21 +27,21 @@ interface ScheduledJob {
 const SAMPLE_JOBS: ScheduledJob[] = [
   {
     id: '1',
-    name: 'Har kunlik yangiliklar va texnologiya xulosasi',
-    schedule: 'Har kuni 09:00 da',
-    model: 'gpt-4o-mini',
-    prompt: 'AI va dasturlash sohasidagi eng so\'nggi 5 ta muhim yangilikni saralab ber.',
+    name: 'Ежедневный дайджест новостей технологий и ИИ',
+    schedule: 'Каждый день в 09:00',
+    model: 'wen-3.6-flash',
+    prompt: 'Сформируй краткий дайджест из 5 главных технологических новостей за сутки.',
     isActive: true,
-    lastRun: 'Bugun 09:00',
+    lastRun: 'Сегодня в 09:00',
   },
   {
     id: '2',
-    name: 'Haftalik kod auditi va xavfsizlik tekshiruvi',
-    schedule: 'Har dushanba 10:00 da',
-    model: 'claude-3-5-sonnet-20240620',
-    prompt: 'Loyiha kodlaridagi potensial xavflar va refaktoring imkoniyatlarini tekshir.',
+    name: 'Еженедельный аудит кодовой базы и безопасности',
+    schedule: 'Каждый понедельник в 10:00',
+    model: 'wen-3.1-pro',
+    prompt: 'Проанализируй коммиты за неделю и выдели потенциальные уязвимости.',
     isActive: false,
-    lastRun: '25-avgust',
+    lastRun: '25 августа',
   },
 ];
 
@@ -50,8 +50,8 @@ export const ScheduledPage: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
-    schedule: 'Har kuni 09:00 da',
-    model: 'gpt-4o-mini',
+    schedule: 'Каждый день в 09:00',
+    model: 'wen-3.6-flash',
     prompt: '',
   });
 
@@ -61,11 +61,11 @@ export const ScheduledPage: React.FC = () => {
       id: Date.now().toString(),
       ...formData,
       isActive: true,
-      lastRun: 'Rejalashtirildi',
+      lastRun: 'Запланировано',
     };
     setJobs([newJob, ...jobs]);
     setIsModalOpen(false);
-    setFormData({ name: '', schedule: 'Har kuni 09:00 da', model: 'gpt-4o-mini', prompt: '' });
+    setFormData({ name: '', schedule: 'Каждый день в 09:00', model: 'wen-3.6-flash', prompt: '' });
   };
 
   const toggleJob = (id: string) => {
@@ -88,10 +88,10 @@ export const ScheduledPage: React.FC = () => {
               </div>
               <div>
                 <h1 className="text-2xl md:text-3xl font-extrabold text-white tracking-tight">
-                  Rejalashtirilgan Vazifalar (Scheduled)
+                  Запланированные задачи (Scheduled)
                 </h1>
                 <p className="text-xs text-zinc-400 mt-1">
-                  AI avtomatizatsiyasi: takroriy vazifalar, kunlik monitoring va xabarnomalar.
+                  Автоматизация ИИ: периодические задачи, мониторинг и регулярные уведомления.
                 </p>
               </div>
             </div>
@@ -101,7 +101,7 @@ export const ScheduledPage: React.FC = () => {
               className="py-3 px-5 rounded-2xl bg-gradient-to-r from-primary to-secondary text-xs font-bold shadow-lg shadow-primary/25 self-start sm:self-auto"
             >
               <Plus className="w-4 h-4" />
-              <span>YANGI VAZIFA QO'SHISH</span>
+              <span>ДОБАВИТЬ ЗАДАЧУ</span>
             </Button>
           </div>
 
@@ -121,7 +121,7 @@ export const ScheduledPage: React.FC = () => {
                           : 'bg-zinc-800 text-zinc-400 border border-surface-border'
                       }`}
                     >
-                      {job.isActive ? 'Faol Rejim' : 'To\'xtatilgan'}
+                      {job.isActive ? 'Активно' : 'Приостановлено'}
                     </span>
                     <span className="text-xs text-zinc-400 font-mono flex items-center gap-1">
                       <Calendar className="w-3 h-3 text-primary-light" />
@@ -143,12 +143,13 @@ export const ScheduledPage: React.FC = () => {
                     onClick={() => toggleJob(job.id)}
                   >
                     {job.isActive ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5" />}
-                    <span>{job.isActive ? 'To\'xtatish' : 'Faollashtirish'}</span>
+                    <span>{job.isActive ? 'Приостановить' : 'Запустить'}</span>
                   </Button>
 
                   <button
                     onClick={() => setJobs(jobs.filter((j) => j.id !== job.id))}
                     className="p-2 text-zinc-500 hover:text-red-400 hover:bg-surface-light rounded-xl transition-colors"
+                    title="Удалить"
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>
@@ -162,39 +163,39 @@ export const ScheduledPage: React.FC = () => {
         <Modal
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
-          title="Yangi Rejali Avtomatizatsiya"
+          title="Новая запланированная задача"
         >
           <div className="space-y-4">
             <Input
-              label="Vazifa Nomi"
-              placeholder="Masalan: Har kuni ertalabki sarhisob"
+              label="Название задачи"
+              placeholder="Например: Утренний дайджест"
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
             />
 
             <div className="space-y-1.5">
               <label className="block text-xs font-semibold text-zinc-300">
-                Takrorlanish Vaqti
+                Периодичность запуска
               </label>
               <select
                 value={formData.schedule}
                 onChange={(e) => setFormData({ ...formData, schedule: e.target.value })}
                 className="w-full bg-surface-dark border border-surface-border rounded-2xl p-3 text-xs text-zinc-100 focus:outline-none focus:border-primary"
               >
-                <option value="Har kuni 09:00 da">Har kuni 09:00 da</option>
-                <option value="Har kuni 18:00 da">Har kuni 18:00 da</option>
-                <option value="Har dushanba 10:00 da">Har dushanba 10:00 da</option>
-                <option value="Har 2 soatda bir marta">Har 2 soatda bir marta</option>
+                <option value="Каждый день в 09:00">Каждый день в 09:00</option>
+                <option value="Каждый день в 18:00">Каждый день в 18:00</option>
+                <option value="Каждый понедельник в 10:00">Каждый понедельник в 10:00</option>
+                <option value="Каждые 2 часа">Каждые 2 часа</option>
               </select>
             </div>
 
             <div className="space-y-1.5">
               <label className="block text-xs font-semibold text-zinc-300">
-                AI Ko'rsatmasi (Prompt)
+                Инструкция для ИИ (Промпт)
               </label>
               <textarea
                 rows={4}
-                placeholder="Avtomatik bajarilishi kerak bo'lgan vazifani yozing..."
+                placeholder="Опишите задачу, которую ИИ должен выполнять по расписанию..."
                 value={formData.prompt}
                 onChange={(e) => setFormData({ ...formData, prompt: e.target.value })}
                 className="w-full bg-surface-dark border border-surface-border rounded-2xl p-3.5 text-xs text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-primary resize-none"
@@ -202,7 +203,7 @@ export const ScheduledPage: React.FC = () => {
             </div>
 
             <Button onClick={handleCreate} className="w-full py-3 rounded-2xl font-bold">
-              Rejalashtirish
+              Запланировать
             </Button>
           </div>
         </Modal>

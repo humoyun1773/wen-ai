@@ -14,23 +14,23 @@ export const AI_MODELS: AIModelOption[] = [
   {
     id: 'wen-3.5-flash-lite',
     name: '3.5 Flash-Lite',
-    subtitle: 'Fastest answers',
+    subtitle: 'Самые быстрые ответы',
   },
   {
     id: 'wen-3.6-flash',
     name: '3.6 Flash',
-    subtitle: 'All-around help',
+    subtitle: 'Универсальная модель',
     isNew: true,
   },
   {
     id: 'wen-3.1-pro',
     name: '3.1 Pro',
-    subtitle: 'Advanced reasoning',
+    subtitle: 'Глубокие рассуждения',
   },
   {
     id: 'wen-extended-thinking',
     name: 'Extended thinking',
-    subtitle: 'Complex problem solving',
+    subtitle: 'Решение сложных задач',
     isExtended: true,
   },
 ];
@@ -112,7 +112,7 @@ export const ModelSelector: React.FC = () => {
                       </span>
                       {m.isNew && (
                         <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-zinc-800 text-zinc-300 border border-white/[0.08]">
-                          New
+                          Новинка
                         </span>
                       )}
                     </div>

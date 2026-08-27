@@ -68,7 +68,7 @@ export const DocumentsPage: React.FC = () => {
       });
       queryClient.invalidateQueries({ queryKey: ['files'] });
     } catch {
-      alert("Hujjat yuklashda xatolik yuz berdi.");
+      alert("Ошибка при загрузке документа.");
     } finally {
       setIsUploading(false);
     }
@@ -86,7 +86,7 @@ export const DocumentsPage: React.FC = () => {
       });
       setAnalysisResult(res.data.result);
     } catch {
-      setAnalysisResult("Tahlil qilishda xatolik yuz berdi.");
+      setAnalysisResult("Ошибка при выполнении анализа документа.");
     } finally {
       setIsAnalyzing(false);
     }
@@ -115,13 +115,13 @@ export const DocumentsPage: React.FC = () => {
                 </h1>
               </div>
               <p className="text-xs text-zinc-400 mt-1.5 leading-relaxed">
-                PDF, Word (DOCX), CSV va matnli hujjatlarni semantik tahlil qiling va faqat hujjat ichidagi faktlar asosida javob oling.
+                Семантический анализ файлов PDF, Word (DOCX), CSV и текстовых документов с ответами строго по фактам из файлов.
               </p>
             </div>
 
             <label className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-2xl bg-gradient-to-r from-primary via-primary-light to-secondary hover:opacity-95 text-white text-xs font-bold shadow-lg shadow-primary/25 cursor-pointer transition-all active:scale-95 self-start sm:self-auto">
               <UploadCloud className="w-4 h-4" />
-              <span>{isUploading ? 'Yuklanmoqda...' : 'HUJJAT YUKLASH'}</span>
+              <span>{isUploading ? 'Загрузка...' : 'ЗАГРУЗИТЬ ДОКУМЕНТ'}</span>
               <input
                 type="file"
                 className="hidden"
@@ -138,10 +138,10 @@ export const DocumentsPage: React.FC = () => {
               <UploadCloud className="w-8 h-8 text-primary-light" />
             </div>
             <h3 className="text-sm font-bold text-white">
-              Hujjatlaringizni bu yerga tashlang yoki tanlang
+              Перетащите документы сюда или нажмите для выбора
             </h3>
             <p className="text-xs text-zinc-400 mt-1 max-w-sm">
-              PDF, DOCX, TXT, CSV, JSON (Avtomatik tokenlash va semantik indekslash)
+              PDF, DOCX, TXT, CSV, JSON (Автоматическая токенизация и семантическая индексация)
             </p>
           </div>
 
@@ -150,17 +150,17 @@ export const DocumentsPage: React.FC = () => {
             <div className="flex items-center justify-between">
               <h2 className="text-base font-bold text-white flex items-center gap-2">
                 <Layers className="w-4 h-4 text-primary-light" />
-                <span>Indekslangan Hujjatlar ({files.length})</span>
+                <span>Индексированные документы ({files.length})</span>
               </h2>
             </div>
 
             {isLoading ? (
               <div className="p-12 text-center text-xs text-zinc-500 animate-pulse">
-                Hujjatlar yuklanmoqda...
+                Загрузка документов...
               </div>
             ) : files.length === 0 ? (
               <div className="p-10 bg-surface/60 rounded-3xl border border-surface-border text-center text-xs text-zinc-400">
-                Hozircha hech qanday hujjat yuklanmagan. Yuqoridagi tugma orqali fayl yuklang.
+                Документы еще не загружены. Загрузите файл с помощью кнопки выше.
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -187,7 +187,7 @@ export const DocumentsPage: React.FC = () => {
                       <button
                         onClick={() => deleteMutation.mutate(file.id)}
                         className="p-2 rounded-xl text-zinc-500 hover:text-red-400 hover:bg-surface-light transition-colors"
-                        title="O'chirish"
+                        title="Удалить"
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>
@@ -210,7 +210,7 @@ export const DocumentsPage: React.FC = () => {
                         }}
                       >
                         <Brain className="w-3.5 h-3.5 text-primary-light" />
-                        <span>AI Tahlil</span>
+                        <span>ИИ Анализ</span>
                       </Button>
                       <Button
                         size="sm"
@@ -219,7 +219,7 @@ export const DocumentsPage: React.FC = () => {
                         onClick={() => handleChatWithFile(file)}
                       >
                         <MessageSquare className="w-3.5 h-3.5" />
-                        <span>Chatda ishlatish</span>
+                        <span>Открыть в чате</span>
                       </Button>
                     </div>
                   </div>
@@ -236,7 +236,7 @@ export const DocumentsPage: React.FC = () => {
             setSelectedFile(null);
             setAnalysisResult(null);
           }}
-          title={selectedFile ? `Hujjat Tahlili: ${selectedFile.file_name}` : 'Tahlil'}
+          title={selectedFile ? `Анализ документа: ${selectedFile.file_name}` : 'Анализ'}
           maxWidth="max-w-2xl"
         >
           <div className="space-y-6">
@@ -251,7 +251,7 @@ export const DocumentsPage: React.FC = () => {
                 }`}
               >
                 <BookOpen className="w-4 h-4 text-primary-light" />
-                <span>Qisqacha Mazmun</span>
+                <span>Краткое резюме</span>
               </button>
 
               <button
@@ -264,7 +264,7 @@ export const DocumentsPage: React.FC = () => {
                 }`}
               >
                 <CheckCircle2 className="w-4 h-4 text-accent-emerald" />
-                <span>Asosiy Bandlar</span>
+                <span>Ключевые пункты</span>
               </button>
 
               <button
@@ -277,7 +277,7 @@ export const DocumentsPage: React.FC = () => {
                 }`}
               >
                 <Languages className="w-4 h-4 text-accent-rose" />
-                <span>Tarjima & Tahlil</span>
+                <span>Перевод и анализ</span>
               </button>
 
               <button
@@ -290,7 +290,7 @@ export const DocumentsPage: React.FC = () => {
                 }`}
               >
                 <Search className="w-4 h-4 text-accent-cyan" />
-                <span>Savol-Javob</span>
+                <span>Вопрос-Ответ</span>
               </button>
             </div>
 
@@ -298,7 +298,7 @@ export const DocumentsPage: React.FC = () => {
               <div className="space-y-2.5">
                 <input
                   type="text"
-                  placeholder="Ushbu hujjat bo'yicha savolingizni yozing..."
+                  placeholder="Задайте вопрос по этому документу..."
                   value={customQuestion}
                   onChange={(e) => setCustomQuestion(e.target.value)}
                   className="w-full bg-surface-dark border border-surface-border rounded-2xl px-4 py-3 text-xs text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-primary"
@@ -309,14 +309,14 @@ export const DocumentsPage: React.FC = () => {
                   onClick={() => handleRunAnalysis('qa')}
                   isLoading={isAnalyzing}
                 >
-                  Javob Olish
+                  Получить ответ
                 </Button>
               </div>
             )}
 
             {isAnalyzing && (
               <div className="py-10 text-center text-xs text-zinc-400 animate-pulse font-medium">
-                Hujjat sun'iy intellekt tomonidan tahlil qilinmoqda...
+                Искусственный интеллект анализирует документ...
               </div>
             )}
 

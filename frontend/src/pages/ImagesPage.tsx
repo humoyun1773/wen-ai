@@ -14,30 +14,30 @@ import {
 } from 'lucide-react';
 
 const PRESET_STYLES = [
-  { id: 'photorealistic', name: 'Fotorealistik', desc: '8k ultra realism, cinematic' },
-  { id: 'anime', name: 'Anime & Manga', desc: 'Makoto Shinkai style, vibrant' },
-  { id: 'cyberpunk', name: 'Cyberpunk Neon', desc: 'Futuristic night city, glowing' },
-  { id: '3d_render', name: '3D Render', desc: 'Octane render, unreal engine 5' },
-  { id: 'minimalist', name: 'Minimalist Vector', desc: 'Clean lines, flat art' },
+  { id: 'photorealistic', name: 'Фотореализм', desc: '8k ultra realism, cinematic' },
+  { id: 'anime', name: 'Аниме & Манга', desc: 'Makoto Shinkai style, vibrant' },
+  { id: 'cyberpunk', name: 'Киберпанк Неон', desc: 'Futuristic night city, glowing' },
+  { id: '3d_render', name: '3D Рендер', desc: 'Octane render, unreal engine 5' },
+  { id: 'minimalist', name: 'Минимализм Вектор', desc: 'Clean lines, flat art' },
 ];
 
 const SAMPLE_GALLERY = [
   {
     id: '1',
     prompt: 'Futuristic AI neural network city with neon purple skyline',
-    style: 'Cyberpunk',
+    style: 'Киберпанк',
     url: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80',
   },
   {
     id: '2',
     prompt: 'Cozy cyberpunk developer workspace with holographic displays',
-    style: 'Photorealistic',
+    style: 'Фотореализм',
     url: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=800&q=80',
   },
   {
     id: '3',
     prompt: 'Abstract quantum computing algorithm visualization',
-    style: '3D Render',
+    style: '3D Рендер',
     url: 'https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?auto=format&fit=crop&w=800&q=80',
   },
 ];
@@ -78,10 +78,10 @@ export const ImagesPage: React.FC = () => {
               </div>
               <div>
                 <h1 className="text-2xl md:text-3xl font-extrabold text-white tracking-tight">
-                  AI Rasmlar & Vision Studio
+                  Изображения & Vision Studio
                 </h1>
                 <p className="text-xs text-zinc-400 mt-1">
-                  Matn orqali yangi rasmlar yarating va mavjud rasmlarni sun'iy intellekt yordamida tahlil qiling.
+                  Генерация новых визуальных концептов по текстовому описанию и анализ изображений с помощью ИИ.
                 </p>
               </div>
             </div>
@@ -91,14 +91,14 @@ export const ImagesPage: React.FC = () => {
           <div className="p-6 rounded-3xl bg-surface/75 border border-surface-borderLight shadow-2xl backdrop-blur-md space-y-5">
             <div className="space-y-2">
               <label className="block text-xs font-bold uppercase tracking-wider text-zinc-300">
-                Rasm Tavsifi (Prompt)
+                Описание изображения (Промпт)
               </label>
               <div className="relative">
                 <textarea
                   rows={3}
                   value={prompt}
                   onChange={(e) => setPrompt(e.target.value)}
-                  placeholder="Masalan: Futuristic neon glowing cyberpunk robot programming in dark room, 8k ultra detailed..."
+                  placeholder="Например: Futuristic neon glowing cyberpunk robot programming in dark room, 8k ultra detailed..."
                   className="w-full bg-surface-dark border border-surface-border rounded-2xl p-4 text-xs sm:text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-primary resize-none leading-relaxed"
                 />
               </div>
@@ -107,7 +107,7 @@ export const ImagesPage: React.FC = () => {
             {/* Style Selector */}
             <div className="space-y-2">
               <label className="block text-xs font-bold uppercase tracking-wider text-zinc-300">
-                Vizual Uslub (Style)
+                Визуальный стиль
               </label>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2.5">
                 {PRESET_STYLES.map((st) => (
@@ -131,7 +131,7 @@ export const ImagesPage: React.FC = () => {
             {/* Aspect Ratio & Action */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-2 border-t border-surface-border">
               <div className="flex items-center gap-2">
-                <span className="text-xs text-zinc-400 font-medium">Format:</span>
+                <span className="text-xs text-zinc-400 font-medium">Формат:</span>
                 {['1:1', '16:9', '9:16', '4:3'].map((ratio) => (
                   <button
                     key={ratio}
@@ -154,7 +154,7 @@ export const ImagesPage: React.FC = () => {
                 className="py-3 px-8 rounded-2xl font-bold bg-gradient-to-r from-primary via-primary-light to-secondary text-xs shadow-lg shadow-primary/30"
               >
                 <Wand2 className="w-4 h-4" />
-                <span>RASM YARATISH</span>
+                <span>СОЗДАТЬ ИЗОБРАЖЕНИЕ</span>
               </Button>
             </div>
           </div>
@@ -163,7 +163,7 @@ export const ImagesPage: React.FC = () => {
           <div className="space-y-4 pt-4">
             <h2 className="text-base font-bold text-white flex items-center gap-2">
               <Palette className="w-4 h-4 text-primary-light" />
-              <span>Yaratilgan Rasmlar Galereyasi</span>
+              <span>Галерея созданных изображений</span>
             </h2>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">

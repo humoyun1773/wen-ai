@@ -69,11 +69,11 @@ export const MessageItem: React.FC<MessageItemProps> = ({
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <span className="text-xs font-bold uppercase tracking-wider text-zinc-300">
-              {isUser ? 'Siz' : 'WEN AI'}
+              {isUser ? 'Вы' : 'WEN AI'}
             </span>
             {!isUser && (
               <span className="text-[9px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full bg-primary/15 text-primary-light border border-primary/30">
-                Assistant
+                Ассистент
               </span>
             )}
           </div>
@@ -86,7 +86,7 @@ export const MessageItem: React.FC<MessageItemProps> = ({
                   ? 'text-primary-light bg-primary/20'
                   : 'text-zinc-400 hover:text-white hover:bg-surface-light'
               }`}
-              title="Ovozli o'qish"
+              title="Озвучить"
             >
               {isSpeaking ? <VolumeX className="w-3.5 h-3.5" /> : <Volume2 className="w-3.5 h-3.5" />}
             </button>
@@ -94,7 +94,7 @@ export const MessageItem: React.FC<MessageItemProps> = ({
             <button
               onClick={handleCopyMessage}
               className="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-surface-light transition-all text-xs flex items-center gap-1"
-              title="Nusxa olish"
+              title="Скопировать"
             >
               {copied ? (
                 <Check className="w-3.5 h-3.5 text-emerald-400" />

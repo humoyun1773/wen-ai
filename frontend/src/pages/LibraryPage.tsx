@@ -17,22 +17,22 @@ const SAMPLE_SAVED = [
   {
     id: '1',
     title: 'FastAPI Async Session & Dependency Injection Pattern',
-    category: 'Code',
+    category: 'Код',
     content: 'from sqlalchemy.ext.asyncio import AsyncSession\n\nasync def get_db() -> AsyncGenerator[AsyncSession, None]:\n    async with AsyncSessionLocal() as session:\n        yield session',
     date: '2026-08-27',
   },
   {
-    title: 'O\'zbekiston Fuqarolik Kodeksi Shartnoma Moddalari',
     id: '2',
-    category: 'Document',
-    content: 'Shartnoma tuzish tartibi, tomonlarning huquq va majburiyatlari hamda javobgarlik shartlari tahlili.',
+    title: 'Шаблон договора на разработку ПО и условия ответственности',
+    category: 'Документ',
+    content: 'Порядок заключения договора, права и обязанности сторон, соглашение о конфиденциальности (NDA) и условия оплаты.',
     date: '2026-08-25',
   },
   {
-    title: 'Clean Architecture Folder Structure Standard',
     id: '3',
-    category: 'Architecture',
-    content: 'API -> Service Layer -> Repository Layer -> Database Model. Business logic controllers ichida yozilmasligi kerak.',
+    title: 'Стандарт чистой архитектуры Clean Architecture',
+    category: 'Архитектура',
+    content: 'API Endpoints -> Service Layer -> Repository Layer -> Database Models. Бизнес-логика строго изолирована от контроллеров.',
     date: '2026-08-20',
   },
 ];
@@ -62,10 +62,10 @@ export const LibraryPage: React.FC = () => {
               </div>
               <div>
                 <h1 className="text-2xl md:text-3xl font-extrabold text-white tracking-tight">
-                  Bilimlar Kutubxonasi (Library)
+                  Библиотека знаний (Library)
                 </h1>
                 <p className="text-xs text-zinc-400 mt-1">
-                  Saqlab olingan AI javoblari, kod bloklari, promptlar va hujjatlar arxivi.
+                  Архив сохраненных ответов ИИ, фрагментов кода, системных промптов и документов.
                 </p>
               </div>
             </div>
@@ -75,7 +75,7 @@ export const LibraryPage: React.FC = () => {
               <Search className="w-3.5 h-3.5 absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-500" />
               <input
                 type="text"
-                placeholder="Kutubxonadan izlash..."
+                placeholder="Поиск по библиотеке..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 className="w-full pl-9 pr-4 py-2.5 bg-surface border border-surface-border rounded-2xl text-xs text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-primary"
@@ -111,13 +111,14 @@ export const LibraryPage: React.FC = () => {
                     className="text-primary-light hover:bg-primary/10 text-xs py-1.5 px-3 rounded-xl"
                     onClick={() => navigate('/chat')}
                   >
-                    <span>Chatda ochish</span>
+                    <span>Открыть в чате</span>
                     <ExternalLink className="w-3 h-3 ml-1" />
                   </Button>
 
                   <button
                     onClick={() => setItems(items.filter((i) => i.id !== item.id))}
                     className="p-1.5 text-zinc-500 hover:text-red-400 hover:bg-surface-light rounded-lg transition-colors"
+                    title="Удалить"
                   >
                     <Trash2 className="w-3.5 h-3.5" />
                   </button>
