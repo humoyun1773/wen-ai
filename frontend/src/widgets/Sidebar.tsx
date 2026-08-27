@@ -179,7 +179,7 @@ export const Sidebar: React.FC = () => {
               <button
                 onClick={() => handleNavClick('/codex')}
                 className="p-2.5 rounded-xl text-zinc-400 hover:text-white hover:bg-surface-light"
-                title="Codex"
+                title="Wen"
               >
                 <Code2 className="w-4 h-4" />
               </button>
@@ -278,7 +278,7 @@ export const Sidebar: React.FC = () => {
               />
               <NavItem
                 icon={<Code2 className="w-4 h-4 text-accent-violet" />}
-                label="Codex"
+                label="Wen"
                 active={location.pathname === '/codex'}
                 onClick={() => handleNavClick('/codex')}
               />

@@ -75,7 +75,7 @@ export const CodexPage: React.FC = () => {
               </div>
               <div>
                 <h1 className="text-2xl font-extrabold text-white tracking-tight">
-                  Codex — AI Developer Studio & Sandbox
+                  WEN — AI Developer Studio & Sandbox
                 </h1>
                 <p className="text-xs text-zinc-400 mt-0.5">
                   Interaktiv kod muharriri, xatolarni tuzatish va sun'iy intellekt tahlili.
