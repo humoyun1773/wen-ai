@@ -7,14 +7,63 @@
     @apply border-surface-border;
   }
   body {
-    @apply bg-background text-zinc-100 font-sans;
+    @apply bg-background text-zinc-100 font-sans tracking-[-0.01em] antialiased selection:bg-primary/40 selection:text-white;
   }
 }
 
-/* Custom modern scrollbars */
+/* Glassmorphism styling */
+.glass-panel {
+  background: rgba(18, 18, 24, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-panel-hover {
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-panel-hover:hover {
+  background: rgba(28, 28, 36, 0.85);
+  border-color: rgba(168, 85, 247, 0.35);
+  box-shadow: 0 10px 30px -10px rgba(121, 40, 202, 0.25);
+  transform: translateY(-2px);
+}
+
+.glass-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glow-brand {
+  box-shadow: 0 0 35px -5px rgba(121, 40, 202, 0.4);
+}
+
+.glow-blue {
+  box-shadow: 0 0 35px -5px rgba(0, 112, 243, 0.35);
+}
+
+.glow-cyan {
+  box-shadow: 0 0 25px -5px rgba(0, 240, 255, 0.3);
+}
+
+.glow-emerald {
+  box-shadow: 0 0 25px -5px rgba(16, 185, 129, 0.3);
+}
+
+/* Grid overlay background */
+.bg-grid-pattern {
+  background-size: 32px 32px;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+}
+
+/* Custom premium scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
 }
 
 ::-webkit-scrollbar-track {
@@ -22,19 +71,19 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #27272a;
+  background: rgba(255, 255, 255, 0.12);
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #3f3f46;
+  background: rgba(168, 85, 247, 0.4);
 }
 
-/* Glow effects */
-.glow-primary {
-  box-shadow: 0 0 25px -5px rgba(112, 0, 255, 0.35);
+/* Smooth gradient text */
+.text-gradient {
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-white via-zinc-200 to-zinc-400;
 }
 
-.glow-subtle {
-  box-shadow: 0 0 15px -3px rgba(112, 0, 255, 0.15);
+.text-gradient-primary {
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-primary-light via-accent-rose to-secondary-light;
 }

@@ -2,7 +2,17 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useChatStore } from '@/app/store/chatStore';
 import { ModelSelector } from '@/widgets/ModelSelector';
 import { apiClient } from '@/shared/api';
-import { Send, Paperclip, X, FileText, Sparkles, Loader2 } from 'lucide-react';
+import {
+  Send,
+  Paperclip,
+  X,
+  FileText,
+  Sparkles,
+  Loader2,
+  Mic,
+  MicOff,
+  CornerDownLeft,
+} from 'lucide-react';
 
 interface ChatInputProps {
   onSendMessage: (text: string) => void;
@@ -12,6 +22,7 @@ interface ChatInputProps {
 export const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, disabled }) => {
   const [text, setText] = useState('');
   const [isUploading, setIsUploading] = useState(false);
+  const [isListening, setIsListening] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -28,7 +39,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, disabled })
       textareaRef.current.style.height = 'auto';
       textareaRef.current.style.height = `${Math.min(
         textareaRef.current.scrollHeight,
-        200
+        220
       )}px`;
     }
   }, [text]);
@@ -61,40 +72,65 @@ export const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, disabled })
         headers: { 'Content-Type': 'multipart/form-data' },
       });
       attachFile(res.data);
-    } catch (err) {
-      alert("Fayl yuklashda xatolik yuz berdi. Hajmi 25MB dan oshmasligi kerak.");
+    } catch {
+      alert("Fayl yuklashda xatolik yuz berdi. Fayl hajmi 25MB dan oshmasligi lozim.");
     } finally {
       setIsUploading(false);
       if (fileInputRef.current) fileInputRef.current.value = '';
     }
   };
 
+  const toggleVoiceInput = () => {
+    if (!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
+      alert("Sizning brauzeringiz ovozli yozishni qo'llab-quvvatlamaydi.");
+      return;
+    }
+    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    const recognition = new SpeechRecognition();
+    recognition.lang = 'uz-UZ';
+    recognition.interimResults = false;
+
+    if (!isListening) {
+      setIsListening(true);
+      recognition.start();
+      recognition.onresult = (event: any) => {
+        const transcript = event.results[0][0].transcript;
+        setText((prev) => (prev ? prev + ' ' + transcript : transcript));
+        setIsListening(false);
+      };
+      recognition.onerror = () => setIsListening(false);
+      recognition.onend = () => setIsListening(false);
+    } else {
+      setIsListening(false);
+    }
+  };
+
   return (
-    <div className="w-full max-w-4xl mx-auto px-4 pb-6">
-      {/* Attached Files Preview Bar */}
+    <div className="w-full max-w-4xl mx-auto px-4 pb-6 pt-2 select-none">
+      {/* Attached Files Bar */}
       {attachedFiles.length > 0 && (
-        <div className="flex flex-wrap gap-2 mb-2 px-2">
+        <div className="flex flex-wrap gap-2 mb-2 px-2 animate-in fade-in slide-in-from-bottom-2 duration-150">
           {attachedFiles.map((file) => (
             <div
               key={file.id}
-              className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-surface border border-surface-border text-xs text-zinc-200"
+              className="flex items-center gap-2 px-3 py-1.5 rounded-2xl bg-surface/90 border border-primary/40 text-xs text-zinc-100 shadow-md backdrop-blur-md"
             >
-              <FileText className="w-3.5 h-3.5 text-primary-light" />
-              <span className="max-w-[150px] truncate">{file.file_name}</span>
+              <FileText className="w-3.5 h-3.5 text-primary-light flex-shrink-0" />
+              <span className="max-w-[160px] truncate font-medium">{file.file_name}</span>
               <button
                 type="button"
                 onClick={() => removeAttachedFile(file.id)}
-                className="text-zinc-400 hover:text-red-400 transition-colors"
+                className="text-zinc-400 hover:text-red-400 transition-colors p-0.5 rounded-full hover:bg-surface-light"
               >
-                <X className="w-3.5 h-3.5" />
+                <X className="w-3 h-3" />
               </button>
             </div>
           ))}
         </div>
       )}
 
-      {/* Main Input Box */}
-      <div className="relative flex flex-col bg-surface border border-surface-border rounded-2xl shadow-xl focus-within:border-primary/60 transition-all p-3">
+      {/* Floating Glassmorphism Container */}
+      <div className="relative flex flex-col bg-surface/80 backdrop-blur-2xl border border-surface-borderLight rounded-3xl shadow-2xl focus-within:border-primary/60 focus-within:ring-4 focus-within:ring-primary/10 transition-all p-3.5">
         <textarea
           ref={textareaRef}
           rows={1}
@@ -103,11 +139,11 @@ export const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, disabled })
           onKeyDown={handleKeyDown}
           placeholder="WEN AI dan istalgan narsani so'rang... (Shift+Enter yangi qator)"
           disabled={disabled || isStreaming}
-          className="w-full bg-transparent text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none resize-none min-h-[44px] max-h-[200px] leading-6 px-2 pt-1"
+          className="w-full bg-transparent text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none resize-none min-h-[46px] max-h-[220px] leading-6 px-2.5 pt-1.5 font-sans"
         />
 
-        <div className="flex items-center justify-between pt-2 border-t border-surface-border/40 mt-2">
-          {/* Left tools: Model Selector + File Upload */}
+        <div className="flex items-center justify-between pt-2.5 border-t border-white/[0.06] mt-2">
+          {/* Left Tools */}
           <div className="flex items-center gap-2">
             <ModelSelector />
 
@@ -122,8 +158,8 @@ export const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, disabled })
               type="button"
               onClick={() => fileInputRef.current?.click()}
               disabled={isUploading || isStreaming}
-              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-surface-light/60 hover:bg-surface-light border border-surface-border text-xs font-medium text-zinc-300 hover:text-white transition-colors"
-              title="Fayl yoki Hujjat yuklash (PDF, DOCX, TXT, CSV)"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-surface/70 hover:bg-surface-light border border-surface-border text-xs font-semibold text-zinc-300 hover:text-white transition-all hover:border-primary/40"
+              title="Hujjat yoki Fayl biriktirish (PDF, Word, CSV, Rasm)"
             >
               {isUploading ? (
                 <Loader2 className="w-3.5 h-3.5 animate-spin text-primary-light" />
@@ -132,23 +168,42 @@ export const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, disabled })
               )}
               <span className="hidden sm:inline">Hujjat</span>
             </button>
+
+            {/* Voice Input Button */}
+            <button
+              type="button"
+              onClick={toggleVoiceInput}
+              className={`p-2 rounded-xl border text-xs font-semibold transition-all ${
+                isListening
+                  ? 'bg-red-500/20 border-red-500 text-red-400 animate-pulse'
+                  : 'bg-surface/70 hover:bg-surface-light border-surface-border text-zinc-400 hover:text-zinc-200'
+              }`}
+              title="Ovozli Yozish"
+            >
+              {isListening ? <MicOff className="w-3.5 h-3.5" /> : <Mic className="w-3.5 h-3.5" />}
+            </button>
           </div>
 
-          {/* Right tool: Send button */}
+          {/* Right Tool: Send Button */}
           <button
             type="button"
             onClick={handleSubmit}
             disabled={!text.trim() || disabled || isStreaming}
-            className="flex items-center justify-center p-2 rounded-xl bg-primary hover:bg-primary-hover disabled:opacity-40 disabled:hover:bg-primary text-white shadow-lg shadow-primary/25 transition-all duration-200 active:scale-95"
+            className="flex items-center justify-center p-2.5 rounded-2xl bg-gradient-to-tr from-primary via-primary-light to-secondary hover:brightness-110 disabled:opacity-30 disabled:hover:brightness-100 text-white shadow-lg shadow-primary/30 transition-all duration-200 active:scale-95 group"
             title="Yuborish"
           >
-            <Send className="w-4 h-4" />
+            <Send className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
           </button>
         </div>
       </div>
-      <p className="text-[11px] text-zinc-500 text-center mt-2">
-        WEN AI muhim faktlarni xato qilishi mumkin. Hujjat va ma'lumotlarni tekshirib ko'ring.
-      </p>
+
+      <div className="flex items-center justify-center gap-4 text-[10px] text-zinc-500 text-center mt-2.5 font-medium">
+        <span>⚡ Real-time SSE Streaming</span>
+        <span>•</span>
+        <span>🔒 Shifrlangan Xavfsiz Aloqa</span>
+        <span>•</span>
+        <span>📄 RAG Document Grounding</span>
+      </div>
     </div>
   );
 };

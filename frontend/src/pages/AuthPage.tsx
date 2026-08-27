@@ -5,7 +5,7 @@ import { useAuthStore } from '@/app/store/authStore';
 import { apiClient } from '@/shared/api';
 import { Input } from '@/shared/components/Input';
 import { Button } from '@/shared/components/Button';
-import { Bot, Mail, Lock, User as UserIcon, Sparkles } from 'lucide-react';
+import { Bot, Mail, Lock, User as UserIcon, Sparkles, ShieldCheck, ArrowRight } from 'lucide-react';
 
 export const AuthPage: React.FC = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -45,37 +45,47 @@ export const AuthPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4 relative overflow-hidden">
-      {/* Ambient background glow */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-primary/20 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-10 right-10 w-80 h-80 bg-secondary/15 rounded-full blur-3xl pointer-events-none" />
+    <div className="min-h-screen bg-background bg-grid-pattern flex flex-col items-center justify-center p-4 relative overflow-hidden select-none">
+      {/* Background ambient glowing orbs */}
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-primary/25 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-10 right-1/4 w-80 h-80 bg-secondary/20 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute top-10 left-10 w-72 h-72 bg-accent-rose/15 rounded-full blur-[90px] pointer-events-none" />
 
-      {/* Main card */}
-      <div className="relative w-full max-w-md bg-surface border border-surface-border rounded-3xl p-8 shadow-2xl z-10">
+      {/* Main Glass Card */}
+      <div className="relative w-full max-w-md bg-surface-dark/85 backdrop-blur-2xl border border-surface-borderLight rounded-3xl p-8 md:p-10 shadow-2xl z-10">
         {/* Brand */}
         <div className="flex flex-col items-center text-center mb-8">
-          <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-primary to-secondary flex items-center justify-center shadow-xl shadow-primary/30 mb-4">
-            <Bot className="w-8 h-8 text-white" />
+          <div className="relative mb-4">
+            <div className="w-16 h-16 rounded-3xl bg-gradient-to-tr from-primary via-primary-light to-secondary flex items-center justify-center shadow-2xl shadow-primary/40 animate-float">
+              <Bot className="w-9 h-9 text-white" />
+            </div>
+            <div className="absolute -inset-1.5 bg-gradient-to-r from-primary to-accent-cyan rounded-3xl blur-lg opacity-30 -z-10" />
           </div>
-          <h1 className="text-2xl font-extrabold text-white tracking-tight">
-            WEN AI
-          </h1>
-          <p className="text-xs text-zinc-400 mt-1">
+
+          <div className="flex items-center gap-2">
+            <h1 className="text-2xl font-black text-white tracking-tight">
+              WEN AI
+            </h1>
+            <span className="text-[10px] uppercase font-bold tracking-widest px-2 py-0.5 rounded-full bg-gradient-to-r from-primary/30 to-secondary/30 text-primary-light border border-primary/30">
+              NEXUS
+            </span>
+          </div>
+          <p className="text-xs text-zinc-400 mt-1 font-medium">
             Universal Sun'iy Intellekt Platformasi
           </p>
         </div>
 
         {/* Tab switcher */}
-        <div className="flex rounded-xl bg-surface-dark p-1 border border-surface-border mb-6">
+        <div className="flex rounded-2xl bg-surface p-1.5 border border-surface-border mb-6">
           <button
             type="button"
             onClick={() => {
               setIsLogin(true);
               setErrorMsg('');
             }}
-            className={`flex-1 py-2 text-xs font-semibold rounded-lg transition-all ${
+            className={`flex-1 py-2.5 text-xs font-bold rounded-xl transition-all ${
               isLogin
-                ? 'bg-surface-light text-white shadow-sm border border-surface-border'
+                ? 'bg-surface-light text-white shadow-md border border-surface-borderLight'
                 : 'text-zinc-400 hover:text-white'
             }`}
           >
@@ -87,9 +97,9 @@ export const AuthPage: React.FC = () => {
               setIsLogin(false);
               setErrorMsg('');
             }}
-            className={`flex-1 py-2 text-xs font-semibold rounded-lg transition-all ${
+            className={`flex-1 py-2.5 text-xs font-bold rounded-xl transition-all ${
               !isLogin
-                ? 'bg-surface-light text-white shadow-sm border border-surface-border'
+                ? 'bg-surface-light text-white shadow-md border border-surface-borderLight'
                 : 'text-zinc-400 hover:text-white'
             }`}
           >
@@ -98,8 +108,8 @@ export const AuthPage: React.FC = () => {
         </div>
 
         {errorMsg && (
-          <div className="mb-4 p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-xs">
-            {errorMsg}
+          <div className="mb-5 p-3.5 rounded-2xl bg-red-500/10 border border-red-500/20 text-red-400 text-xs flex items-start gap-2">
+            <span className="font-semibold">{errorMsg}</span>
           </div>
         )}
 
@@ -132,18 +142,22 @@ export const AuthPage: React.FC = () => {
 
           <Button
             type="submit"
-            className="w-full mt-2"
+            className="w-full mt-3 py-3 rounded-2xl bg-gradient-to-r from-primary via-primary-hover to-secondary shadow-lg shadow-primary/30 text-xs font-bold tracking-wide"
             isLoading={isLoading}
           >
-            {isLogin ? "Tizimga Kirish" : "Hisob Yaratish"}
+            <span className="flex items-center justify-center gap-2">
+              <span>{isLogin ? "TIZIMGA KIRISH" : "HISOB YARATISH"}</span>
+              <ArrowRight className="w-4 h-4" />
+            </span>
           </Button>
         </form>
 
-        <div className="mt-6 text-center">
-          <p className="text-xs text-zinc-500 flex items-center justify-center gap-1">
-            <Sparkles className="w-3 h-3 text-primary-light" />
-            Xavfsiz JWT va Argon2 shifrlash
-          </p>
+        <div className="mt-8 pt-4 border-t border-surface-border flex items-center justify-between text-[11px] text-zinc-500">
+          <span className="flex items-center gap-1.5">
+            <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+            Argon2 & JWT Xavfsiz
+          </span>
+          <span>v1.0.0 Production</span>
         </div>
       </div>
     </div>

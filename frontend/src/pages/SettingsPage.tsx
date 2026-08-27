@@ -13,6 +13,8 @@ import {
   Download,
   Check,
   ShieldCheck,
+  Zap,
+  Sliders,
 } from 'lucide-react';
 
 export const SettingsPage: React.FC = () => {
@@ -60,26 +62,28 @@ export const SettingsPage: React.FC = () => {
   };
 
   return (
-    <div className="flex h-screen w-screen overflow-hidden bg-background text-zinc-100">
+    <div className="flex h-screen w-screen overflow-hidden bg-background bg-grid-pattern text-zinc-100">
       <Sidebar />
 
-      <main className="flex-1 flex flex-col h-full overflow-y-auto p-6 md:p-10">
+      <main className="flex-1 flex flex-col h-full overflow-y-auto p-6 md:p-10 relative">
         <div className="max-w-4xl mx-auto w-full space-y-8">
           {/* Header */}
-          <div className="border-b border-surface-border/60 pb-6">
-            <div className="flex items-center gap-2">
-              <SettingsIcon className="w-6 h-6 text-primary-light" />
-              <h1 className="text-2xl font-bold text-white tracking-tight">
+          <div className="border-b border-surface-border pb-6">
+            <div className="flex items-center gap-2.5">
+              <div className="p-2 rounded-xl bg-primary/10 border border-primary/20 text-primary-light">
+                <SettingsIcon className="w-5 h-5" />
+              </div>
+              <h1 className="text-2xl md:text-3xl font-extrabold text-white tracking-tight">
                 Tizim Sozlamalari
               </h1>
             </div>
-            <p className="text-xs text-zinc-400 mt-1">
-              Profil, AI modellari parametrlari va hisob xavfsizligini boshqaring.
+            <p className="text-xs text-zinc-400 mt-1.5 leading-relaxed">
+              Profil sozlamalari, sun'iy intellekt modeli harorati va hisob xavfsizligini boshqaring.
             </p>
           </div>
 
           {/* Navigation Tabs */}
-          <div className="flex rounded-2xl bg-surface p-1 border border-surface-border gap-1">
+          <div className="flex rounded-2xl bg-surface/80 p-1.5 border border-surface-border gap-1.5 backdrop-blur-md">
             <TabBtn
               label="Umumiy"
               active={activeTab === 'general'}
@@ -104,8 +108,8 @@ export const SettingsPage: React.FC = () => {
 
           {/* Tab 1: General */}
           {activeTab === 'general' && (
-            <div className="p-6 rounded-3xl bg-surface border border-surface-border space-y-6">
-              <h3 className="text-base font-semibold text-white">
+            <div className="p-8 rounded-3xl bg-surface/70 border border-surface-borderLight space-y-6 shadow-xl backdrop-blur-md">
+              <h3 className="text-base font-bold text-white">
                 Foydalanuvchi Profili
               </h3>
               <div className="space-y-4 max-w-md">
@@ -123,7 +127,7 @@ export const SettingsPage: React.FC = () => {
               </div>
 
               <div className="pt-4 border-t border-surface-border flex items-center gap-3">
-                <Button onClick={handleSaveProfile}>
+                <Button onClick={handleSaveProfile} className="py-2.5 px-6 rounded-xl font-bold">
                   {saveSuccess ? (
                     <>
                       <Check className="w-4 h-4 text-emerald-400" />
@@ -139,20 +143,21 @@ export const SettingsPage: React.FC = () => {
 
           {/* Tab 2: AI Settings */}
           {activeTab === 'ai' && (
-            <div className="p-6 rounded-3xl bg-surface border border-surface-border space-y-6">
-              <h3 className="text-base font-semibold text-white">
-                Sun'iy Intellekt Parametrlari
+            <div className="p-8 rounded-3xl bg-surface/70 border border-surface-borderLight space-y-6 shadow-xl backdrop-blur-md">
+              <h3 className="text-base font-bold text-white flex items-center gap-2">
+                <Cpu className="w-5 h-5 text-primary-light" />
+                <span>Sun'iy Intellekt Parametrlari</span>
               </h3>
 
               <div className="space-y-6 max-w-md">
                 <div className="space-y-2">
-                  <label className="block text-xs font-medium text-zinc-300">
+                  <label className="block text-xs font-semibold text-zinc-300">
                     Birlamchi AI Modeli
                   </label>
                   <select
                     value={defaultModel}
                     onChange={(e) => setDefaultModel(e.target.value)}
-                    className="w-full bg-surface-dark border border-surface-border rounded-xl px-4 py-2.5 text-xs text-zinc-100 focus:outline-none focus:border-primary"
+                    className="w-full bg-surface-dark border border-surface-border rounded-2xl px-4 py-3 text-xs text-zinc-100 focus:outline-none focus:border-primary font-medium"
                   >
                     <option value="gpt-4o-mini">GPT-4o Mini (OpenAI)</option>
                     <option value="gpt-4o">GPT-4o (OpenAI)</option>
@@ -163,10 +168,10 @@ export const SettingsPage: React.FC = () => {
                   </select>
                 </div>
 
-                <div className="space-y-2">
+                <div className="space-y-3 p-4 rounded-2xl bg-surface-dark/60 border border-surface-border">
                   <div className="flex justify-between text-xs">
-                    <span className="text-zinc-300 font-medium">Harorat (Temperature: {temperature})</span>
-                    <span className="text-zinc-400 text-[11px]">
+                    <span className="text-zinc-200 font-semibold">Harorat (Temperature: {temperature})</span>
+                    <span className="text-primary-light font-bold">
                       {parseFloat(temperature) < 0.4 ? 'Aniq & Qat\'iy' : parseFloat(temperature) > 0.8 ? 'Kreativ' : 'Muvozanatli'}
                     </span>
                   </div>
@@ -177,13 +182,16 @@ export const SettingsPage: React.FC = () => {
                     step="0.1"
                     value={temperature}
                     onChange={(e) => setTemperature(e.target.value)}
-                    className="w-full accent-primary"
+                    className="w-full accent-primary h-2 bg-surface-light rounded-lg cursor-pointer"
                   />
+                  <p className="text-[11px] text-zinc-400">
+                    Past harorat aniq va qat'iy javoblar beradi, yuqori harorat esa ijodiy fikrlashni kuchaytiradi.
+                  </p>
                 </div>
               </div>
 
               <div className="pt-4 border-t border-surface-border">
-                <Button onClick={handleSaveProfile}>
+                <Button onClick={handleSaveProfile} className="py-2.5 px-6 rounded-xl font-bold">
                   {saveSuccess ? 'Saqlandi!' : 'Parametrlarni Saqlash'}
                 </Button>
               </div>
@@ -192,13 +200,14 @@ export const SettingsPage: React.FC = () => {
 
           {/* Tab 3: Account & Security */}
           {activeTab === 'account' && (
-            <div className="p-6 rounded-3xl bg-surface border border-surface-border space-y-6">
-              <h3 className="text-base font-semibold text-white">
-                Maxfiylik va Parolni O'zgartirish
+            <div className="p-8 rounded-3xl bg-surface/70 border border-surface-borderLight space-y-6 shadow-xl backdrop-blur-md">
+              <h3 className="text-base font-bold text-white flex items-center gap-2">
+                <ShieldCheck className="w-5 h-5 text-emerald-400" />
+                <span>Maxfiylik va Parolni O'zgartirish</span>
               </h3>
 
               {passwordMsg && (
-                <div className="p-3 rounded-xl bg-primary/10 border border-primary/20 text-primary-light text-xs">
+                <div className="p-4 rounded-2xl bg-primary/10 border border-primary/20 text-primary-light text-xs font-semibold">
                   {passwordMsg}
                 </div>
               )}
@@ -220,7 +229,7 @@ export const SettingsPage: React.FC = () => {
                   placeholder="••••••••"
                 />
 
-                <Button type="submit">
+                <Button type="submit" className="py-2.5 px-6 rounded-xl font-bold">
                   Parolni Yangilash
                 </Button>
               </form>
@@ -229,41 +238,42 @@ export const SettingsPage: React.FC = () => {
 
           {/* Tab 4: Data */}
           {activeTab === 'data' && (
-            <div className="p-6 rounded-3xl bg-surface border border-surface-border space-y-6">
-              <h3 className="text-base font-semibold text-white">
+            <div className="p-8 rounded-3xl bg-surface/70 border border-surface-borderLight space-y-6 shadow-xl backdrop-blur-md">
+              <h3 className="text-base font-bold text-white">
                 Ma'lumotlar Boshqaruvi
               </h3>
 
               <div className="space-y-4 max-w-lg">
-                <div className="p-4 rounded-2xl bg-surface-dark border border-surface-border flex items-center justify-between">
+                <div className="p-5 rounded-2xl bg-surface-dark border border-surface-border flex items-center justify-between">
                   <div>
-                    <h4 className="text-xs font-semibold text-white">
+                    <h4 className="text-xs font-bold text-white">
                       Ma'lumotlarni Eksport Qilish
                     </h4>
-                    <p className="text-[11px] text-zinc-400">
+                    <p className="text-[11px] text-zinc-400 mt-0.5">
                       Barcha chatlar va fayllar tarixini JSON formatida yuklab olish.
                     </p>
                   </div>
                   <Button
                     size="sm"
                     variant="secondary"
-                    onClick={() => alert("Eksport fayli tayyorlanmoqda...")}
+                    className="rounded-xl"
+                    onClick={() => alert("Eksport tayyorlanmoqda...")}
                   >
                     <Download className="w-3.5 h-3.5" />
                     <span>Yuklab Olish</span>
                   </Button>
                 </div>
 
-                <div className="p-4 rounded-2xl bg-red-500/5 border border-red-500/20 flex items-center justify-between">
+                <div className="p-5 rounded-2xl bg-red-500/5 border border-red-500/20 flex items-center justify-between">
                   <div>
-                    <h4 className="text-xs font-semibold text-red-400">
+                    <h4 className="text-xs font-bold text-red-400">
                       Tizimdan Chiqish
                     </h4>
-                    <p className="text-[11px] text-zinc-400">
+                    <p className="text-[11px] text-zinc-400 mt-0.5">
                       Ushbu qurilmadagi faol sessiyani yakunlash.
                     </p>
                   </div>
-                  <Button size="sm" variant="danger" onClick={logout}>
+                  <Button size="sm" variant="danger" className="rounded-xl" onClick={logout}>
                     Chiqish
                   </Button>
                 </div>
@@ -284,9 +294,9 @@ const TabBtn: React.FC<{
   <button
     type="button"
     onClick={onClick}
-    className={`flex-1 py-2.5 text-xs font-semibold rounded-xl transition-all ${
+    className={`flex-1 py-2.5 text-xs font-bold rounded-xl transition-all ${
       active
-        ? 'bg-surface-light text-white shadow-sm border border-surface-border'
+        ? 'bg-surface-light text-white shadow-md border border-surface-borderLight'
         : 'text-zinc-400 hover:text-white'
     }`}
   >
