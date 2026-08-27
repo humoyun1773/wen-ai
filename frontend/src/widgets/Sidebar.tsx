@@ -27,6 +27,7 @@ import {
   Plug,
   Folder,
   Code2,
+  CreditCard,
 } from 'lucide-react';
 
 export const Sidebar: React.FC = () => {
@@ -145,48 +146,130 @@ export const Sidebar: React.FC = () => {
       >
         {/* Collapsed view on desktop */}
         {!isSidebarOpen && (
-          <div className="hidden md:flex flex-col items-center py-5 px-3 w-full justify-between h-full">
-            <div className="flex flex-col items-center gap-3">
+          <div className="hidden md:flex flex-col items-center py-4 px-2 w-full justify-between h-full overflow-y-auto">
+            <div className="flex flex-col items-center gap-2.5 w-full">
               <div
                 onClick={() => navigate('/chat')}
-                className="w-9 h-9 rounded-xl bg-surface border border-surface-border flex items-center justify-center font-black text-[11px] text-white shadow-md cursor-pointer hover:border-primary/50 transition-all"
+                className="w-10 h-10 rounded-2xl bg-surface border border-surface-border flex items-center justify-center font-black text-xs text-white shadow-md cursor-pointer hover:border-primary/50 hover:bg-surface-light transition-all"
+                title="WEN AI"
               >
                 WEN
               </div>
               <button
                 onClick={toggleSidebar}
-                className="p-2.5 rounded-xl bg-surface/80 hover:bg-surface-light border border-surface-border text-zinc-400 hover:text-white transition-all"
+                className="p-2.5 rounded-xl bg-surface/80 hover:bg-surface-light border border-surface-border text-zinc-400 hover:text-white transition-all cursor-pointer"
                 title="Развернуть панель"
               >
                 <ChevronRight className="w-4 h-4" />
               </button>
               <button
                 onClick={handleNewChat}
-                className="p-2.5 rounded-xl bg-gradient-to-r from-primary to-secondary hover:brightness-110 text-white shadow-lg shadow-primary/25 transition-all"
+                className="p-2.5 rounded-xl bg-gradient-to-r from-primary to-secondary hover:brightness-110 text-white shadow-lg shadow-primary/25 transition-all cursor-pointer"
                 title="Новый чат"
               >
                 <Plus className="w-4 h-4" />
               </button>
               <button
                 onClick={() => handleNavClick('/images')}
-                className="p-2.5 rounded-xl text-zinc-400 hover:text-white hover:bg-surface-light"
+                className={`p-2.5 rounded-xl transition-all cursor-pointer ${
+                  location.pathname === '/images'
+                    ? 'bg-primary/20 text-white border border-primary/40'
+                    : 'text-zinc-400 hover:text-white hover:bg-surface-light'
+                }`}
                 title="Изображения"
               >
-                <ImageIcon className="w-4 h-4" />
+                <ImageIcon className="w-4 h-4 text-accent-rose" />
+              </button>
+              <button
+                onClick={() => handleNavClick('/library')}
+                className={`p-2.5 rounded-xl transition-all cursor-pointer ${
+                  location.pathname === '/library'
+                    ? 'bg-primary/20 text-white border border-primary/40'
+                    : 'text-zinc-400 hover:text-white hover:bg-surface-light'
+                }`}
+                title="Библиотека"
+              >
+                <BookOpen className="w-4 h-4 text-accent-cyan" />
+              </button>
+              <button
+                onClick={() => handleNavClick('/scheduled')}
+                className={`p-2.5 rounded-xl transition-all cursor-pointer ${
+                  location.pathname === '/scheduled'
+                    ? 'bg-primary/20 text-white border border-primary/40'
+                    : 'text-zinc-400 hover:text-white hover:bg-surface-light'
+                }`}
+                title="Запланированное"
+              >
+                <Clock className="w-4 h-4 text-accent-emerald" />
+              </button>
+              <button
+                onClick={() => handleNavClick('/plugins')}
+                className={`p-2.5 rounded-xl transition-all cursor-pointer ${
+                  location.pathname === '/plugins'
+                    ? 'bg-primary/20 text-white border border-primary/40'
+                    : 'text-zinc-400 hover:text-white hover:bg-surface-light'
+                }`}
+                title="Плагины"
+              >
+                <Plug className="w-4 h-4 text-primary-light" />
+              </button>
+              <button
+                onClick={() => handleNavClick('/projects')}
+                className={`p-2.5 rounded-xl transition-all cursor-pointer ${
+                  location.pathname === '/projects'
+                    ? 'bg-primary/20 text-white border border-primary/40'
+                    : 'text-zinc-400 hover:text-white hover:bg-surface-light'
+                }`}
+                title="Проекты"
+              >
+                <Folder className="w-4 h-4 text-accent-amber" />
               </button>
               <button
                 onClick={() => handleNavClick('/codex')}
-                className="p-2.5 rounded-xl text-zinc-400 hover:text-white hover:bg-surface-light"
-                title="Wen"
+                className={`p-2.5 rounded-xl transition-all cursor-pointer ${
+                  location.pathname === '/codex'
+                    ? 'bg-primary/20 text-white border border-primary/40'
+                    : 'text-zinc-400 hover:text-white hover:bg-surface-light'
+                }`}
+                title="Wen Codex"
               >
-                <Code2 className="w-4 h-4" />
+                <Code2 className="w-4 h-4 text-accent-violet" />
+              </button>
+              <button
+                onClick={() => handleNavClick('/documents')}
+                className={`p-2.5 rounded-xl transition-all cursor-pointer ${
+                  location.pathname === '/documents'
+                    ? 'bg-primary/20 text-white border border-primary/40'
+                    : 'text-zinc-400 hover:text-white hover:bg-surface-light'
+                }`}
+                title="Документы (RAG)"
+              >
+                <FileText className="w-4 h-4 text-accent-cyan" />
+              </button>
+              <button
+                onClick={() => handleNavClick('/prompts')}
+                className={`p-2.5 rounded-xl transition-all cursor-pointer ${
+                  location.pathname === '/prompts'
+                    ? 'bg-primary/20 text-white border border-primary/40'
+                    : 'text-zinc-400 hover:text-white hover:bg-surface-light'
+                }`}
+                title="Промпты"
+              >
+                <Terminal className="w-4 h-4 text-accent-rose" />
               </button>
             </div>
 
-            <div className="flex flex-col items-center gap-3">
+            <div className="flex flex-col items-center gap-2.5 mt-auto pt-3 border-t border-surface-border w-full">
+              <button
+                onClick={() => handleNavClick('/settings')}
+                className="p-2.5 rounded-xl text-zinc-400 hover:text-white hover:bg-surface-light transition-all cursor-pointer"
+                title="Настройки"
+              >
+                <Settings className="w-4 h-4" />
+              </button>
               <button
                 onClick={logout}
-                className="p-2.5 rounded-xl text-red-400/80 hover:text-red-400 hover:bg-red-500/10 transition-all"
+                className="p-2.5 rounded-xl text-red-400/80 hover:text-red-400 hover:bg-red-500/10 transition-all cursor-pointer"
                 title="Выйти"
               >
                 <LogOut className="w-4 h-4" />
@@ -207,21 +290,21 @@ export const Sidebar: React.FC = () => {
                 }}
                 className="cursor-pointer py-1"
               >
-                <span className="font-black text-lg tracking-wider text-white">
+                <span className="font-black text-xl tracking-wider text-white">
                   WEN AI
                 </span>
               </div>
 
               <button
                 onClick={toggleSidebar}
-                className="p-1.5 rounded-xl text-zinc-400 hover:text-white hover:bg-surface-light border border-transparent hover:border-surface-border transition-all"
+                className="p-1.5 rounded-xl text-zinc-400 hover:text-white hover:bg-surface-light border border-transparent hover:border-surface-border transition-all cursor-pointer"
                 title="Свернуть"
               >
                 <ChevronLeft className="w-4 h-4" />
               </button>
             </div>
 
-            {/* Core Feature Navigation Bar (Новый чат, Изображения, Библиотека, Запланированное, Плагины, Проекты, Wen) */}
+            {/* Core Feature Navigation Bar */}
             <div className="p-3 space-y-1 border-b border-surface-border/60">
               <NavItem
                 icon={<Plus className="w-4 h-4 text-primary-light" />}
@@ -262,9 +345,21 @@ export const Sidebar: React.FC = () => {
               />
               <NavItem
                 icon={<Code2 className="w-4 h-4 text-accent-violet" />}
-                label="Wen"
+                label="Wen Codex"
                 active={location.pathname === '/codex'}
                 onClick={() => handleNavClick('/codex')}
+              />
+              <NavItem
+                icon={<FileText className="w-4 h-4 text-accent-cyan" />}
+                label="Документы (RAG)"
+                active={location.pathname === '/documents'}
+                onClick={() => handleNavClick('/documents')}
+              />
+              <NavItem
+                icon={<Terminal className="w-4 h-4 text-accent-rose" />}
+                label="Библиотека промптов"
+                active={location.pathname === '/prompts'}
+                onClick={() => handleNavClick('/prompts')}
               />
             </div>
 
@@ -282,7 +377,7 @@ export const Sidebar: React.FC = () => {
                 {searchQuery && (
                   <button
                     onClick={() => setSearchQuery('')}
-                    className="absolute right-2.5 text-zinc-400 hover:text-white"
+                    className="absolute right-2.5 text-zinc-400 hover:text-white cursor-pointer"
                   >
                     <X className="w-3 h-3" />
                   </button>
@@ -374,27 +469,18 @@ export const Sidebar: React.FC = () => {
                           if (window.innerWidth < 768) setSidebarOpen(false);
                         }}
                       />
-                      <MenuOption
-                        icon={<FileText className="w-4 h-4 text-accent-cyan" />}
-                        label="Документы и RAG"
-                        onClick={() => {
-                          setIsProfileMenuOpen(false);
-                          navigate('/documents');
-                          if (window.innerWidth < 768) setSidebarOpen(false);
-                        }}
-                      />
-                      <MenuOption
-                        icon={<Terminal className="w-4 h-4 text-accent-rose" />}
-                        label="Библиотека промптов"
-                        onClick={() => {
-                          setIsProfileMenuOpen(false);
-                          navigate('/prompts');
-                          if (window.innerWidth < 768) setSidebarOpen(false);
-                        }}
-                      />
-                      <div className="my-1 border-t border-surface-border" />
                     </>
                   )}
+
+                  <MenuOption
+                    icon={<CreditCard className="w-4 h-4 text-primary-light" />}
+                    label="Тарифные планы"
+                    onClick={() => {
+                      setIsProfileMenuOpen(false);
+                      navigate('/pricing');
+                      if (window.innerWidth < 768) setSidebarOpen(false);
+                    }}
+                  />
 
                   <MenuOption
                     icon={<Settings className="w-4 h-4 text-zinc-300" />}
@@ -405,6 +491,8 @@ export const Sidebar: React.FC = () => {
                       if (window.innerWidth < 768) setSidebarOpen(false);
                     }}
                   />
+
+                  <div className="my-1 border-t border-surface-border" />
 
                   <MenuOption
                     icon={<LogOut className="w-4 h-4 text-red-400" />}
@@ -435,7 +523,7 @@ export const Sidebar: React.FC = () => {
                 </div>
                 <button
                   type="button"
-                  className="p-1 rounded-lg text-zinc-400 group-hover:text-white"
+                  className="p-1 rounded-lg text-zinc-400 group-hover:text-white cursor-pointer"
                 >
                   <MoreVertical className="w-4 h-4" />
                 </button>
@@ -458,7 +546,7 @@ const NavItem: React.FC<{
   return (
     <button
       onClick={onClick}
-      className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
+      className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
         active
           ? 'bg-primary/20 text-white border border-primary/40 shadow-sm'
           : highlight
@@ -482,7 +570,7 @@ const MenuOption: React.FC<{
     <button
       type="button"
       onClick={onClick}
-      className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold transition-all text-left ${
+      className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold transition-all text-left cursor-pointer ${
         danger
           ? 'text-red-400 hover:bg-red-500/10'
           : 'text-zinc-300 hover:text-white hover:bg-surface-light'
@@ -526,7 +614,7 @@ const ChatItem: React.FC<{
             e.stopPropagation();
             onTogglePin();
           }}
-          className={`p-1 rounded-lg hover:bg-surface-dark ${
+          className={`p-1 rounded-lg hover:bg-surface-dark cursor-pointer ${
             conv.is_pinned ? 'text-primary-light' : 'text-zinc-500 hover:text-white'
           }`}
           title={conv.is_pinned ? 'Открепить' : 'Закрепить'}
@@ -538,7 +626,7 @@ const ChatItem: React.FC<{
             e.stopPropagation();
             onDelete();
           }}
-          className="p-1 rounded-lg text-zinc-500 hover:text-red-400 hover:bg-surface-dark"
+          className="p-1 rounded-lg text-zinc-500 hover:text-red-400 hover:bg-surface-dark cursor-pointer"
           title="Удалить"
         >
           <Trash2 className="w-3 h-3" />
