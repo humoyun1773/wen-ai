@@ -19,19 +19,7 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode; adminOnly?: boolean 
   children,
   adminOnly = false,
 }) => {
-  const { isAuthenticated, user, checkAuth, isLoading } = useAuthStore();
-
-  useEffect(() => {
-    checkAuth();
-  }, [checkAuth]);
-
-  if (isLoading) {
-    return (
-      <div className="h-screen w-screen flex items-center justify-center bg-background text-zinc-400 text-xs">
-        Yuklanmoqda...
-      </div>
-    );
-  }
+  const { isAuthenticated, user } = useAuthStore();
 
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;

@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useChatStore } from '@/app/store/chatStore';
 import { ModelSelector } from '@/widgets/ModelSelector';
 import { AttachmentToolsMenu } from '@/widgets/AttachmentToolsMenu';
@@ -19,6 +20,7 @@ interface ChatInputProps {
 }
 
 export const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, disabled }) => {
+  const navigate = useNavigate();
   const [text, setText] = useState('');
   const [isUploading, setIsUploading] = useState(false);
   const [isListening, setIsListening] = useState(false);
@@ -83,19 +85,19 @@ export const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, disabled })
   const handleActionSelect = (action: string) => {
     switch (action) {
       case 'create_image':
-        setText((prev) => (prev ? prev + ' /image ' : '/image '));
+        navigate('/images');
         break;
       case 'create_music':
         setText((prev) => (prev ? prev + ' /music ' : '/music '));
         break;
       case 'canvas':
-        setText((prev) => (prev ? prev + ' [Режим Canvas] ' : '[Режим Canvas] '));
+        navigate('/codex');
         break;
       case 'deep_research':
-        setText((prev) => (prev ? prev + ' [Глубокое исследование] ' : '[Глубокое исследование] '));
+        navigate('/library');
         break;
       case 'guided_learning':
-        setText((prev) => (prev ? prev + ' [Обучение с ИИ] ' : '[Обучение с ИИ] '));
+        navigate('/prompts');
         break;
       case 'photos':
       case 'avatar':

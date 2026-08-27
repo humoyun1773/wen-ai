@@ -61,7 +61,7 @@ export const AttachmentToolsMenu: React.FC<AttachmentToolsMenuProps> = ({
             onUploadClick();
             onClose();
           }}
-          className="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/[0.08] hover:text-white transition-colors text-left"
+          className="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/[0.08] hover:text-white transition-colors text-left cursor-pointer"
         >
           <Paperclip className="w-4 h-4 text-zinc-400" />
           <span className="font-medium">Загрузить файлы</span>
@@ -74,7 +74,7 @@ export const AttachmentToolsMenu: React.FC<AttachmentToolsMenuProps> = ({
             onActionSelect('drive');
             onClose();
           }}
-          className="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/[0.08] hover:text-white transition-colors text-left"
+          className="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/[0.08] hover:text-white transition-colors text-left cursor-pointer"
         >
           <HardDrive className="w-4 h-4 text-zinc-400" />
           <span className="font-medium">Добавить из Drive</span>
@@ -90,7 +90,7 @@ export const AttachmentToolsMenu: React.FC<AttachmentToolsMenuProps> = ({
             onClick={() =>
               setActiveSubmenu(activeSubmenu === 'uploads' ? 'none' : 'uploads')
             }
-            className={`w-full flex items-center justify-between px-3 py-2 rounded-xl transition-colors text-left ${
+            className={`w-full flex items-center justify-between px-3 py-2 rounded-xl transition-colors text-left cursor-pointer ${
               activeSubmenu === 'uploads'
                 ? 'bg-white/[0.12] text-white'
                 : 'hover:bg-white/[0.08] hover:text-white'
@@ -113,7 +113,7 @@ export const AttachmentToolsMenu: React.FC<AttachmentToolsMenuProps> = ({
             onActionSelect('create_image');
             onClose();
           }}
-          className="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/[0.08] hover:text-white transition-colors text-left"
+          className="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/[0.08] hover:text-white transition-colors text-left cursor-pointer"
         >
           <ImageIcon className="w-4 h-4 text-zinc-400" />
           <span className="font-medium">Создать изображение</span>
@@ -126,7 +126,7 @@ export const AttachmentToolsMenu: React.FC<AttachmentToolsMenuProps> = ({
             onActionSelect('create_music');
             onClose();
           }}
-          className="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/[0.08] hover:text-white transition-colors text-left"
+          className="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/[0.08] hover:text-white transition-colors text-left cursor-pointer"
         >
           <Music className="w-4 h-4 text-zinc-400" />
           <span className="font-medium">Создать музыку</span>
@@ -139,7 +139,7 @@ export const AttachmentToolsMenu: React.FC<AttachmentToolsMenuProps> = ({
             onActionSelect('canvas');
             onClose();
           }}
-          className="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/[0.08] hover:text-white transition-colors text-left"
+          className="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/[0.08] hover:text-white transition-colors text-left cursor-pointer"
         >
           <Layout className="w-4 h-4 text-zinc-400" />
           <span className="font-medium">Режим Canvas</span>
@@ -155,7 +155,7 @@ export const AttachmentToolsMenu: React.FC<AttachmentToolsMenuProps> = ({
             onClick={() =>
               setActiveSubmenu(activeSubmenu === 'tools' ? 'none' : 'tools')
             }
-            className={`w-full flex items-center justify-between px-3 py-2 rounded-xl transition-colors text-left ${
+            className={`w-full flex items-center justify-between px-3 py-2 rounded-xl transition-colors text-left cursor-pointer ${
               activeSubmenu === 'tools'
                 ? 'bg-white/[0.12] text-white'
                 : 'hover:bg-white/[0.08] hover:text-white'
@@ -179,7 +179,7 @@ export const AttachmentToolsMenu: React.FC<AttachmentToolsMenuProps> = ({
               onActionSelect('photos');
               onClose();
             }}
-            className="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/[0.08] hover:text-white transition-colors text-left"
+            className="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/[0.08] hover:text-white transition-colors text-left cursor-pointer"
           >
             <ImageIcon className="w-4 h-4 text-zinc-400" />
             <span className="font-medium">Фотографии</span>
@@ -191,7 +191,7 @@ export const AttachmentToolsMenu: React.FC<AttachmentToolsMenuProps> = ({
               onActionSelect('avatar');
               onClose();
             }}
-            className="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/[0.08] hover:text-white transition-colors text-left"
+            className="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/[0.08] hover:text-white transition-colors text-left cursor-pointer"
           >
             <User className="w-4 h-4 text-zinc-400" />
             <span className="font-medium">Аватар</span>
@@ -203,7 +203,7 @@ export const AttachmentToolsMenu: React.FC<AttachmentToolsMenuProps> = ({
               onActionSelect('notebooks');
               onClose();
             }}
-            className="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/[0.08] hover:text-white transition-colors text-left"
+            className="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/[0.08] hover:text-white transition-colors text-left cursor-pointer"
           >
             <BookMarked className="w-4 h-4 text-zinc-400" />
             <span className="font-medium">Блокноты</span>
@@ -220,7 +220,7 @@ export const AttachmentToolsMenu: React.FC<AttachmentToolsMenuProps> = ({
               onActionSelect('deep_research');
               onClose();
             }}
-            className="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/[0.08] hover:text-white transition-colors text-left"
+            className="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/[0.08] hover:text-white transition-colors text-left cursor-pointer"
           >
             <Atom className="w-4 h-4 text-zinc-400" />
             <span className="font-medium">Глубокое исследование</span>
@@ -232,7 +232,7 @@ export const AttachmentToolsMenu: React.FC<AttachmentToolsMenuProps> = ({
               onActionSelect('guided_learning');
               onClose();
             }}
-            className="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/[0.08] hover:text-white transition-colors text-left"
+            className="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/[0.08] hover:text-white transition-colors text-left cursor-pointer"
           >
             <BookOpen className="w-4 h-4 text-zinc-400" />
             <span className="font-medium">Обучение с ИИ</span>

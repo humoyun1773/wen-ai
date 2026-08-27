@@ -74,7 +74,7 @@ export const ModelSelector: React.FC = () => {
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-3.5 py-2 rounded-2xl bg-surface hover:bg-surface-light border border-surface-border text-xs font-bold text-zinc-200 transition-all hover:border-primary/40 shadow-sm group select-none"
+        className="flex items-center gap-2 px-3.5 py-2 rounded-2xl bg-surface hover:bg-surface-light border border-surface-border text-xs font-bold text-zinc-200 transition-all hover:border-primary/40 shadow-sm group select-none cursor-pointer"
       >
         <span className="text-white font-semibold">{activeModelObj.name}</span>
         <ChevronDown className="w-3.5 h-3.5 text-zinc-400 group-hover:text-white transition-colors" />
@@ -94,7 +94,7 @@ export const ModelSelector: React.FC = () => {
                     setSelectedModel(m.id);
                     setIsOpen(false);
                   }}
-                  className={`w-full flex items-start gap-3 px-3 py-2 rounded-xl text-left transition-colors ${
+                  className={`w-full flex items-start gap-3 px-3 py-2 rounded-xl text-left transition-colors cursor-pointer ${
                     isSelected
                       ? 'bg-white/[0.08] text-white'
                       : 'hover:bg-white/[0.05] text-zinc-300'
@@ -135,7 +135,7 @@ export const ModelSelector: React.FC = () => {
                   setSelectedModel(extendedModel.id);
                   setIsOpen(false);
                 }}
-                className={`w-full flex items-start gap-3 px-3 py-2 rounded-xl text-left transition-colors ${
+                className={`w-full flex items-start gap-3 px-3 py-2 rounded-xl text-left transition-colors cursor-pointer ${
                   selectedModel === extendedModel.id
                     ? 'bg-white/[0.08] text-white'
                     : 'hover:bg-white/[0.05] text-zinc-300'
