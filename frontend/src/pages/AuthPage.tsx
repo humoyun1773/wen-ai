@@ -5,7 +5,7 @@ import { useAuthStore } from '@/app/store/authStore';
 import { apiClient } from '@/shared/api';
 import { Input } from '@/shared/components/Input';
 import { Button } from '@/shared/components/Button';
-import { Bot, Mail, Lock, User as UserIcon, Sparkles, ShieldCheck, ArrowRight } from 'lucide-react';
+import { Bot, Mail, Lock, User as UserIcon, ShieldCheck, ArrowRight } from 'lucide-react';
 
 export const AuthPage: React.FC = () => {
   const [isLogin, setIsLogin] = useState(true);

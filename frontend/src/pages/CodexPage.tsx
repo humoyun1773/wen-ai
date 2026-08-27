@@ -8,7 +8,6 @@ import {
   Copy,
   Check,
   RotateCcw,
-  Sparkles,
   Bug,
   Lightbulb,
   FileCode,

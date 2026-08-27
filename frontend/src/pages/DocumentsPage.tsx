@@ -11,7 +11,7 @@ import {
   FileText,
   UploadCloud,
   Trash2,
-  Sparkles,
+  Brain,
   MessageSquare,
   FileCheck,
   Search,
@@ -209,7 +209,7 @@ export const DocumentsPage: React.FC = () => {
                           setAnalysisResult(null);
                         }}
                       >
-                        <Sparkles className="w-3.5 h-3.5 text-primary-light" />
+                        <Brain className="w-3.5 h-3.5 text-primary-light" />
                         <span>AI Tahlil</span>
                       </Button>
                       <Button

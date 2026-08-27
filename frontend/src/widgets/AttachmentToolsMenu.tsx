@@ -10,7 +10,6 @@ import {
   Atom,
   BookOpen,
   User,
-  Sparkles,
   BookMarked,
   ToggleLeft,
   ToggleRight,

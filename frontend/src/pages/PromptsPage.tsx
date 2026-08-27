@@ -13,7 +13,6 @@ import {
   Plus,
   Trash2,
   Edit2,
-  Sparkles,
   MessageSquare,
   Code,
   BookCheck,
@@ -172,7 +171,7 @@ export const PromptsPage: React.FC = () => {
           {/* Preset templates */}
           <div className="space-y-3.5">
             <h3 className="text-xs font-bold uppercase tracking-wider text-zinc-400 flex items-center gap-2">
-              <Sparkles className="w-3.5 h-3.5 text-primary-light" />
+              <Layers className="w-3.5 h-3.5 text-primary-light" />
               <span>Tayyor Shablonlar (1-bosishda qo'shish)</span>
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">

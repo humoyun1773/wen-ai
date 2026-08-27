@@ -3,7 +3,7 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { Message } from '@/types';
 import { CodeBlock } from '@/shared/components/CodeBlock';
-import { Bot, User as UserIcon, Copy, Check, Sparkles, Volume2, VolumeX, RotateCcw } from 'lucide-react';
+import { Bot, User as UserIcon, Copy, Check, Volume2, VolumeX, RotateCcw } from 'lucide-react';
 
 interface MessageItemProps {
   message: Partial<Message>;

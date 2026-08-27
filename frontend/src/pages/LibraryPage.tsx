@@ -9,7 +9,6 @@ import {
   Code,
   FileText,
   Trash2,
-  Sparkles,
   ExternalLink,
   FolderOpen,
 } from 'lucide-react';

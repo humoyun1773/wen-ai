@@ -19,7 +19,6 @@ import {
   ChevronLeft,
   ChevronRight,
   Bot,
-  Sparkles,
   Layers,
   X,
   MoreVertical,

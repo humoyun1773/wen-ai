@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Sidebar } from '@/widgets/Sidebar';
 import {
   Check,
-  Sparkles,
   Zap,
   ShieldCheck,
   Building,
@@ -21,10 +20,6 @@ export const PricingPage: React.FC = () => {
         <div className="max-w-6xl mx-auto w-full space-y-8">
           {/* Title Header */}
           <div className="text-center max-w-xl mx-auto space-y-2 pt-4">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/15 border border-primary/30 text-primary-light text-xs font-bold mb-2">
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>WEN AI Ta'rif Rejalari</span>
-            </div>
             <h1 className="text-3xl md:text-4xl font-black tracking-tight text-white">
               Tarif rejangizni yangilang
             </h1>
@@ -146,8 +141,7 @@ export const PricingPage: React.FC = () => {
 
                 <div className="space-y-4">
                   <div>
-                    <span className="text-xs font-bold uppercase tracking-wider text-primary-light flex items-center gap-1">
-                      <Sparkles className="w-3 h-3" />
+                    <span className="text-xs font-bold uppercase tracking-wider text-primary-light">
                       WEN Plus
                     </span>
                     <h3 className="text-base font-bold text-white mt-1">

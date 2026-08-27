@@ -4,7 +4,6 @@ import { Button } from '@/shared/components/Button';
 import { Input } from '@/shared/components/Input';
 import {
   Image as ImageIcon,
-  Sparkles,
   Download,
   UploadCloud,
   Wand2,

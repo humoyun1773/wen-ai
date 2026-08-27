@@ -11,7 +11,6 @@ import {
   Pause,
   Trash2,
   Calendar,
-  Sparkles,
   Zap,
 } from 'lucide-react';
 

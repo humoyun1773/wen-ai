@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import {
   X,
   Check,
-  Sparkles,
   Zap,
   ShieldCheck,
   Cpu,
@@ -159,8 +158,7 @@ export const UpgradePlanModal: React.FC<UpgradePlanModalProps> = ({
 
               <div className="space-y-4">
                 <div>
-                  <span className="text-xs font-bold uppercase tracking-wider text-primary-light flex items-center gap-1">
-                    <Sparkles className="w-3 h-3" />
+                  <span className="text-xs font-bold uppercase tracking-wider text-primary-light">
                     WEN Plus
                   </span>
                   <h3 className="text-base font-bold text-white mt-1">

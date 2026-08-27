@@ -13,7 +13,6 @@ import {
   MoreVertical,
   Trash2,
   ExternalLink,
-  Sparkles,
 } from 'lucide-react';
 
 interface Project {
