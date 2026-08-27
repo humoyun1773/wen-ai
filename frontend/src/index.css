@@ -9,11 +9,14 @@
   body {
     @apply bg-background text-zinc-100 font-sans tracking-[-0.01em] antialiased selection:bg-primary/40 selection:text-white;
   }
-  button, a, select, input[type="button"], input[type="submit"], [role="button"] {
-    cursor: pointer;
+  button, a, select, input[type="button"], input[type="submit"], [role="button"], .cursor-pointer {
+    cursor: pointer !important;
+  }
+  button *, a *, [role="button"] * {
+    cursor: pointer !important;
   }
   button:disabled, input:disabled {
-    cursor: not-allowed;
+    cursor: not-allowed !important;
   }
 }
 

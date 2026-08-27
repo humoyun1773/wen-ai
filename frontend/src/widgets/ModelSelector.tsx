@@ -68,12 +68,23 @@ export const ModelSelector: React.FC = () => {
   const regularModels = AI_MODELS.filter((m) => !m.isExtended);
   const extendedModel = AI_MODELS.find((m) => m.isExtended);
 
+  const handleSelect = (e: React.MouseEvent, modelId: string) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setSelectedModel(modelId);
+    setIsOpen(false);
+  };
+
   return (
     <div className="relative" ref={dropdownRef}>
       {/* Selector Trigger Button */}
       <button
         type="button"
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          setIsOpen(!isOpen);
+        }}
         className="flex items-center gap-2 px-3.5 py-2 rounded-2xl bg-surface hover:bg-surface-light border border-surface-border text-xs font-bold text-zinc-200 transition-all hover:border-primary/40 shadow-sm group select-none cursor-pointer"
       >
         <span className="text-white font-semibold">{activeModelObj.name}</span>
@@ -90,10 +101,7 @@ export const ModelSelector: React.FC = () => {
                 <button
                   key={m.id}
                   type="button"
-                  onClick={() => {
-                    setSelectedModel(m.id);
-                    setIsOpen(false);
-                  }}
+                  onClick={(e) => handleSelect(e, m.id)}
                   className={`w-full flex items-start gap-3 px-3 py-2 rounded-xl text-left transition-colors cursor-pointer ${
                     isSelected
                       ? 'bg-white/[0.08] text-white'
@@ -131,10 +139,7 @@ export const ModelSelector: React.FC = () => {
             {extendedModel && (
               <button
                 type="button"
-                onClick={() => {
-                  setSelectedModel(extendedModel.id);
-                  setIsOpen(false);
-                }}
+                onClick={(e) => handleSelect(e, extendedModel.id)}
                 className={`w-full flex items-start gap-3 px-3 py-2 rounded-xl text-left transition-colors cursor-pointer ${
                   selectedModel === extendedModel.id
                     ? 'bg-white/[0.08] text-white'

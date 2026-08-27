@@ -11,8 +11,6 @@ import {
   BookOpen,
   User,
   BookMarked,
-  ToggleLeft,
-  ToggleRight,
 } from 'lucide-react';
 
 interface AttachmentToolsMenuProps {
@@ -47,17 +45,26 @@ export const AttachmentToolsMenu: React.FC<AttachmentToolsMenuProps> = ({
 
   if (!isOpen) return null;
 
+  const handleItemClick = (e: React.MouseEvent, action: string) => {
+    e.preventDefault();
+    e.stopPropagation();
+    onActionSelect(action);
+    onClose();
+  };
+
   return (
     <div
       ref={menuRef}
-      className="absolute bottom-full left-0 mb-3 z-50 flex items-end gap-1.5 select-none animate-in fade-in zoom-in-95 duration-150"
+      className="absolute bottom-full left-0 mb-3 z-50 flex items-end gap-1.5 animate-in fade-in zoom-in-95 duration-150"
     >
       {/* Main Menu Panel */}
       <div className="w-56 bg-[#18181b]/95 backdrop-blur-2xl border border-white/[0.1] rounded-2xl shadow-2xl p-1.5 space-y-0.5 text-xs text-zinc-200">
         {/* Upload files */}
         <button
           type="button"
-          onClick={() => {
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
             onUploadClick();
             onClose();
           }}
@@ -70,10 +77,7 @@ export const AttachmentToolsMenu: React.FC<AttachmentToolsMenuProps> = ({
         {/* Add from Drive */}
         <button
           type="button"
-          onClick={() => {
-            onActionSelect('drive');
-            onClose();
-          }}
+          onClick={(e) => handleItemClick(e, 'drive')}
           className="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/[0.08] hover:text-white transition-colors text-left cursor-pointer"
         >
           <HardDrive className="w-4 h-4 text-zinc-400" />
@@ -87,9 +91,11 @@ export const AttachmentToolsMenu: React.FC<AttachmentToolsMenuProps> = ({
         >
           <button
             type="button"
-            onClick={() =>
-              setActiveSubmenu(activeSubmenu === 'uploads' ? 'none' : 'uploads')
-            }
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setActiveSubmenu(activeSubmenu === 'uploads' ? 'none' : 'uploads');
+            }}
             className={`w-full flex items-center justify-between px-3 py-2 rounded-xl transition-colors text-left cursor-pointer ${
               activeSubmenu === 'uploads'
                 ? 'bg-white/[0.12] text-white'
@@ -109,10 +115,7 @@ export const AttachmentToolsMenu: React.FC<AttachmentToolsMenuProps> = ({
         {/* Create image */}
         <button
           type="button"
-          onClick={() => {
-            onActionSelect('create_image');
-            onClose();
-          }}
+          onClick={(e) => handleItemClick(e, 'create_image')}
           className="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/[0.08] hover:text-white transition-colors text-left cursor-pointer"
         >
           <ImageIcon className="w-4 h-4 text-zinc-400" />
@@ -122,10 +125,7 @@ export const AttachmentToolsMenu: React.FC<AttachmentToolsMenuProps> = ({
         {/* Create music */}
         <button
           type="button"
-          onClick={() => {
-            onActionSelect('create_music');
-            onClose();
-          }}
+          onClick={(e) => handleItemClick(e, 'create_music')}
           className="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/[0.08] hover:text-white transition-colors text-left cursor-pointer"
         >
           <Music className="w-4 h-4 text-zinc-400" />
@@ -135,10 +135,7 @@ export const AttachmentToolsMenu: React.FC<AttachmentToolsMenuProps> = ({
         {/* Canvas */}
         <button
           type="button"
-          onClick={() => {
-            onActionSelect('canvas');
-            onClose();
-          }}
+          onClick={(e) => handleItemClick(e, 'canvas')}
           className="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/[0.08] hover:text-white transition-colors text-left cursor-pointer"
         >
           <Layout className="w-4 h-4 text-zinc-400" />
@@ -152,9 +149,11 @@ export const AttachmentToolsMenu: React.FC<AttachmentToolsMenuProps> = ({
         >
           <button
             type="button"
-            onClick={() =>
-              setActiveSubmenu(activeSubmenu === 'tools' ? 'none' : 'tools')
-            }
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setActiveSubmenu(activeSubmenu === 'tools' ? 'none' : 'tools');
+            }}
             className={`w-full flex items-center justify-between px-3 py-2 rounded-xl transition-colors text-left cursor-pointer ${
               activeSubmenu === 'tools'
                 ? 'bg-white/[0.12] text-white'
@@ -175,10 +174,7 @@ export const AttachmentToolsMenu: React.FC<AttachmentToolsMenuProps> = ({
         <div className="w-52 bg-[#18181b]/95 backdrop-blur-2xl border border-white/[0.1] rounded-2xl shadow-2xl p-1.5 space-y-0.5 text-xs text-zinc-200 animate-in fade-in slide-in-from-left-2 duration-100">
           <button
             type="button"
-            onClick={() => {
-              onActionSelect('photos');
-              onClose();
-            }}
+            onClick={(e) => handleItemClick(e, 'photos')}
             className="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/[0.08] hover:text-white transition-colors text-left cursor-pointer"
           >
             <ImageIcon className="w-4 h-4 text-zinc-400" />
@@ -187,10 +183,7 @@ export const AttachmentToolsMenu: React.FC<AttachmentToolsMenuProps> = ({
 
           <button
             type="button"
-            onClick={() => {
-              onActionSelect('avatar');
-              onClose();
-            }}
+            onClick={(e) => handleItemClick(e, 'avatar')}
             className="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/[0.08] hover:text-white transition-colors text-left cursor-pointer"
           >
             <User className="w-4 h-4 text-zinc-400" />
@@ -199,10 +192,7 @@ export const AttachmentToolsMenu: React.FC<AttachmentToolsMenuProps> = ({
 
           <button
             type="button"
-            onClick={() => {
-              onActionSelect('notebooks');
-              onClose();
-            }}
+            onClick={(e) => handleItemClick(e, 'notebooks')}
             className="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/[0.08] hover:text-white transition-colors text-left cursor-pointer"
           >
             <BookMarked className="w-4 h-4 text-zinc-400" />
@@ -216,10 +206,7 @@ export const AttachmentToolsMenu: React.FC<AttachmentToolsMenuProps> = ({
         <div className="w-60 bg-[#18181b]/95 backdrop-blur-2xl border border-white/[0.1] rounded-2xl shadow-2xl p-1.5 space-y-0.5 text-xs text-zinc-200 animate-in fade-in slide-in-from-left-2 duration-100">
           <button
             type="button"
-            onClick={() => {
-              onActionSelect('deep_research');
-              onClose();
-            }}
+            onClick={(e) => handleItemClick(e, 'deep_research')}
             className="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/[0.08] hover:text-white transition-colors text-left cursor-pointer"
           >
             <Atom className="w-4 h-4 text-zinc-400" />
@@ -228,10 +215,7 @@ export const AttachmentToolsMenu: React.FC<AttachmentToolsMenuProps> = ({
 
           <button
             type="button"
-            onClick={() => {
-              onActionSelect('guided_learning');
-              onClose();
-            }}
+            onClick={(e) => handleItemClick(e, 'guided_learning')}
             className="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/[0.08] hover:text-white transition-colors text-left cursor-pointer"
           >
             <BookOpen className="w-4 h-4 text-zinc-400" />
@@ -240,9 +224,11 @@ export const AttachmentToolsMenu: React.FC<AttachmentToolsMenuProps> = ({
 
           {/* Personal Intelligence toggle switch */}
           <div
-            onClick={() =>
-              setIsPersonalIntelligenceActive(!isPersonalIntelligenceActive)
-            }
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setIsPersonalIntelligenceActive(!isPersonalIntelligenceActive);
+            }}
             className="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/[0.08] cursor-pointer transition-colors text-left"
           >
             <div className="flex items-center gap-3">
