@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useAuthStore } from '@/app/store/authStore';
 import { useChatStore } from '@/app/store/chatStore';
@@ -6,10 +6,11 @@ import { apiClient } from '@/shared/api';
 import { Message } from '@/types';
 import { MessageItem } from '@/widgets/MessageItem';
 import { ChatInput } from '@/widgets/ChatInput';
+import { UpgradePlanModal } from '@/widgets/UpgradePlanModal';
+import { ModelSelector } from '@/widgets/ModelSelector';
 import {
   Bot,
   Sparkles,
-  Cpu,
   Menu,
 } from 'lucide-react';
 
@@ -17,6 +18,8 @@ export const ChatArea: React.FC = () => {
   const queryClient = useQueryClient();
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { user } = useAuthStore();
+
+  const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState(false);
 
   const {
     currentConversationId,
@@ -156,29 +159,31 @@ export const ChatArea: React.FC = () => {
             <Menu className="w-4 h-4" />
           </button>
 
-          <div className="flex items-center gap-2 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold">
+          {/* Model Selector Dropdown */}
+          <ModelSelector />
+
+          <div className="hidden sm:flex items-center gap-2 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
             <span>AI Online</span>
           </div>
-          <span className="text-xs font-medium text-zinc-400 hidden lg:inline">
-            WEN Universal Intelligence
-          </span>
         </div>
 
+        {/* Upgrade Plan Button (Opens Pricing Modal) */}
         <div className="flex items-center gap-2">
-          <div className="flex items-center gap-1.5 px-3 py-1 rounded-xl bg-surface border border-surface-border text-xs text-zinc-300 font-mono">
-            <Cpu className="w-3.5 h-3.5 text-primary-light" />
-            <span className="text-white font-semibold truncate max-w-[120px] sm:max-w-none">
-              {selectedModel}
-            </span>
-          </div>
+          <button
+            onClick={() => setIsUpgradeModalOpen(true)}
+            className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-primary via-primary-light to-secondary hover:brightness-110 text-white text-xs font-bold shadow-md shadow-primary/25 transition-all active:scale-95 group"
+          >
+            <Sparkles className="w-3.5 h-3.5 group-hover:rotate-12 transition-transform" />
+            <span>Обновить план</span>
+          </button>
         </div>
       </div>
 
       {/* Messages Scroll Area */}
       <div className="flex-1 overflow-y-auto px-3 sm:px-4 py-4 sm:py-6 space-y-4 relative z-10 flex flex-col">
         {messages.length === 0 && !streamingMessage ? (
-          /* Clean Minimalist Welcome Screen without bulky suggestion cards */
+          /* Clean Minimalist Welcome Screen */
           <div className="my-auto flex flex-col items-center justify-center text-center py-8 px-4 max-w-xl mx-auto">
             {/* Logo Orb */}
             <div className="relative mb-5">
@@ -224,6 +229,12 @@ export const ChatArea: React.FC = () => {
 
       {/* Input Box */}
       <ChatInput onSendMessage={handleSendMessage} disabled={isStreaming} />
+
+      {/* Upgrade Plan Modal */}
+      <UpgradePlanModal
+        isOpen={isUpgradeModalOpen}
+        onClose={() => setIsUpgradeModalOpen(false)}
+      />
     </div>
   );
 };

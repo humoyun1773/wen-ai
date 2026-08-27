@@ -13,6 +13,7 @@ import { ScheduledPage } from '@/pages/ScheduledPage';
 import { PluginsPage } from '@/pages/PluginsPage';
 import { ProjectsPage } from '@/pages/ProjectsPage';
 import { CodexPage } from '@/pages/CodexPage';
+import { PricingPage } from '@/pages/PricingPage';
 
 const ProtectedRoute: React.FC<{ children: React.ReactNode; adminOnly?: boolean }> = ({
   children,
@@ -109,6 +110,14 @@ export const AppRouter: React.FC = () => {
           element={
             <ProtectedRoute>
               <CodexPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/pricing"
+          element={
+            <ProtectedRoute>
+              <PricingPage />
             </ProtectedRoute>
           }
         />
