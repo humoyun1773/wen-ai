@@ -10,7 +10,6 @@ import { UpgradePlanModal } from '@/widgets/UpgradePlanModal';
 import { LanguageSelector, SUPPORTED_LANGUAGES } from '@/widgets/LanguageSelector';
 import {
   Bot,
-  Sparkles,
   Menu,
 } from 'lucide-react';
 
@@ -156,7 +155,7 @@ export const ChatArea: React.FC = () => {
 
   return (
     <div className="flex-1 flex flex-col h-screen bg-background bg-grid-pattern relative overflow-hidden">
-      {/* Clean Header Bar (Without model dropdown and AI online badge) */}
+      {/* Clean Header Bar */}
       <div className="flex items-center justify-between px-3 sm:px-6 py-3.5 border-b border-surface-border bg-surface-dark/75 backdrop-blur-xl z-20">
         <div className="flex items-center gap-2 sm:gap-3">
           {/* Mobile hamburger menu toggle */}
@@ -183,9 +182,8 @@ export const ChatArea: React.FC = () => {
 
           <button
             onClick={() => setIsUpgradeModalOpen(true)}
-            className="flex items-center gap-1.5 px-3.5 sm:px-4 py-2 rounded-full bg-gradient-to-r from-primary via-primary-light to-secondary hover:brightness-110 text-white text-xs font-bold shadow-md shadow-primary/25 transition-all active:scale-95 group"
+            className="px-4 py-2 rounded-full bg-gradient-to-r from-primary via-primary-light to-secondary hover:brightness-110 text-white text-xs font-bold shadow-md shadow-primary/25 transition-all active:scale-95"
           >
-            <Sparkles className="w-3.5 h-3.5 group-hover:rotate-12 transition-transform" />
             <span className="hidden sm:inline">Upgrade Plan</span>
             <span className="sm:hidden">Upgrade</span>
           </button>
@@ -195,7 +193,7 @@ export const ChatArea: React.FC = () => {
       {/* Messages Scroll Area */}
       <div className="flex-1 overflow-y-auto px-3 sm:px-4 py-4 sm:py-6 space-y-4 relative z-10 flex flex-col">
         {messages.length === 0 && !streamingMessage ? (
-          /* Clean Multilingual Welcome Screen */
+          /* Clean Multilingual Welcome Screen without clutter */
           <div className="my-auto flex flex-col items-center justify-center text-center py-8 px-4 max-w-xl mx-auto">
             {/* Logo Orb */}
             <div className="relative mb-5">
@@ -203,11 +201,6 @@ export const ChatArea: React.FC = () => {
                 <Bot className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
               </div>
               <div className="absolute -inset-2 bg-gradient-to-r from-primary to-accent-rose rounded-3xl blur-xl opacity-30 -z-10 animate-pulse-subtle" />
-            </div>
-
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary-light text-xs font-semibold mb-3">
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>Universal Artificial Intelligence</span>
             </div>
 
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white tracking-tight mb-2.5">

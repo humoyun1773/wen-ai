@@ -72,8 +72,7 @@ export const MessageItem: React.FC<MessageItemProps> = ({
               {isUser ? 'Siz' : 'WEN AI'}
             </span>
             {!isUser && (
-              <span className="flex items-center gap-1 text-[9px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full bg-primary/15 text-primary-light border border-primary/30">
-                <Sparkles className="w-2.5 h-2.5" />
+              <span className="text-[9px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full bg-primary/15 text-primary-light border border-primary/30">
                 Assistant
               </span>
             )}
