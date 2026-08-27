@@ -7,7 +7,6 @@ import { Message } from '@/types';
 import { MessageItem } from '@/widgets/MessageItem';
 import { ChatInput } from '@/widgets/ChatInput';
 import { UpgradePlanModal } from '@/widgets/UpgradePlanModal';
-import { ModelSelector } from '@/widgets/ModelSelector';
 import { LanguageSelector, SUPPORTED_LANGUAGES } from '@/widgets/LanguageSelector';
 import {
   Bot,
@@ -21,7 +20,7 @@ export const ChatArea: React.FC = () => {
   const { user } = useAuthStore();
 
   const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState(false);
-  // Default language is English ('en') on first entry
+  // Default language is English ('en')
   const [currentLang, setCurrentLang] = useState<string>(() => {
     return localStorage.getItem('wen_ai_lang') || 'en';
   });
@@ -157,8 +156,8 @@ export const ChatArea: React.FC = () => {
 
   return (
     <div className="flex-1 flex flex-col h-screen bg-background bg-grid-pattern relative overflow-hidden">
-      {/* Header bar */}
-      <div className="flex items-center justify-between px-3 sm:px-6 py-3 border-b border-surface-border bg-surface-dark/75 backdrop-blur-xl z-20">
+      {/* Clean Header Bar (Without model dropdown and AI online badge) */}
+      <div className="flex items-center justify-between px-3 sm:px-6 py-3.5 border-b border-surface-border bg-surface-dark/75 backdrop-blur-xl z-20">
         <div className="flex items-center gap-2 sm:gap-3">
           {/* Mobile hamburger menu toggle */}
           <button
@@ -169,17 +168,13 @@ export const ChatArea: React.FC = () => {
             <Menu className="w-4 h-4" />
           </button>
 
-          {/* Model Selector Dropdown */}
-          <ModelSelector />
-
-          <div className="hidden md:flex items-center gap-2 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            <span>AI Online</span>
-          </div>
+          <span className="text-xs font-bold uppercase tracking-wider text-zinc-400 hidden sm:inline">
+            WEN AI
+          </span>
         </div>
 
         {/* Right Nav Actions: Language Switcher (20 Languages) & Upgrade Plan */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 sm:gap-3">
           {/* 20-Language Selector Dropdown (Default English) */}
           <LanguageSelector
             currentLang={currentLang}
@@ -188,7 +183,7 @@ export const ChatArea: React.FC = () => {
 
           <button
             onClick={() => setIsUpgradeModalOpen(true)}
-            className="flex items-center gap-1.5 px-3 sm:px-3.5 py-1.5 rounded-full bg-gradient-to-r from-primary via-primary-light to-secondary hover:brightness-110 text-white text-xs font-bold shadow-md shadow-primary/25 transition-all active:scale-95 group"
+            className="flex items-center gap-1.5 px-3.5 sm:px-4 py-2 rounded-full bg-gradient-to-r from-primary via-primary-light to-secondary hover:brightness-110 text-white text-xs font-bold shadow-md shadow-primary/25 transition-all active:scale-95 group"
           >
             <Sparkles className="w-3.5 h-3.5 group-hover:rotate-12 transition-transform" />
             <span className="hidden sm:inline">Upgrade Plan</span>
