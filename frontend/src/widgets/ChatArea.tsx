@@ -129,7 +129,7 @@ export const ChatArea: React.FC = () => {
     }
   };
 
-  // Default English greeting (AI auto-detects language on user's prompt)
+  // Default English greeting
   const getGreeting = () => {
     if (user?.name) {
       return `Good day, ${user.name}`;
@@ -139,26 +139,24 @@ export const ChatArea: React.FC = () => {
 
   return (
     <div className="flex-1 flex flex-col h-screen bg-background bg-grid-pattern relative overflow-hidden">
-      {/* Clean Navbar without manual language dropdown */}
+      {/* Clean Navbar */}
       <div className="flex items-center justify-between px-3 sm:px-6 py-3.5 border-b border-surface-border bg-surface-dark/75 backdrop-blur-xl z-20">
         <div className="flex items-center gap-2 sm:gap-3">
           {/* Mobile hamburger menu toggle */}
           <button
+            type="button"
             onClick={toggleSidebar}
             className="p-2 rounded-xl bg-surface border border-surface-border text-zinc-300 hover:text-white md:hidden"
             title="Menyu"
           >
             <Menu className="w-4 h-4" />
           </button>
-
-          <span className="text-xs font-bold uppercase tracking-wider text-zinc-400 hidden sm:inline">
-            WEN AI
-          </span>
         </div>
 
         {/* Right Nav Action: Upgrade Plan Button */}
         <div className="flex items-center gap-2 sm:gap-3">
           <button
+            type="button"
             onClick={() => setIsUpgradeModalOpen(true)}
             className="px-4 py-2 rounded-full bg-gradient-to-r from-primary via-primary-light to-secondary hover:brightness-110 text-white text-xs font-bold shadow-md shadow-primary/25 transition-all active:scale-95"
           >
