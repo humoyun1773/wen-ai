@@ -8,6 +8,7 @@ import { MessageItem } from '@/widgets/MessageItem';
 import { ChatInput } from '@/widgets/ChatInput';
 import { UpgradePlanModal } from '@/widgets/UpgradePlanModal';
 import { ModelSelector } from '@/widgets/ModelSelector';
+import { LanguageSelector, SUPPORTED_LANGUAGES } from '@/widgets/LanguageSelector';
 import {
   Bot,
   Sparkles,
@@ -20,6 +21,10 @@ export const ChatArea: React.FC = () => {
   const { user } = useAuthStore();
 
   const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState(false);
+  // Default language is English ('en') on first entry
+  const [currentLang, setCurrentLang] = useState<string>(() => {
+    return localStorage.getItem('wen_ai_lang') || 'en';
+  });
 
   const {
     currentConversationId,
@@ -35,6 +40,11 @@ export const ChatArea: React.FC = () => {
     resetStreaming,
     toggleSidebar,
   } = useChatStore();
+
+  const handleSelectLanguage = (code: string) => {
+    setCurrentLang(code);
+    localStorage.setItem('wen_ai_lang', code);
+  };
 
   // Fetch messages if a conversation is active
   const { data: messages = [], isLoading } = useQuery<Message[]>({
@@ -113,16 +123,16 @@ export const ChatArea: React.FC = () => {
                 appendStreamingChunk(data.content);
               }
               if (data.error) {
-                appendStreamingChunk(`\n\n**Xatolik:** ${data.error}`);
+                appendStreamingChunk(`\n\n**Error:** ${data.error}`);
               }
-            } catch {
+            } catch (e) {
               // Ignore non-JSON lines
             }
           }
         }
       }
     } catch (err: any) {
-      appendStreamingChunk(`\n\n*Server bilan bog'lanishda xatolik yuz berdi: ${err.message}*`);
+      appendStreamingChunk(`\n\n*Connection error: ${err.message}*`);
     } finally {
       setIsStreaming(false);
       clearAttachedFiles();
@@ -132,24 +142,24 @@ export const ChatArea: React.FC = () => {
     }
   };
 
-  // Dynamic personalized greeting
-  const getGreeting = () => {
-    const hour = new Date().getHours();
-    let timeGreeting = 'Xayrli kun';
-    if (hour < 12) timeGreeting = 'Xayrli tong';
-    else if (hour >= 18) timeGreeting = 'Xayrli kech';
+  const currentLangObj =
+    SUPPORTED_LANGUAGES.find((l) => l.code === currentLang) ||
+    SUPPORTED_LANGUAGES[0];
 
+  // Dynamic localized personalized greeting
+  const getGreeting = () => {
+    const base = currentLangObj.greeting;
     if (user?.name) {
-      return `${timeGreeting}, ${user.name}`;
+      return `${base}, ${user.name}`;
     }
-    return `${timeGreeting}`;
+    return base;
   };
 
   return (
     <div className="flex-1 flex flex-col h-screen bg-background bg-grid-pattern relative overflow-hidden">
       {/* Header bar */}
-      <div className="flex items-center justify-between px-4 sm:px-6 py-3 border-b border-surface-border bg-surface-dark/75 backdrop-blur-xl z-20">
-        <div className="flex items-center gap-3">
+      <div className="flex items-center justify-between px-3 sm:px-6 py-3 border-b border-surface-border bg-surface-dark/75 backdrop-blur-xl z-20">
+        <div className="flex items-center gap-2 sm:gap-3">
           {/* Mobile hamburger menu toggle */}
           <button
             onClick={toggleSidebar}
@@ -162,20 +172,27 @@ export const ChatArea: React.FC = () => {
           {/* Model Selector Dropdown */}
           <ModelSelector />
 
-          <div className="hidden sm:flex items-center gap-2 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold">
+          <div className="hidden md:flex items-center gap-2 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
             <span>AI Online</span>
           </div>
         </div>
 
-        {/* Upgrade Plan Button (Opens Pricing Modal) */}
+        {/* Right Nav Actions: Language Switcher (20 Languages) & Upgrade Plan */}
         <div className="flex items-center gap-2">
+          {/* 20-Language Selector Dropdown (Default English) */}
+          <LanguageSelector
+            currentLang={currentLang}
+            onSelectLang={handleSelectLanguage}
+          />
+
           <button
             onClick={() => setIsUpgradeModalOpen(true)}
-            className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-primary via-primary-light to-secondary hover:brightness-110 text-white text-xs font-bold shadow-md shadow-primary/25 transition-all active:scale-95 group"
+            className="flex items-center gap-1.5 px-3 sm:px-3.5 py-1.5 rounded-full bg-gradient-to-r from-primary via-primary-light to-secondary hover:brightness-110 text-white text-xs font-bold shadow-md shadow-primary/25 transition-all active:scale-95 group"
           >
             <Sparkles className="w-3.5 h-3.5 group-hover:rotate-12 transition-transform" />
-            <span>Обновить план</span>
+            <span className="hidden sm:inline">Upgrade Plan</span>
+            <span className="sm:hidden">Upgrade</span>
           </button>
         </div>
       </div>
@@ -183,7 +200,7 @@ export const ChatArea: React.FC = () => {
       {/* Messages Scroll Area */}
       <div className="flex-1 overflow-y-auto px-3 sm:px-4 py-4 sm:py-6 space-y-4 relative z-10 flex flex-col">
         {messages.length === 0 && !streamingMessage ? (
-          /* Clean Minimalist Welcome Screen */
+          /* Clean Multilingual Welcome Screen */
           <div className="my-auto flex flex-col items-center justify-center text-center py-8 px-4 max-w-xl mx-auto">
             {/* Logo Orb */}
             <div className="relative mb-5">
@@ -195,14 +212,14 @@ export const ChatArea: React.FC = () => {
 
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary-light text-xs font-semibold mb-3">
               <Sparkles className="w-3.5 h-3.5" />
-              <span>Universal Sun'iy Intellekt</span>
+              <span>Universal Artificial Intelligence</span>
             </div>
 
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white tracking-tight mb-2.5">
               {getGreeting()}!
             </h1>
             <p className="text-xs sm:text-sm text-zinc-400 max-w-md leading-relaxed">
-              Sizga bugun qanday vazifada yordam bera olaman?
+              {currentLangObj.subtitle}
             </p>
           </div>
         ) : (
@@ -228,7 +245,10 @@ export const ChatArea: React.FC = () => {
       </div>
 
       {/* Input Box */}
-      <ChatInput onSendMessage={handleSendMessage} disabled={isStreaming} />
+      <ChatInput
+        onSendMessage={handleSendMessage}
+        disabled={isStreaming}
+      />
 
       {/* Upgrade Plan Modal */}
       <UpgradePlanModal
