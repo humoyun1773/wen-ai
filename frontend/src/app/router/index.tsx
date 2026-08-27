@@ -61,7 +61,7 @@ export const AppRouter: React.FC = () => {
         <Route
           path="/documents"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute adminOnly>
               <DocumentsPage />
             </ProtectedRoute>
           }
@@ -69,7 +69,7 @@ export const AppRouter: React.FC = () => {
         <Route
           path="/prompts"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute adminOnly>
               <PromptsPage />
             </ProtectedRoute>
           }

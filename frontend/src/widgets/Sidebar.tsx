@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuthStore } from '@/app/store/authStore';
@@ -21,9 +21,9 @@ import {
   Bot,
   Sparkles,
   Layers,
-  Flame,
   X,
-  Compass,
+  MoreVertical,
+  User as UserIcon,
 } from 'lucide-react';
 
 export const Sidebar: React.FC = () => {
@@ -40,6 +40,22 @@ export const Sidebar: React.FC = () => {
   } = useChatStore();
 
   const [searchQuery, setSearchQuery] = useState('');
+  const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
+  const profileMenuRef = useRef<HTMLDivElement>(null);
+
+  // Close profile menu on outside click
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        profileMenuRef.current &&
+        !profileMenuRef.current.contains(event.target as Node)
+      ) {
+        setIsProfileMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   // Fetch conversations
   const { data: conversations = [], isLoading } = useQuery<Conversation[]>({
@@ -50,7 +66,7 @@ export const Sidebar: React.FC = () => {
     },
   });
 
-  // Delete conversation mutation
+  // Delete conversation
   const deleteMutation = useMutation({
     mutationFn: async (id: string) => {
       await apiClient.delete(`/conversations/${id}`);
@@ -64,7 +80,7 @@ export const Sidebar: React.FC = () => {
     },
   });
 
-  // Pin/Unpin conversation mutation
+  // Pin/Unpin conversation
   const pinMutation = useMutation({
     mutationFn: async ({ id, isPinned }: { id: string; isPinned: boolean }) => {
       await apiClient.patch(`/conversations/${id}`, { is_pinned: !isPinned });
@@ -92,6 +108,8 @@ export const Sidebar: React.FC = () => {
   const pinnedChats = filteredConversations.filter((c) => c.is_pinned);
   const recentChats = filteredConversations.filter((c) => !c.is_pinned);
 
+  const isAdmin = user?.role === 'admin';
+
   if (!isSidebarOpen) {
     return (
       <div className="hidden md:flex flex-col items-center py-5 px-3 w-[72px] bg-surface-dark border-r border-surface-border justify-between h-screen z-30 select-none">
@@ -105,7 +123,7 @@ export const Sidebar: React.FC = () => {
           <button
             onClick={toggleSidebar}
             className="p-2.5 rounded-xl bg-surface/80 hover:bg-surface-light border border-surface-border text-zinc-400 hover:text-white transition-all"
-            title="Sidebar-ni kengaytirish"
+            title="Sidebar-ni ochish"
           >
             <ChevronRight className="w-4 h-4" />
           </button>
@@ -119,28 +137,6 @@ export const Sidebar: React.FC = () => {
         </div>
 
         <div className="flex flex-col items-center gap-3">
-          <button
-            onClick={() => navigate('/documents')}
-            className={`p-2.5 rounded-xl transition-all ${
-              location.pathname === '/documents'
-                ? 'bg-primary/20 text-primary-light border border-primary/30'
-                : 'text-zinc-400 hover:text-white hover:bg-surface-light'
-            }`}
-            title="Document AI"
-          >
-            <FileText className="w-4 h-4" />
-          </button>
-          <button
-            onClick={() => navigate('/settings')}
-            className={`p-2.5 rounded-xl transition-all ${
-              location.pathname === '/settings'
-                ? 'bg-primary/20 text-primary-light border border-primary/30'
-                : 'text-zinc-400 hover:text-white hover:bg-surface-light'
-            }`}
-            title="Sozlamalar"
-          >
-            <Settings className="w-4 h-4" />
-          </button>
           <button
             onClick={logout}
             className="p-2.5 rounded-xl text-red-400/80 hover:text-red-400 hover:bg-red-500/10 transition-all"
@@ -173,7 +169,7 @@ export const Sidebar: React.FC = () => {
                 WEN AI
               </span>
               <span className="text-[9px] uppercase font-black tracking-widest px-1.5 py-0.5 rounded-md bg-gradient-to-r from-primary/30 to-secondary/30 text-primary-light border border-primary/30 shadow-sm">
-                NEXUS
+                PRO
               </span>
             </div>
             <p className="text-[11px] text-zinc-400 font-medium">Universal AI Platform</p>
@@ -222,7 +218,7 @@ export const Sidebar: React.FC = () => {
         </div>
       </div>
 
-      {/* Conversations List */}
+      {/* Clean Chat Conversations List */}
       <div className="flex-1 overflow-y-auto px-3 space-y-4 py-2">
         {/* Pinned Section */}
         {pinnedChats.length > 0 && (
@@ -250,7 +246,7 @@ export const Sidebar: React.FC = () => {
         <div className="space-y-1">
           <div className="px-2 text-[10px] font-bold text-zinc-400 uppercase tracking-widest flex items-center gap-1.5">
             <Layers className="w-3 h-3" />
-            <span>Tarix</span>
+            <span>Suhbatlar Tarixi</span>
           </div>
           {isLoading ? (
             <div className="p-4 text-center text-xs text-zinc-500 animate-pulse">
@@ -277,61 +273,126 @@ export const Sidebar: React.FC = () => {
         </div>
       </div>
 
-      {/* Navigation Tools */}
-      <div className="p-3 border-t border-surface-border bg-surface-dark/95 space-y-1">
-        <NavLink
-          icon={<FileText className="w-4 h-4 text-accent-cyan" />}
-          label="Document AI & RAG"
-          active={location.pathname === '/documents'}
-          onClick={() => navigate('/documents')}
-        />
-        <NavLink
-          icon={<Terminal className="w-4 h-4 text-accent-rose" />}
-          label="Prompt Kutubxonasi"
-          active={location.pathname === '/prompts'}
-          onClick={() => navigate('/prompts')}
-        />
-        {user?.role === 'admin' && (
-          <NavLink
-            icon={<Shield className="w-4 h-4 text-emerald-400" />}
-            label="Admin Boshqaruvi"
-            active={location.pathname === '/admin'}
-            onClick={() => navigate('/admin')}
-          />
-        )}
-        <NavLink
-          icon={<Settings className="w-4 h-4 text-zinc-300" />}
-          label="Sozlamalar"
-          active={location.pathname === '/settings'}
-          onClick={() => navigate('/settings')}
-        />
-      </div>
+      {/* User Profile & Interactive Popover Menu at the Bottom */}
+      <div className="relative p-3 border-t border-surface-border bg-surface/90" ref={profileMenuRef}>
+        {/* Profile Popover Menu */}
+        {isProfileMenuOpen && (
+          <div className="absolute bottom-full left-3 right-3 mb-2 bg-surface-dark/95 backdrop-blur-2xl border border-surface-borderLight rounded-3xl shadow-2xl p-2 z-50 space-y-1 animate-in fade-in zoom-in-95 duration-150">
+            <div className="px-3 py-2.5 border-b border-surface-border">
+              <p className="text-xs font-bold text-white truncate">{user?.name}</p>
+              <p className="text-[10px] text-zinc-400 truncate">{user?.email}</p>
+              <div className="mt-1.5">
+                <span
+                  className={`text-[9px] uppercase font-bold tracking-widest px-2 py-0.5 rounded-full border ${
+                    isAdmin
+                      ? 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30'
+                      : 'bg-primary/15 text-primary-light border-primary/30'
+                  }`}
+                >
+                  {isAdmin ? 'ADMINISTRATOR' : 'PREMIUM USER'}
+                </span>
+              </div>
+            </div>
 
-      {/* User Profile Footer */}
-      <div className="p-3 border-t border-surface-border bg-surface/90 flex items-center justify-between">
+            {/* Admin only features */}
+            {isAdmin && (
+              <>
+                <MenuOption
+                  icon={<Shield className="w-4 h-4 text-emerald-400" />}
+                  label="Admin Boshqaruvi"
+                  onClick={() => {
+                    setIsProfileMenuOpen(false);
+                    navigate('/admin');
+                  }}
+                />
+                <MenuOption
+                  icon={<FileText className="w-4 h-4 text-accent-cyan" />}
+                  label="Document AI & RAG"
+                  onClick={() => {
+                    setIsProfileMenuOpen(false);
+                    navigate('/documents');
+                  }}
+                />
+                <MenuOption
+                  icon={<Terminal className="w-4 h-4 text-accent-rose" />}
+                  label="Prompt Kutubxonasi"
+                  onClick={() => {
+                    setIsProfileMenuOpen(false);
+                    navigate('/prompts');
+                  }}
+                />
+                <div className="my-1 border-t border-surface-border" />
+              </>
+            )}
+
+            <MenuOption
+              icon={<Settings className="w-4 h-4 text-zinc-300" />}
+              label="Sozlamalar"
+              onClick={() => {
+                setIsProfileMenuOpen(false);
+                navigate('/settings');
+              }}
+            />
+
+            <MenuOption
+              icon={<LogOut className="w-4 h-4 text-red-400" />}
+              label="Tizimdan Chiqish"
+              danger
+              onClick={() => {
+                setIsProfileMenuOpen(false);
+                logout();
+              }}
+            />
+          </div>
+        )}
+
+        {/* Profile Card Trigger */}
         <div
-          onClick={() => navigate('/settings')}
-          className="flex items-center gap-2.5 min-w-0 cursor-pointer group"
+          onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
+          className="flex items-center justify-between p-2 rounded-2xl bg-surface-dark/60 hover:bg-surface-light border border-surface-border cursor-pointer transition-all group"
         >
-          <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-primary to-secondary flex items-center justify-center font-bold text-xs text-white flex-shrink-0 shadow-md">
-            {user?.name ? user.name[0].toUpperCase() : 'U'}
+          <div className="flex items-center gap-2.5 min-w-0">
+            <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-primary to-secondary flex items-center justify-center font-bold text-xs text-white flex-shrink-0 shadow-md">
+              {user?.name ? user.name[0].toUpperCase() : 'U'}
+            </div>
+            <div className="min-w-0">
+              <p className="text-xs font-semibold text-zinc-100 truncate group-hover:text-primary-light transition-colors">
+                {user?.name || 'Foydalanuvchi'}
+              </p>
+              <p className="text-[10px] text-zinc-400 truncate">{user?.email}</p>
+            </div>
           </div>
-          <div className="min-w-0">
-            <p className="text-xs font-semibold text-zinc-100 truncate group-hover:text-primary-light transition-colors">
-              {user?.name || 'Foydalanuvchi'}
-            </p>
-            <p className="text-[10px] text-zinc-400 truncate">{user?.email}</p>
-          </div>
+          <button
+            type="button"
+            className="p-1 rounded-lg text-zinc-400 group-hover:text-white"
+          >
+            <MoreVertical className="w-4 h-4" />
+          </button>
         </div>
-        <button
-          onClick={logout}
-          className="p-1.5 rounded-xl text-zinc-400 hover:text-red-400 hover:bg-red-500/10 transition-colors"
-          title="Tizimdan chiqish"
-        >
-          <LogOut className="w-4 h-4" />
-        </button>
       </div>
     </aside>
+  );
+};
+
+const MenuOption: React.FC<{
+  icon: React.ReactNode;
+  label: string;
+  danger?: boolean;
+  onClick: () => void;
+}> = ({ icon, label, danger, onClick }) => {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold transition-all text-left ${
+        danger
+          ? 'text-red-400 hover:bg-red-500/10'
+          : 'text-zinc-300 hover:text-white hover:bg-surface-light'
+      }`}
+    >
+      {icon}
+      <span>{label}</span>
+    </button>
   );
 };
 
@@ -385,26 +446,5 @@ const ChatItem: React.FC<{
         </button>
       </div>
     </div>
-  );
-};
-
-const NavLink: React.FC<{
-  icon: React.ReactNode;
-  label: string;
-  active: boolean;
-  onClick: () => void;
-}> = ({ icon, label, active, onClick }) => {
-  return (
-    <button
-      onClick={onClick}
-      className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
-        active
-          ? 'bg-primary/20 text-white border border-primary/40 shadow-sm'
-          : 'text-zinc-400 hover:bg-surface hover:text-zinc-100'
-      }`}
-    >
-      {icon}
-      <span>{label}</span>
-    </button>
   );
 };
