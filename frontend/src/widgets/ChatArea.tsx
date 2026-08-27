@@ -58,6 +58,7 @@ export const ChatArea: React.FC = () => {
   const { user } = useAuthStore();
 
   const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState(false);
+  const [optimisticMessages, setOptimisticMessages] = useState<Message[]>([]);
 
   const {
     currentConversationId,
@@ -74,8 +75,13 @@ export const ChatArea: React.FC = () => {
     toggleSidebar,
   } = useChatStore();
 
+  // Reset optimistic messages when current conversation changes
+  useEffect(() => {
+    setOptimisticMessages([]);
+  }, [currentConversationId]);
+
   // Fetch messages if a conversation is active
-  const { data: messages = [], isLoading } = useQuery<Message[]>({
+  const { data: messages = [] } = useQuery<Message[]>({
     queryKey: ['messages', currentConversationId],
     queryFn: async () => {
       if (!currentConversationId) return [];
@@ -85,13 +91,26 @@ export const ChatArea: React.FC = () => {
     enabled: !!currentConversationId,
   });
 
+  const displayMessages = [...messages, ...optimisticMessages];
+
   // Auto-scroll on new message or stream chunk
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages, streamingMessage]);
+  }, [displayMessages, streamingMessage]);
 
   const handleSendMessage = async (text: string) => {
-    if (isStreaming) return;
+    if (isStreaming || !text.trim()) return;
+
+    // Optimistically add user message immediately to the UI
+    const tempUserMsg: Message = {
+      id: `temp-${Date.now()}`,
+      conversation_id: currentConversationId || 'temp',
+      role: 'user',
+      content: text,
+      tokens: 0,
+      created_at: new Date().toISOString(),
+    };
+    setOptimisticMessages((prev) => [...prev, tempUserMsg]);
 
     setIsStreaming(true);
     setStreamingMessage('');
@@ -109,7 +128,7 @@ export const ChatArea: React.FC = () => {
         body: JSON.stringify({
           conversation_id: currentConversationId,
           message: text,
-          model: selectedModel,
+          model: selectedModel || 'wen-3.6-flash',
           attached_file_ids: attachedIds,
         }),
       });
@@ -125,6 +144,7 @@ export const ChatArea: React.FC = () => {
 
       let doneReading = false;
       let buffer = '';
+      let receivedConversationId = currentConversationId;
 
       while (!doneReading) {
         const { value, done } = await reader.read();
@@ -144,7 +164,8 @@ export const ChatArea: React.FC = () => {
 
             try {
               const data = JSON.parse(dataStr);
-              if (data.conversation_id && !currentConversationId) {
+              if (data.conversation_id && !receivedConversationId) {
+                receivedConversationId = data.conversation_id;
                 setCurrentConversationId(data.conversation_id);
               }
               if (data.content) {
@@ -159,13 +180,20 @@ export const ChatArea: React.FC = () => {
           }
         }
       }
+
+      if (receivedConversationId) {
+        await queryClient.invalidateQueries({ queryKey: ['messages', receivedConversationId] });
+      }
     } catch (err: any) {
       appendStreamingChunk(`\n\n*Connection error: ${err.message}*`);
     } finally {
       setIsStreaming(false);
       clearAttachedFiles();
+      setOptimisticMessages([]);
       queryClient.invalidateQueries({ queryKey: ['conversations'] });
-      queryClient.invalidateQueries({ queryKey: ['messages', currentConversationId] });
+      if (currentConversationId) {
+        queryClient.invalidateQueries({ queryKey: ['messages', currentConversationId] });
+      }
       resetStreaming();
     }
   };
@@ -213,7 +241,7 @@ export const ChatArea: React.FC = () => {
 
       {/* Messages Scroll Area */}
       <div className="flex-1 overflow-y-auto px-3 sm:px-4 py-4 sm:py-6 space-y-4 relative z-10 flex flex-col">
-        {messages.length === 0 && !streamingMessage ? (
+        {displayMessages.length === 0 && !streamingMessage ? (
           /* Clean Luxury Welcome Screen */
           <div className="my-auto flex flex-col items-center justify-center text-center py-6 px-4 max-w-3xl mx-auto w-full">
             {/* Header & Subtitle */}
@@ -262,7 +290,7 @@ export const ChatArea: React.FC = () => {
         ) : (
           /* Render Message List */
           <div className="space-y-4 max-w-4xl mx-auto w-full">
-            {messages.map((msg) => (
+            {displayMessages.map((msg) => (
               <MessageItem key={msg.id} message={msg} />
             ))}
 
