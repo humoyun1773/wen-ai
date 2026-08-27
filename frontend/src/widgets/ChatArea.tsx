@@ -9,7 +9,6 @@ import { ChatInput } from '@/widgets/ChatInput';
 import { UpgradePlanModal } from '@/widgets/UpgradePlanModal';
 import { LanguageSelector, SUPPORTED_LANGUAGES } from '@/widgets/LanguageSelector';
 import {
-  Bot,
   Menu,
 } from 'lucide-react';
 
@@ -193,20 +192,12 @@ export const ChatArea: React.FC = () => {
       {/* Messages Scroll Area */}
       <div className="flex-1 overflow-y-auto px-3 sm:px-4 py-4 sm:py-6 space-y-4 relative z-10 flex flex-col">
         {messages.length === 0 && !streamingMessage ? (
-          /* Clean Multilingual Welcome Screen without clutter */
+          /* Clean Minimal Multilingual Welcome Screen */
           <div className="my-auto flex flex-col items-center justify-center text-center py-8 px-4 max-w-xl mx-auto">
-            {/* Logo Orb */}
-            <div className="relative mb-5">
-              <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-3xl bg-gradient-to-tr from-primary via-primary-light to-secondary flex items-center justify-center shadow-2xl shadow-primary/40 animate-float">
-                <Bot className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
-              </div>
-              <div className="absolute -inset-2 bg-gradient-to-r from-primary to-accent-rose rounded-3xl blur-xl opacity-30 -z-10 animate-pulse-subtle" />
-            </div>
-
-            <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white tracking-tight mb-2.5">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white tracking-tight mb-3">
               {getGreeting()}!
             </h1>
-            <p className="text-xs sm:text-sm text-zinc-400 max-w-md leading-relaxed">
+            <p className="text-sm sm:text-base text-zinc-400 max-w-md leading-relaxed">
               {currentLangObj.subtitle}
             </p>
           </div>
