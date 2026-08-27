@@ -200,11 +200,13 @@ export const ChatArea: React.FC = () => {
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Input Box */}
-      <ChatInput
-        onSendMessage={handleSendMessage}
-        disabled={isStreaming}
-      />
+      {/* Input Box with High Z-Index so popups are never blocked */}
+      <div className="relative z-30 flex-shrink-0">
+        <ChatInput
+          onSendMessage={handleSendMessage}
+          disabled={isStreaming}
+        />
+      </div>
 
       {/* Upgrade Plan Modal */}
       <UpgradePlanModal

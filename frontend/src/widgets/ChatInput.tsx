@@ -138,7 +138,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, disabled })
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto px-4 pb-6 pt-2 select-none">
+    <div className="w-full max-w-4xl mx-auto px-4 pb-6 pt-2 relative z-30">
       {/* Attached Files Bar */}
       {attachedFiles.length > 0 && (
         <div className="flex flex-wrap gap-2 mb-2 px-2 animate-in fade-in slide-in-from-bottom-2 duration-150">
@@ -163,7 +163,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, disabled })
       )}
 
       {/* Floating Glassmorphism Container */}
-      <div className="relative flex flex-col bg-surface/80 backdrop-blur-2xl border border-surface-borderLight rounded-3xl shadow-2xl focus-within:border-primary/60 focus-within:ring-4 focus-within:ring-primary/10 transition-all p-3.5">
+      <div className="relative z-30 flex flex-col bg-surface/80 backdrop-blur-2xl border border-surface-borderLight rounded-3xl shadow-2xl focus-within:border-primary/60 focus-within:ring-4 focus-within:ring-primary/10 transition-all p-3.5">
         <textarea
           ref={textareaRef}
           rows={1}
