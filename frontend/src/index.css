@@ -81,9 +81,15 @@
 
 /* Smooth gradient text */
 .text-gradient {
-  @apply bg-clip-text text-transparent bg-gradient-to-r from-white via-zinc-200 to-zinc-400;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  background-image: linear-gradient(to right, #ffffff, #e4e4e7, #a1a1aa);
 }
 
 .text-gradient-primary {
-  @apply bg-clip-text text-transparent bg-gradient-to-r from-primary-light via-accent-rose to-secondary-light;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  background-image: linear-gradient(to right, #a855f7, #ec4899, #06b6d4);
 }
