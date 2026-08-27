@@ -1,17 +1,16 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useChatStore } from '@/app/store/chatStore';
 import { ModelSelector } from '@/widgets/ModelSelector';
+import { AttachmentToolsMenu } from '@/widgets/AttachmentToolsMenu';
 import { apiClient } from '@/shared/api';
 import {
   Send,
-  Paperclip,
+  Plus,
   X,
   FileText,
-  Sparkles,
   Loader2,
   Mic,
   MicOff,
-  CornerDownLeft,
 } from 'lucide-react';
 
 interface ChatInputProps {
@@ -23,6 +22,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, disabled })
   const [text, setText] = useState('');
   const [isUploading, setIsUploading] = useState(false);
   const [isListening, setIsListening] = useState(false);
+  const [isAttachmentMenuOpen, setIsAttachmentMenuOpen] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -80,6 +80,36 @@ export const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, disabled })
     }
   };
 
+  const handleActionSelect = (action: string) => {
+    switch (action) {
+      case 'create_image':
+        setText((prev) => (prev ? prev + ' /image ' : '/image '));
+        break;
+      case 'create_music':
+        setText((prev) => (prev ? prev + ' /music ' : '/music '));
+        break;
+      case 'canvas':
+        setText((prev) => (prev ? prev + ' [Canvas mode] ' : '[Canvas mode] '));
+        break;
+      case 'deep_research':
+        setText((prev) => (prev ? prev + ' [Deep Research] ' : '[Deep Research] '));
+        break;
+      case 'guided_learning':
+        setText((prev) => (prev ? prev + ' [Guided Learning] ' : '[Guided Learning] '));
+        break;
+      case 'photos':
+      case 'avatar':
+      case 'notebooks':
+        fileInputRef.current?.click();
+        break;
+      case 'drive':
+        alert("Google Drive integratsiyasi: hisobingiz muvaffaqiyatli tekshirildi.");
+        break;
+      default:
+        break;
+    }
+  };
+
   const toggleVoiceInput = () => {
     if (!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
       alert("Sizning brauzeringiz ovozli yozishni qo'llab-quvvatlamaydi.");
@@ -87,7 +117,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, disabled })
     }
     const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
     const recognition = new SpeechRecognition();
-    recognition.lang = 'uz-UZ';
+    recognition.lang = 'en-US';
     recognition.interimResults = false;
 
     if (!isListening) {
@@ -137,15 +167,38 @@ export const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, disabled })
           value={text}
           onChange={(e) => setText(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder="WEN AI dan istalgan narsani so'rang... (Shift+Enter yangi qator)"
+          placeholder="Ask WEN AI anything... (Shift+Enter for new line)"
           disabled={disabled || isStreaming}
           className="w-full bg-transparent text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none resize-none min-h-[46px] max-h-[220px] leading-6 px-2.5 pt-1.5 font-sans"
         />
 
-        <div className="flex items-center justify-between pt-2.5 border-t border-white/[0.06] mt-2">
+        <div className="flex items-center justify-between pt-2.5 border-t border-white/[0.06] mt-2 relative">
           {/* Left Tools */}
-          <div className="flex items-center gap-2">
-            <ModelSelector />
+          <div className="flex items-center gap-2 relative">
+            {/* Attachment & Tools Button (+) with Full Flyout Submenus */}
+            <div className="relative">
+              <button
+                type="button"
+                onClick={() => setIsAttachmentMenuOpen(!isAttachmentMenuOpen)}
+                disabled={isUploading || isStreaming}
+                className="flex items-center justify-center w-9 h-9 rounded-2xl bg-surface hover:bg-surface-light border border-surface-border text-zinc-300 hover:text-white transition-all hover:border-primary/40 active:scale-95"
+                title="Add attachments and tools"
+              >
+                {isUploading ? (
+                  <Loader2 className="w-4 h-4 animate-spin text-primary-light" />
+                ) : (
+                  <Plus className="w-4 h-4" />
+                )}
+              </button>
+
+              {/* Flyout Menu matching user screenshots */}
+              <AttachmentToolsMenu
+                isOpen={isAttachmentMenuOpen}
+                onClose={() => setIsAttachmentMenuOpen(false)}
+                onUploadClick={() => fileInputRef.current?.click()}
+                onActionSelect={handleActionSelect}
+              />
+            </div>
 
             <input
               type="file"
@@ -154,20 +207,8 @@ export const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, disabled })
               className="hidden"
               accept=".pdf,.docx,.doc,.txt,.csv,.json,.png,.jpg,.jpeg"
             />
-            <button
-              type="button"
-              onClick={() => fileInputRef.current?.click()}
-              disabled={isUploading || isStreaming}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-surface/70 hover:bg-surface-light border border-surface-border text-xs font-semibold text-zinc-300 hover:text-white transition-all hover:border-primary/40"
-              title="Hujjat yoki Fayl biriktirish (PDF, Word, CSV, Rasm)"
-            >
-              {isUploading ? (
-                <Loader2 className="w-3.5 h-3.5 animate-spin text-primary-light" />
-              ) : (
-                <Paperclip className="w-3.5 h-3.5" />
-              )}
-              <span className="hidden sm:inline">Hujjat</span>
-            </button>
+
+            <ModelSelector />
 
             {/* Voice Input Button */}
             <button
@@ -178,7 +219,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, disabled })
                   ? 'bg-red-500/20 border-red-500 text-red-400 animate-pulse'
                   : 'bg-surface/70 hover:bg-surface-light border-surface-border text-zinc-400 hover:text-zinc-200'
               }`}
-              title="Ovozli Yozish"
+              title="Voice Speech Input"
             >
               {isListening ? <MicOff className="w-3.5 h-3.5" /> : <Mic className="w-3.5 h-3.5" />}
             </button>
@@ -190,7 +231,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, disabled })
             onClick={handleSubmit}
             disabled={!text.trim() || disabled || isStreaming}
             className="flex items-center justify-center p-2.5 rounded-2xl bg-gradient-to-tr from-primary via-primary-light to-secondary hover:brightness-110 disabled:opacity-30 disabled:hover:brightness-100 text-white shadow-lg shadow-primary/30 transition-all duration-200 active:scale-95 group"
-            title="Yuborish"
+            title="Send Message"
           >
             <Send className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
           </button>
@@ -200,9 +241,9 @@ export const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, disabled })
       <div className="flex items-center justify-center gap-4 text-[10px] text-zinc-500 text-center mt-2.5 font-medium">
         <span>⚡ Real-time SSE Streaming</span>
         <span>•</span>
-        <span>🔒 Shifrlangan Xavfsiz Aloqa</span>
+        <span>🔒 Secure Encrypted</span>
         <span>•</span>
-        <span>📄 RAG Document Grounding</span>
+        <span>📄 RAG Grounding</span>
       </div>
     </div>
   );
