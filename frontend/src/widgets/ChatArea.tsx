@@ -8,13 +8,8 @@ import { MessageItem } from '@/widgets/MessageItem';
 import { ChatInput } from '@/widgets/ChatInput';
 import {
   Bot,
-  Code2,
-  FileSearch,
   Sparkles,
-  Languages,
-  Zap,
   Cpu,
-  ArrowUpRight,
   Menu,
 } from 'lucide-react';
 
@@ -181,77 +176,29 @@ export const ChatArea: React.FC = () => {
       </div>
 
       {/* Messages Scroll Area */}
-      <div className="flex-1 overflow-y-auto px-3 sm:px-4 py-4 sm:py-6 space-y-4 relative z-10">
+      <div className="flex-1 overflow-y-auto px-3 sm:px-4 py-4 sm:py-6 space-y-4 relative z-10 flex flex-col">
         {messages.length === 0 && !streamingMessage ? (
-          /* Personalized Welcome State */
-          <div className="max-w-2xl mx-auto my-auto flex flex-col items-center justify-center text-center py-6 sm:py-8 px-2">
+          /* Clean Minimalist Welcome Screen without bulky suggestion cards */
+          <div className="my-auto flex flex-col items-center justify-center text-center py-8 px-4 max-w-xl mx-auto">
             {/* Logo Orb */}
-            <div className="relative mb-4 sm:mb-5">
-              <div className="w-16 h-16 sm:w-18 sm:h-18 rounded-3xl bg-gradient-to-tr from-primary via-primary-light to-secondary flex items-center justify-center shadow-2xl shadow-primary/40 animate-float">
-                <Bot className="w-8 h-8 sm:w-9 sm:h-9 text-white" />
+            <div className="relative mb-5">
+              <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-3xl bg-gradient-to-tr from-primary via-primary-light to-secondary flex items-center justify-center shadow-2xl shadow-primary/40 animate-float">
+                <Bot className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
               </div>
               <div className="absolute -inset-2 bg-gradient-to-r from-primary to-accent-rose rounded-3xl blur-xl opacity-30 -z-10 animate-pulse-subtle" />
             </div>
 
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary-light text-xs font-semibold mb-2.5">
-              <Sparkles className="w-3 h-3" />
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary-light text-xs font-semibold mb-3">
+              <Sparkles className="w-3.5 h-3.5" />
               <span>Universal Sun'iy Intellekt</span>
             </div>
 
-            <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white tracking-tight mb-2">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white tracking-tight mb-2.5">
               {getGreeting()}!
             </h1>
-            <p className="text-xs sm:text-sm text-zinc-400 max-w-md mb-6 leading-relaxed">
-              Sizga bugun qanday vazifada yordam beray? Istalgan savolingizni bering yoki pastdagi namunalardan tanlang.
+            <p className="text-xs sm:text-sm text-zinc-400 max-w-md leading-relaxed">
+              Sizga bugun qanday vazifada yordam bera olaman?
             </p>
-
-            {/* Suggestion Cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3 w-full text-left">
-              <SuggestionCard
-                icon={<Code2 className="w-4 h-4 text-primary-light" />}
-                category="DASTURLASH"
-                title="FastAPI & React Clean Architecture"
-                subtitle="Toza arxitektura va andozalar"
-                onClick={() =>
-                  handleSendMessage(
-                    "FastAPI va React TypeScript loyihasi uchun Clean Architecture (Repository, Service, Controller) strukturasini to'liq tushuntirib ber."
-                  )
-                }
-              />
-              <SuggestionCard
-                icon={<FileSearch className="w-4 h-4 text-accent-cyan" />}
-                category="RAG HUJJATLAR"
-                title="PDF va Hujjatlarni Tahlil Qilish"
-                subtitle="Semantik qidiruv va kontekst"
-                onClick={() =>
-                  handleSendMessage(
-                    "PDF, Word yoki CSV fayllarni RAG tizimiga yuklab, ulardan qanday qilib aniq faktlar bo'yicha savol-javob qilish mumkin?"
-                  )
-                }
-              />
-              <SuggestionCard
-                icon={<Languages className="w-4 h-4 text-accent-rose" />}
-                category="TARJIMA & TAHRIR"
-                title="Professional O'zbek Tili Tahriri"
-                subtitle="Rasmiy shartnoma va matnlar"
-                onClick={() =>
-                  handleSendMessage(
-                    "Rasmiy xizmat xati yoki shartnomaning kirish qismini o'zbek tilida professional va yuridik jihatdan to'g'ri tuzib ber."
-                  )
-                }
-              />
-              <SuggestionCard
-                icon={<Zap className="w-4 h-4 text-accent-emerald" />}
-                category="OPTIMIZATSIYA"
-                title="Algoritm va Xatolarni Tuzatish"
-                subtitle="Unumdorlik va xavfsizlik"
-                onClick={() =>
-                  handleSendMessage(
-                    "Python va TypeScript da async/await xatolarini topish va performance optimizatsiya qilish bo'yicha eng yaxshi amaliyotlar qaysilar?"
-                  )
-                }
-              />
-            </div>
           </div>
         ) : (
           /* Render Message List */
@@ -278,34 +225,5 @@ export const ChatArea: React.FC = () => {
       {/* Input Box */}
       <ChatInput onSendMessage={handleSendMessage} disabled={isStreaming} />
     </div>
-  );
-};
-
-const SuggestionCard: React.FC<{
-  icon: React.ReactNode;
-  category: string;
-  title: string;
-  subtitle: string;
-  onClick: () => void;
-}> = ({ icon, category, title, subtitle, onClick }) => {
-  return (
-    <button
-      onClick={onClick}
-      className="group relative flex items-start gap-3 p-3.5 rounded-2xl bg-surface/75 border border-surface-border hover:border-primary/50 hover:bg-surface-light/90 transition-all duration-200 text-left shadow-md hover:-translate-y-0.5 active:scale-[0.99]"
-    >
-      <div className="p-2 rounded-xl bg-surface-dark border border-surface-border group-hover:border-primary/40 group-hover:bg-primary/10 transition-colors flex-shrink-0">
-        {icon}
-      </div>
-      <div className="flex-1 min-w-0">
-        <span className="text-[9px] font-bold tracking-widest uppercase text-zinc-500 group-hover:text-primary-light transition-colors">
-          {category}
-        </span>
-        <h4 className="text-xs font-bold text-zinc-100 group-hover:text-white transition-colors truncate mt-0.5">
-          {title}
-        </h4>
-        <p className="text-[11px] text-zinc-400 mt-0.5 leading-tight line-clamp-1">{subtitle}</p>
-      </div>
-      <ArrowUpRight className="w-3.5 h-3.5 text-zinc-600 group-hover:text-primary-light transition-colors opacity-0 group-hover:opacity-100 flex-shrink-0" />
-    </button>
   );
 };
