@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useChatStore } from '@/app/store/chatStore';
 import { ChevronDown, Check } from 'lucide-react';
 
-interface AIModelOption {
+export interface AIModelOption {
   id: string;
   name: string;
   subtitle: string;
@@ -40,14 +40,9 @@ export const ModelSelector: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Default to '3.6 Flash' if not set
   useEffect(() => {
-    if (!selectedModel || selectedModel === 'gpt-4o-mini') {
-      setSelectedModel('wen-3.6-flash');
-    }
-  }, [selectedModel, setSelectedModel]);
+    if (!isOpen) return;
 
-  useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (
         dropdownRef.current &&
@@ -56,36 +51,33 @@ export const ModelSelector: React.FC = () => {
         setIsOpen(false);
       }
     };
-    if (isOpen) {
-      const timer = setTimeout(() => {
-        document.addEventListener('click', handleClickOutside);
-      }, 50);
-      return () => {
-        clearTimeout(timer);
-        document.removeEventListener('click', handleClickOutside);
-      };
-    }
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
   }, [isOpen]);
 
   const activeModelObj =
-    AI_MODELS.find((m) => m.id === selectedModel) || AI_MODELS[1]; // default 3.6 Flash
+    AI_MODELS.find((m) => m.id === selectedModel) ||
+    AI_MODELS.find((m) => m.id === 'wen-3.6-flash') ||
+    AI_MODELS[1];
 
   const regularModels = AI_MODELS.filter((m) => !m.isExtended);
   const extendedModel = AI_MODELS.find((m) => m.isExtended);
 
-  const handleSelect = (modelId: string) => {
+  const handleSelectModel = (modelId: string) => {
     setSelectedModel(modelId);
     setIsOpen(false);
   };
 
   return (
-    <div className="relative" ref={dropdownRef} onMouseDown={(e) => e.stopPropagation()}>
+    <div className="relative inline-block text-left" ref={dropdownRef}>
       {/* Selector Trigger Button */}
       <button
         type="button"
-        onMouseDown={(e) => e.preventDefault()}
-        onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-3.5 py-2 rounded-2xl bg-surface hover:bg-surface-light border border-surface-border text-xs font-bold text-zinc-200 transition-all hover:border-primary/40 shadow-sm group select-none cursor-pointer"
+        onClick={() => setIsOpen((prev) => !prev)}
+        className="flex items-center gap-2 px-3.5 py-2 rounded-2xl bg-surface hover:bg-surface-light border border-surface-border text-xs font-bold text-zinc-200 transition-all hover:border-primary/40 shadow-sm group cursor-pointer"
       >
         <span className="text-white font-semibold">{activeModelObj.name}</span>
         <ChevronDown className="w-3.5 h-3.5 text-zinc-400 group-hover:text-white transition-colors" />
@@ -93,7 +85,7 @@ export const ModelSelector: React.FC = () => {
 
       {/* Model Dropdown Popup matching exact user screenshot */}
       {isOpen && (
-        <div className="absolute bottom-full left-0 mb-3 w-64 bg-[#18181b] border border-white/[0.15] rounded-2xl shadow-2xl p-2 z-50 select-none animate-in fade-in zoom-in-95 duration-150">
+        <div className="absolute bottom-full left-0 mb-3 w-64 bg-[#18181b] border border-white/[0.15] rounded-2xl shadow-2xl p-2 z-50 animate-in fade-in zoom-in-95 duration-150">
           <div className="space-y-1">
             {regularModels.map((m) => {
               const isSelected = selectedModel === m.id;
@@ -101,11 +93,10 @@ export const ModelSelector: React.FC = () => {
                 <button
                   key={m.id}
                   type="button"
-                  onMouseDown={(e) => e.preventDefault()}
-                  onClick={() => handleSelect(m.id)}
-                  className={`w-full flex items-start gap-3 px-3 py-2.5 rounded-xl text-left transition-all cursor-pointer active:scale-[0.98] ${
+                  onClick={() => handleSelectModel(m.id)}
+                  className={`w-full flex items-start gap-3 px-3 py-2.5 rounded-xl text-left transition-all cursor-pointer ${
                     isSelected
-                      ? 'bg-white/[0.12] text-white'
+                      ? 'bg-white/[0.15] text-white'
                       : 'hover:bg-white/[0.08] text-zinc-300'
                   }`}
                 >
@@ -140,11 +131,10 @@ export const ModelSelector: React.FC = () => {
             {extendedModel && (
               <button
                 type="button"
-                onMouseDown={(e) => e.preventDefault()}
-                onClick={() => handleSelect(extendedModel.id)}
-                className={`w-full flex items-start gap-3 px-3 py-2.5 rounded-xl text-left transition-all cursor-pointer active:scale-[0.98] ${
+                onClick={() => handleSelectModel(extendedModel.id)}
+                className={`w-full flex items-start gap-3 px-3 py-2.5 rounded-xl text-left transition-all cursor-pointer ${
                   selectedModel === extendedModel.id
-                    ? 'bg-white/[0.12] text-white'
+                    ? 'bg-white/[0.15] text-white'
                     : 'hover:bg-white/[0.08] text-zinc-300'
                 }`}
               >

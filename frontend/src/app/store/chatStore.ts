@@ -26,7 +26,7 @@ interface ChatState {
 
 export const useChatStore = create<ChatState>((set) => ({
   currentConversationId: null,
-  selectedModel: 'gpt-4o-mini',
+  selectedModel: 'wen-3.6-flash',
   selectedPromptId: null,
   attachedFiles: [],
   isSidebarOpen: true,
