@@ -57,9 +57,14 @@ export const ModelSelector: React.FC = () => {
       }
     };
     if (isOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
+      const timer = setTimeout(() => {
+        document.addEventListener('click', handleClickOutside);
+      }, 50);
+      return () => {
+        clearTimeout(timer);
+        document.removeEventListener('click', handleClickOutside);
+      };
     }
-    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isOpen]);
 
   const activeModelObj =
@@ -68,23 +73,18 @@ export const ModelSelector: React.FC = () => {
   const regularModels = AI_MODELS.filter((m) => !m.isExtended);
   const extendedModel = AI_MODELS.find((m) => m.isExtended);
 
-  const handleSelect = (e: React.MouseEvent, modelId: string) => {
-    e.preventDefault();
-    e.stopPropagation();
+  const handleSelect = (modelId: string) => {
     setSelectedModel(modelId);
     setIsOpen(false);
   };
 
   return (
-    <div className="relative" ref={dropdownRef}>
+    <div className="relative" ref={dropdownRef} onMouseDown={(e) => e.stopPropagation()}>
       {/* Selector Trigger Button */}
       <button
         type="button"
-        onClick={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          setIsOpen(!isOpen);
-        }}
+        onMouseDown={(e) => e.preventDefault()}
+        onClick={() => setIsOpen(!isOpen)}
         className="flex items-center gap-2 px-3.5 py-2 rounded-2xl bg-surface hover:bg-surface-light border border-surface-border text-xs font-bold text-zinc-200 transition-all hover:border-primary/40 shadow-sm group select-none cursor-pointer"
       >
         <span className="text-white font-semibold">{activeModelObj.name}</span>
@@ -93,7 +93,7 @@ export const ModelSelector: React.FC = () => {
 
       {/* Model Dropdown Popup matching exact user screenshot */}
       {isOpen && (
-        <div className="absolute bottom-full left-0 mb-3 w-64 bg-[#18181b]/95 backdrop-blur-2xl border border-white/[0.1] rounded-2xl shadow-2xl p-2 z-50 select-none animate-in fade-in zoom-in-95 duration-150">
+        <div className="absolute bottom-full left-0 mb-3 w-64 bg-[#18181b] border border-white/[0.15] rounded-2xl shadow-2xl p-2 z-50 select-none animate-in fade-in zoom-in-95 duration-150">
           <div className="space-y-1">
             {regularModels.map((m) => {
               const isSelected = selectedModel === m.id;
@@ -101,11 +101,12 @@ export const ModelSelector: React.FC = () => {
                 <button
                   key={m.id}
                   type="button"
-                  onClick={(e) => handleSelect(e, m.id)}
-                  className={`w-full flex items-start gap-3 px-3 py-2 rounded-xl text-left transition-colors cursor-pointer ${
+                  onMouseDown={(e) => e.preventDefault()}
+                  onClick={() => handleSelect(m.id)}
+                  className={`w-full flex items-start gap-3 px-3 py-2.5 rounded-xl text-left transition-all cursor-pointer active:scale-[0.98] ${
                     isSelected
-                      ? 'bg-white/[0.08] text-white'
-                      : 'hover:bg-white/[0.05] text-zinc-300'
+                      ? 'bg-white/[0.12] text-white'
+                      : 'hover:bg-white/[0.08] text-zinc-300'
                   }`}
                 >
                   {/* Checkmark slot on left */}
@@ -133,17 +134,18 @@ export const ModelSelector: React.FC = () => {
             })}
 
             {/* Separator line */}
-            <div className="my-1 border-t border-white/[0.08]" />
+            <div className="my-1 border-t border-white/[0.1]" />
 
             {/* Extended thinking item */}
             {extendedModel && (
               <button
                 type="button"
-                onClick={(e) => handleSelect(e, extendedModel.id)}
-                className={`w-full flex items-start gap-3 px-3 py-2 rounded-xl text-left transition-colors cursor-pointer ${
+                onMouseDown={(e) => e.preventDefault()}
+                onClick={() => handleSelect(extendedModel.id)}
+                className={`w-full flex items-start gap-3 px-3 py-2.5 rounded-xl text-left transition-all cursor-pointer active:scale-[0.98] ${
                   selectedModel === extendedModel.id
-                    ? 'bg-white/[0.08] text-white'
-                    : 'hover:bg-white/[0.05] text-zinc-300'
+                    ? 'bg-white/[0.12] text-white'
+                    : 'hover:bg-white/[0.08] text-zinc-300'
                 }`}
               >
                 {/* Checkmark slot on left */}
