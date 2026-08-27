@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuthStore } from '@/app/store/authStore';
 import { useChatStore } from '@/app/store/chatStore';
@@ -112,13 +112,6 @@ export const Sidebar: React.FC = () => {
     }
   };
 
-  const handleNavClick = (path: string) => {
-    navigate(path);
-    if (window.innerWidth < 768) {
-      setSidebarOpen(false);
-    }
-  };
-
   const filteredConversations = conversations.filter((c) =>
     c.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -148,126 +141,155 @@ export const Sidebar: React.FC = () => {
         {!isSidebarOpen && (
           <div className="hidden md:flex flex-col items-center py-4 px-2 w-full justify-between h-full overflow-y-auto">
             <div className="flex flex-col items-center gap-2.5 w-full">
-              <div
-                onClick={() => navigate('/chat')}
+              <NavLink
+                to="/chat"
                 className="w-10 h-10 rounded-2xl bg-surface border border-surface-border flex items-center justify-center font-black text-xs text-white shadow-md cursor-pointer hover:border-primary/50 hover:bg-surface-light transition-all"
                 title="WEN AI"
               >
                 WEN
-              </div>
+              </NavLink>
+
               <button
+                type="button"
                 onClick={toggleSidebar}
                 className="p-2.5 rounded-xl bg-surface/80 hover:bg-surface-light border border-surface-border text-zinc-400 hover:text-white transition-all cursor-pointer"
                 title="Развернуть панель"
               >
                 <ChevronRight className="w-4 h-4" />
               </button>
+
               <button
+                type="button"
                 onClick={handleNewChat}
                 className="p-2.5 rounded-xl bg-gradient-to-r from-primary to-secondary hover:brightness-110 text-white shadow-lg shadow-primary/25 transition-all cursor-pointer"
                 title="Новый чат"
               >
                 <Plus className="w-4 h-4" />
               </button>
-              <button
-                onClick={() => handleNavClick('/images')}
-                className={`p-2.5 rounded-xl transition-all cursor-pointer ${
-                  location.pathname === '/images'
-                    ? 'bg-primary/20 text-white border border-primary/40'
-                    : 'text-zinc-400 hover:text-white hover:bg-surface-light'
-                }`}
+
+              <NavLink
+                to="/images"
+                className={({ isActive }) =>
+                  `p-2.5 rounded-xl transition-all cursor-pointer ${
+                    isActive
+                      ? 'bg-primary/20 text-white border border-primary/40'
+                      : 'text-zinc-400 hover:text-white hover:bg-surface-light'
+                  }`
+                }
                 title="Изображения"
               >
                 <ImageIcon className="w-4 h-4 text-accent-rose" />
-              </button>
-              <button
-                onClick={() => handleNavClick('/library')}
-                className={`p-2.5 rounded-xl transition-all cursor-pointer ${
-                  location.pathname === '/library'
-                    ? 'bg-primary/20 text-white border border-primary/40'
-                    : 'text-zinc-400 hover:text-white hover:bg-surface-light'
-                }`}
+              </NavLink>
+
+              <NavLink
+                to="/library"
+                className={({ isActive }) =>
+                  `p-2.5 rounded-xl transition-all cursor-pointer ${
+                    isActive
+                      ? 'bg-primary/20 text-white border border-primary/40'
+                      : 'text-zinc-400 hover:text-white hover:bg-surface-light'
+                  }`
+                }
                 title="Библиотека"
               >
                 <BookOpen className="w-4 h-4 text-accent-cyan" />
-              </button>
-              <button
-                onClick={() => handleNavClick('/scheduled')}
-                className={`p-2.5 rounded-xl transition-all cursor-pointer ${
-                  location.pathname === '/scheduled'
-                    ? 'bg-primary/20 text-white border border-primary/40'
-                    : 'text-zinc-400 hover:text-white hover:bg-surface-light'
-                }`}
+              </NavLink>
+
+              <NavLink
+                to="/scheduled"
+                className={({ isActive }) =>
+                  `p-2.5 rounded-xl transition-all cursor-pointer ${
+                    isActive
+                      ? 'bg-primary/20 text-white border border-primary/40'
+                      : 'text-zinc-400 hover:text-white hover:bg-surface-light'
+                  }`
+                }
                 title="Запланированное"
               >
                 <Clock className="w-4 h-4 text-accent-emerald" />
-              </button>
-              <button
-                onClick={() => handleNavClick('/plugins')}
-                className={`p-2.5 rounded-xl transition-all cursor-pointer ${
-                  location.pathname === '/plugins'
-                    ? 'bg-primary/20 text-white border border-primary/40'
-                    : 'text-zinc-400 hover:text-white hover:bg-surface-light'
-                }`}
+              </NavLink>
+
+              <NavLink
+                to="/plugins"
+                className={({ isActive }) =>
+                  `p-2.5 rounded-xl transition-all cursor-pointer ${
+                    isActive
+                      ? 'bg-primary/20 text-white border border-primary/40'
+                      : 'text-zinc-400 hover:text-white hover:bg-surface-light'
+                  }`
+                }
                 title="Плагины"
               >
                 <Plug className="w-4 h-4 text-primary-light" />
-              </button>
-              <button
-                onClick={() => handleNavClick('/projects')}
-                className={`p-2.5 rounded-xl transition-all cursor-pointer ${
-                  location.pathname === '/projects'
-                    ? 'bg-primary/20 text-white border border-primary/40'
-                    : 'text-zinc-400 hover:text-white hover:bg-surface-light'
-                }`}
+              </NavLink>
+
+              <NavLink
+                to="/projects"
+                className={({ isActive }) =>
+                  `p-2.5 rounded-xl transition-all cursor-pointer ${
+                    isActive
+                      ? 'bg-primary/20 text-white border border-primary/40'
+                      : 'text-zinc-400 hover:text-white hover:bg-surface-light'
+                  }`
+                }
                 title="Проекты"
               >
                 <Folder className="w-4 h-4 text-accent-amber" />
-              </button>
-              <button
-                onClick={() => handleNavClick('/codex')}
-                className={`p-2.5 rounded-xl transition-all cursor-pointer ${
-                  location.pathname === '/codex'
-                    ? 'bg-primary/20 text-white border border-primary/40'
-                    : 'text-zinc-400 hover:text-white hover:bg-surface-light'
-                }`}
+              </NavLink>
+
+              <NavLink
+                to="/codex"
+                className={({ isActive }) =>
+                  `p-2.5 rounded-xl transition-all cursor-pointer ${
+                    isActive
+                      ? 'bg-primary/20 text-white border border-primary/40'
+                      : 'text-zinc-400 hover:text-white hover:bg-surface-light'
+                  }`
+                }
                 title="Wen Codex"
               >
                 <Code2 className="w-4 h-4 text-accent-violet" />
-              </button>
-              <button
-                onClick={() => handleNavClick('/documents')}
-                className={`p-2.5 rounded-xl transition-all cursor-pointer ${
-                  location.pathname === '/documents'
-                    ? 'bg-primary/20 text-white border border-primary/40'
-                    : 'text-zinc-400 hover:text-white hover:bg-surface-light'
-                }`}
+              </NavLink>
+
+              <NavLink
+                to="/documents"
+                className={({ isActive }) =>
+                  `p-2.5 rounded-xl transition-all cursor-pointer ${
+                    isActive
+                      ? 'bg-primary/20 text-white border border-primary/40'
+                      : 'text-zinc-400 hover:text-white hover:bg-surface-light'
+                  }`
+                }
                 title="Документы (RAG)"
               >
                 <FileText className="w-4 h-4 text-accent-cyan" />
-              </button>
-              <button
-                onClick={() => handleNavClick('/prompts')}
-                className={`p-2.5 rounded-xl transition-all cursor-pointer ${
-                  location.pathname === '/prompts'
-                    ? 'bg-primary/20 text-white border border-primary/40'
-                    : 'text-zinc-400 hover:text-white hover:bg-surface-light'
-                }`}
-                title="Промпты"
+              </NavLink>
+
+              <NavLink
+                to="/prompts"
+                className={({ isActive }) =>
+                  `p-2.5 rounded-xl transition-all cursor-pointer ${
+                    isActive
+                      ? 'bg-primary/20 text-white border border-primary/40'
+                      : 'text-zinc-400 hover:text-white hover:bg-surface-light'
+                  }`
+                }
+                title="Пromпты"
               >
                 <Terminal className="w-4 h-4 text-accent-rose" />
-              </button>
+              </NavLink>
             </div>
 
             <div className="flex flex-col items-center gap-2.5 mt-auto pt-3 border-t border-surface-border w-full">
-              <button
-                onClick={() => handleNavClick('/settings')}
+              <NavLink
+                to="/settings"
                 className="p-2.5 rounded-xl text-zinc-400 hover:text-white hover:bg-surface-light transition-all cursor-pointer"
                 title="Настройки"
               >
                 <Settings className="w-4 h-4" />
-              </button>
+              </NavLink>
               <button
+                type="button"
                 onClick={logout}
                 className="p-2.5 rounded-xl text-red-400/80 hover:text-red-400 hover:bg-red-500/10 transition-all cursor-pointer"
                 title="Выйти"
@@ -283,9 +305,9 @@ export const Sidebar: React.FC = () => {
           <div className="flex flex-col h-full w-full">
             {/* Brand Header */}
             <div className="flex items-center justify-between px-5 py-4 border-b border-surface-border">
-              <div
+              <NavLink
+                to="/chat"
                 onClick={() => {
-                  navigate('/chat');
                   if (window.innerWidth < 768) setSidebarOpen(false);
                 }}
                 className="cursor-pointer py-1"
@@ -293,9 +315,10 @@ export const Sidebar: React.FC = () => {
                 <span className="font-black text-xl tracking-wider text-white">
                   WEN AI
                 </span>
-              </div>
+              </NavLink>
 
               <button
+                type="button"
                 onClick={toggleSidebar}
                 className="p-1.5 rounded-xl text-zinc-400 hover:text-white hover:bg-surface-light border border-transparent hover:border-surface-border transition-all cursor-pointer"
                 title="Свернуть"
@@ -304,62 +327,93 @@ export const Sidebar: React.FC = () => {
               </button>
             </div>
 
-            {/* Core Feature Navigation Bar */}
+            {/* Core Feature Navigation Bar with NavLinks */}
             <div className="p-3 space-y-1 border-b border-surface-border/60">
-              <NavItem
-                icon={<Plus className="w-4 h-4 text-primary-light" />}
-                label="Новый чат"
-                active={location.pathname === '/chat' && !currentConversationId}
+              <button
+                type="button"
                 onClick={handleNewChat}
-                highlight
-              />
-              <NavItem
+                className={`w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs font-semibold transition-all cursor-pointer select-none text-left ${
+                  location.pathname === '/chat' && !currentConversationId
+                    ? 'bg-primary/20 text-white border border-primary/40 shadow-sm'
+                    : 'text-white hover:bg-surface-light hover:text-white'
+                }`}
+              >
+                <div className="w-5 h-5 flex items-center justify-center flex-shrink-0">
+                  <Plus className="w-4 h-4 text-primary-light" />
+                </div>
+                <span className="truncate">Новый чат</span>
+              </button>
+
+              <SidebarNavLink
+                to="/images"
                 icon={<ImageIcon className="w-4 h-4 text-accent-rose" />}
                 label="Изображения"
-                active={location.pathname === '/images'}
-                onClick={() => handleNavClick('/images')}
+                onNavigate={() => {
+                  if (window.innerWidth < 768) setSidebarOpen(false);
+                }}
               />
-              <NavItem
+
+              <SidebarNavLink
+                to="/library"
                 icon={<BookOpen className="w-4 h-4 text-accent-cyan" />}
                 label="Библиотека"
-                active={location.pathname === '/library'}
-                onClick={() => handleNavClick('/library')}
+                onNavigate={() => {
+                  if (window.innerWidth < 768) setSidebarOpen(false);
+                }}
               />
-              <NavItem
+
+              <SidebarNavLink
+                to="/scheduled"
                 icon={<Clock className="w-4 h-4 text-accent-emerald" />}
                 label="Запланированное"
-                active={location.pathname === '/scheduled'}
-                onClick={() => handleNavClick('/scheduled')}
+                onNavigate={() => {
+                  if (window.innerWidth < 768) setSidebarOpen(false);
+                }}
               />
-              <NavItem
+
+              <SidebarNavLink
+                to="/plugins"
                 icon={<Plug className="w-4 h-4 text-primary-light" />}
                 label="Плагины"
-                active={location.pathname === '/plugins'}
-                onClick={() => handleNavClick('/plugins')}
+                onNavigate={() => {
+                  if (window.innerWidth < 768) setSidebarOpen(false);
+                }}
               />
-              <NavItem
+
+              <SidebarNavLink
+                to="/projects"
                 icon={<Folder className="w-4 h-4 text-accent-amber" />}
                 label="Проекты"
-                active={location.pathname === '/projects'}
-                onClick={() => handleNavClick('/projects')}
+                onNavigate={() => {
+                  if (window.innerWidth < 768) setSidebarOpen(false);
+                }}
               />
-              <NavItem
+
+              <SidebarNavLink
+                to="/codex"
                 icon={<Code2 className="w-4 h-4 text-accent-violet" />}
                 label="Wen Codex"
-                active={location.pathname === '/codex'}
-                onClick={() => handleNavClick('/codex')}
+                onNavigate={() => {
+                  if (window.innerWidth < 768) setSidebarOpen(false);
+                }}
               />
-              <NavItem
+
+              <SidebarNavLink
+                to="/documents"
                 icon={<FileText className="w-4 h-4 text-accent-cyan" />}
                 label="Документы (RAG)"
-                active={location.pathname === '/documents'}
-                onClick={() => handleNavClick('/documents')}
+                onNavigate={() => {
+                  if (window.innerWidth < 768) setSidebarOpen(false);
+                }}
               />
-              <NavItem
+
+              <SidebarNavLink
+                to="/prompts"
                 icon={<Terminal className="w-4 h-4 text-accent-rose" />}
                 label="Библиотека промптов"
-                active={location.pathname === '/prompts'}
-                onClick={() => handleNavClick('/prompts')}
+                onNavigate={() => {
+                  if (window.innerWidth < 768) setSidebarOpen(false);
+                }}
               />
             </div>
 
@@ -376,6 +430,7 @@ export const Sidebar: React.FC = () => {
                 />
                 {searchQuery && (
                   <button
+                    type="button"
                     onClick={() => setSearchQuery('')}
                     className="absolute right-2.5 text-zinc-400 hover:text-white cursor-pointer"
                   >
@@ -536,27 +591,29 @@ export const Sidebar: React.FC = () => {
   );
 };
 
-const NavItem: React.FC<{
+const SidebarNavLink: React.FC<{
+  to: string;
   icon: React.ReactNode;
   label: string;
-  active: boolean;
-  onClick: () => void;
-  highlight?: boolean;
-}> = ({ icon, label, active, onClick, highlight }) => {
+  onNavigate: () => void;
+}> = ({ to, icon, label, onNavigate }) => {
   return (
-    <button
-      onClick={onClick}
-      className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
-        active
-          ? 'bg-primary/20 text-white border border-primary/40 shadow-sm'
-          : highlight
-          ? 'text-white hover:bg-surface-light hover:text-white'
-          : 'text-zinc-400 hover:bg-surface hover:text-zinc-100'
-      }`}
+    <NavLink
+      to={to}
+      onClick={onNavigate}
+      className={({ isActive }) =>
+        `w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs font-semibold transition-all cursor-pointer select-none text-left ${
+          isActive
+            ? 'bg-primary/20 text-white border border-primary/40 shadow-sm'
+            : 'text-zinc-400 hover:bg-surface-light hover:text-zinc-100 border border-transparent'
+        }`
+      }
     >
-      {icon}
-      <span>{label}</span>
-    </button>
+      <div className="w-5 h-5 flex items-center justify-center flex-shrink-0">
+        {icon}
+      </div>
+      <span className="truncate">{label}</span>
+    </NavLink>
   );
 };
 
@@ -610,6 +667,7 @@ const ChatItem: React.FC<{
 
       <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
         <button
+          type="button"
           onClick={(e) => {
             e.stopPropagation();
             onTogglePin();
@@ -622,6 +680,7 @@ const ChatItem: React.FC<{
           <Pin className="w-3 h-3" />
         </button>
         <button
+          type="button"
           onClick={(e) => {
             e.stopPropagation();
             onDelete();
