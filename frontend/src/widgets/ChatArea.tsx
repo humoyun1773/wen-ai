@@ -129,12 +129,12 @@ export const ChatArea: React.FC = () => {
     }
   };
 
-  // Default English greeting
+  // Russian greeting
   const getGreeting = () => {
     if (user?.name) {
-      return `Good day, ${user.name}`;
+      return `Добрый день, ${user.name}`;
     }
-    return 'Good day';
+    return 'Добрый день';
   };
 
   return (
@@ -146,7 +146,7 @@ export const ChatArea: React.FC = () => {
           <button
             type="button"
             onClick={toggleSidebar}
-            className="p-2 rounded-xl bg-surface border border-surface-border text-zinc-300 hover:text-white md:hidden"
+            className="p-2 rounded-xl bg-surface border border-surface-border text-zinc-300 hover:text-white md:hidden cursor-pointer"
             title="Меню"
           >
             <Menu className="w-4 h-4" />
@@ -158,7 +158,7 @@ export const ChatArea: React.FC = () => {
           <button
             type="button"
             onClick={() => setIsUpgradeModalOpen(true)}
-            className="px-4 py-2 rounded-full bg-gradient-to-r from-primary via-primary-light to-secondary hover:brightness-110 text-white text-xs font-bold shadow-md shadow-primary/25 transition-all active:scale-95"
+            className="px-4 py-2 rounded-full bg-gradient-to-r from-primary via-primary-light to-secondary hover:brightness-110 text-white text-xs font-bold shadow-md shadow-primary/25 transition-all active:scale-95 cursor-pointer"
           >
             <span className="hidden sm:inline">Обновить тариф</span>
             <span className="sm:hidden">Тариф</span>
@@ -175,7 +175,7 @@ export const ChatArea: React.FC = () => {
               {getGreeting()}!
             </h1>
             <p className="text-sm sm:text-base text-zinc-400 max-w-md leading-relaxed">
-              How can I help you today?
+              Чем я могу помочь вам сегодня?
             </p>
           </div>
         ) : (
